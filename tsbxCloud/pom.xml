@@ -6,7 +6,12 @@
 
     <groupId>ins.cloud</groupId>
     <artifactId>tsbxCloud</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>cloud-provide-payment8001</module>
+        <module>cloud-consumer-order80</module>
+    </modules>
 
 
     <!-- 统一管理jar包版本 -->
@@ -85,7 +90,15 @@
                 <version>${lombok.version}</version>
                 <optional>true</optional>
             </dependency>
+            <!--热部署-->
+        <!--    <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <scope>runtime</scope>
+                <optional>true</optional>
+            </dependency>-->
         </dependencies>
+
     </dependencyManagement>
 
     <build>
@@ -93,6 +106,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.4.1</version>
                 <configuration>
                     <fork>true</fork>
                     <addResources>true</addResources>
