@@ -1,8 +1,8 @@
-package com.tsbx.channel.service.impl;
+package com.tsbx.business.channel.service.impl;
 
-import com.tsbx.channel.dao.ChannelDao;
-import com.tsbx.channel.pojo.MesChannel;
-import com.tsbx.channel.service.ChannelService;
+import com.tsbx.business.channel.pojo.MesChannel;
+import com.tsbx.business.channel.service.ChannelService;
+import com.tsbx.business.channel.dao.ChannelDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

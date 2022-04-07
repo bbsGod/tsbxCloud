@@ -1,4 +1,4 @@
-package com.tsbx.channel.pojo;
+package com.tsbx.business.channel.pojo;
 
 import lombok.Data;
 

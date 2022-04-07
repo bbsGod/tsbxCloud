@@ -1,6 +1,6 @@
-package com.tsbx.channel.service;
+package com.tsbx.business.channel.service;
 
-import com.tsbx.channel.pojo.MesChannel;
+import com.tsbx.business.channel.pojo.MesChannel;
 
 import java.util.List;
 

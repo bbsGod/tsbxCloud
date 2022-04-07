@@ -6,11 +6,11 @@
 <!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
 <!-- ============================================================== -->
 <!-- ============================================================== -->
-<mapper namespace="com.tsbx.channel.dao.ChannelDao">
+<mapper namespace="com.tsbx.business.channel.dao.ChannelDao">
 	<!-- 默认开启二级缓存,使用Least Recently Used（LRU，最近最少使用的）算法来收回 -->
 	<cache/>
 	<!-- 通用查询结果对象-->
-	<resultMap id="BaseResultMap" type="com.tsbx.channel.pojo.MesChannel">
+	<resultMap id="BaseResultMap" type="com.tsbx.business.channel.pojo.MesChannel">
 		 <id column="id" property="id"/> 
 		 <result column="channel_name" property="channelName"/> 
 		 <result column="channel_type" property="channelType"/> 
@@ -75,12 +75,12 @@
 	</sql>
 
 	<!-- 按对象查询一页记录（多条记录） -->
-	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.tsbx.channel.pojo.MesChannel">
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.tsbx.business.channel.pojo.MesChannel">
 		<include refid="Base_Select_By_Entity" />
 	</select>
 
 	<!-- 完整插入一条记录-->
-	<insert id="insert" parameterType="com.tsbx.channel.pojo.MesChannel">
+	<insert id="insert" parameterType="com.tsbx.business.channel.pojo.MesChannel">
 		insert into mes_channel (id, channel_name, channel_type, mes_type_code, mes_company_code,
 			channel_key, valid_status, create_time, update_time, flag
 			)
@@ -90,7 +90,7 @@
 	</insert>
 
 	<!-- 插入一条记录(为空的字段不操作) -->
-	<insert id="insertSelective" parameterType="com.tsbx.channel.pojo.MesChannel">
+	<insert id="insertSelective" parameterType="com.tsbx.business.channel.pojo.MesChannel">
 		insert into mes_channel
 		<trim prefix="(" suffix=")" suffixOverrides="," >
 			<if test="id != null" >
@@ -174,7 +174,7 @@
 	</delete>
 
 	<!-- 更新一条记录(为空的字段不操作) -->
-	<update id="updateSelectiveByPrimaryKey" parameterType="com.tsbx.channel.pojo.MesChannel">
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.tsbx.business.channel.pojo.MesChannel">
 		update mes_channel
 		<set>
 			<if test="channelName != null" >
@@ -209,7 +209,7 @@
 	</update>
 
 	<!-- 完整更新一条记录 -->
-	<update id="updateByPrimaryKey" parameterType="com.tsbx.channel.pojo.MesChannel">
+	<update id="updateByPrimaryKey" parameterType="com.tsbx.business.channel.pojo.MesChannel">
 		update mes_channel
 		set channel_name=#{channelName,jdbcType=VARCHAR},
 			channel_type=#{channelType,jdbcType=VARCHAR},

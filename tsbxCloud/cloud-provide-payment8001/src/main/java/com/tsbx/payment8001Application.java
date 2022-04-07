@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @version 1.0
  * @date 2022/4/7 0:11
  */
-@MapperScan("com.tsbx.*.dao")
+@MapperScan("com.tsbx.*.*.dao")
 @SpringBootApplication
 @EnableTransactionManagement
 public class payment8001Application {
