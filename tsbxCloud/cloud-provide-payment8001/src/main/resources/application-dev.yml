@@ -1,0 +1,37 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: cloud-payment-service
+  datasource:
+     druid:
+        #url: jdbc:oracle:thin:@10.1.3.35:1521:orcl
+        #username: mesdev
+        #password: Mesdev@2022
+        url: jdbc:mysql://82.156.175.242:3306/tsbx_cloud?Timezone=UTC&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useServerPrepStmts=true&cachePrepStmts=true&useSSL=false
+        username: root
+        password: tsbx8888
+        
+        max-wait: 10000
+        min-idle: 5
+        initial-size: 5
+        max-active: 100
+        web-stat-filter:
+          enabled: false
+
+  devtools:
+     add-properties: false   
+     
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        
+
+mybatis:
+  mapperLocations: classpath:/mapper/*/*.xml
+  #实体类所在的包，配置号后mapper.xml不需要写实体类的完整路径
+  #type-aliases-package: com.atguigu.springcloud.entities
+  
