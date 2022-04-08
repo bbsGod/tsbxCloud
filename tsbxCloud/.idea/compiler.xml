@@ -8,8 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="cloud-consumer-order80" />
+        <module name="cloud-api-commons" />
         <module name="cloud-provide-payment8001" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ucloud-consumer-order80" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

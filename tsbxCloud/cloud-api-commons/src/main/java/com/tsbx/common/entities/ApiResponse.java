@@ -2,14 +2,12 @@ package com.tsbx.common.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
-//@NoArgsConstructor
-public class ApiResponse  <T> implements Serializable {
+public class ApiResponse<T> implements Serializable {
     private Integer status;
     private String statusText;
     private T data;
@@ -19,7 +17,7 @@ public class ApiResponse  <T> implements Serializable {
         this.statusText = "Success";
     }
 
-    public ApiResponse(Integer status,String statusText){
+    public ApiResponse(Integer status, String statusText){
         this(status,statusText,null);
 
     }
