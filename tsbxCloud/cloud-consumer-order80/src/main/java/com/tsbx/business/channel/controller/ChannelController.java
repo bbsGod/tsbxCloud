@@ -1,6 +1,7 @@
 package com.tsbx.business.channel.controller;
 
 import com.tsbx.business.channel.pojo.MesChannel;
+import com.tsbx.common.annotation.Log;
 import com.tsbx.common.entities.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,18 @@ public class ChannelController {
     @Autowired
     private RestTemplate restTemplate;
     
+   
     @GetMapping("/getChannel")
     public ApiResponse<MesChannel> getChannle(){
         return  restTemplate.getForObject(CHANNEL_URL+"/getChannel",ApiResponse.class);
         
+    }
+    @Log
+    @GetMapping("/logTest")
+    public ApiResponse<MesChannel> logTest(){
+        ApiResponse<MesChannel> mesChannel = new ApiResponse<>();
+        log.info("调用方法成功，返回结果");
+        return  mesChannel;
     }
     
 }
