@@ -1,0 +1,39 @@
+server:
+  port: 80
+spring:
+  application:
+    name: cloud-consumer-order
+  devtools:
+     add-properties: false   
+  cloud:
+    nacos:
+      server-addr: 82.156.175.242:8848
+
+feign:
+  client:
+    config:
+      default:
+        #建立连接所用的时间，适用于网络状况正常的情况下，两端连接所需要的时间
+        ConnectTimeOut: 3000
+        #指建立连接后从服务端读取到可用资源所用的时间
+        ReadTimeOut: 3000
+  hystrix:
+    enabled: true
+    command:
+      default:
+        execution:
+          isolation:
+            strategy: SEMAPHORE
+  # openfeign 使用httpclient
+  httpclient:
+    enabled: true
+
+# ribbon 使用httpclient  替换默认 httpUrlConnection
+ribbon:
+  http:
+    client:
+      enabled: true
+
+logging:
+  level:
+    com.tsbx.business.nacos.controller.service.PaymentFeignService: debug

@@ -1,0 +1,30 @@
+server:
+  port: 3377
+
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: @profile.name@
+  cloud:
+    nacos:
+      # Nacos 认证用户
+      username: nacos
+      # Nacos 认证密码
+      password: nacos
+      discovery:
+        #服务注册中心地址
+        server-addr: @discovery.server-addr@
+      config:
+        #配置中心地址
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        #指定yaml格式的配置（yml和yaml都可以）
+        file-extension: yaml
+        #指定命名空间 开发工作空间
+        namespace:  @config.namespace@
+        #指定组
+        group: @config.group@
+        # 共享配置
+        shared-dataids: shareconfig.yaml
+        # 自动刷新
+        refreshable-dataids: shareconfig.yaml

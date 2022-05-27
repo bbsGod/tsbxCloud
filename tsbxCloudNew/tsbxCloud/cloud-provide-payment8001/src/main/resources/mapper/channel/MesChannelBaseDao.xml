@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<!-- =======通过ins-framework-mybatis工具自动生成，请勿手工修改！======= -->
+<!-- =======本配置文件中定义的节点可在自定义配置文件中直接使用！       ======= -->
+<!-- ============================================================== -->
+<!-- ============================================================== -->
+<mapper namespace="com.tsbx.business.channel.dao.ChannelDao">
+	<!-- 默认开启二级缓存,使用Least Recently Used（LRU，最近最少使用的）算法来收回 -->
+	<cache/>
+	<!-- 通用查询结果对象-->
+	<resultMap id="BaseResultMap" type="com.tsbx.business.channel.pojo.MesChannel">
+		 <id column="id" property="id"/> 
+		 <result column="channel_name" property="channelName"/> 
+		 <result column="channel_type" property="channelType"/> 
+		 <result column="mes_type_code" property="mesTypeCode"/>
+		 <result column="mes_company_code" property="mesCompanyCode"/>
+		 <result column="channel_key" property="channelKey"/> 
+		 <result column="valid_status" property="validStatus"/> 
+		 <result column="create_time" property="createTime"/> 
+		 <result column="update_time" property="updateTime"/> 
+		 <result column="flag" property="flag"/> 
+	</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+		 id, channel_name, channel_type, mes_type_code, mes_company_code,
+		 channel_key, valid_status, create_time, update_time, flag
+		
+	</sql>
+
+	<!-- 按对象查询记录的WHERE部分 -->
+	<sql id="Base_Select_By_Entity_Where">
+		<if test="id != null" >
+			and id = #{id}
+		</if>
+		<if test="channelName != null" >
+			and channel_name = #{channelName}
+		</if>
+		<if test="channelType != null" >
+			and channel_type = #{channelType}
+		</if>
+		<if test="mesTypeCode != null" >
+			and mes_type_code = #{mesTypeCode}
+		</if>
+		<if test="mesCompanyCode != null" >
+			and mes_company_code = #{mesCompanyCode}
+		</if>
+		<if test="channelKey != null" >
+			and channel_key = #{channelKey}
+		</if>
+		<if test="validStatus != null" >
+			and valid_status = #{validStatus}
+		</if>
+		<if test="createTime != null" >
+			and create_time = #{createTime}
+		</if>
+		<if test="updateTime != null" >
+			and update_time = #{updateTime}
+		</if>
+		<if test="flag != null" >
+			and flag = #{flag}
+		</if>
+	</sql>
+
+	<!-- 按对象查询记录的SQL部分 -->
+	<sql id="Base_Select_By_Entity">
+		select
+			<include refid="Base_Column_List" />
+		from mes_channel
+		<where>
+			<include refid="Base_Select_By_Entity_Where" />
+		</where>
+	</sql>
+
+	<!-- 按对象查询一页记录（多条记录） -->
+	<select id="selectPage" resultMap="BaseResultMap" parameterType="com.tsbx.business.channel.pojo.MesChannel">
+		<include refid="Base_Select_By_Entity" />
+	</select>
+
+	<!-- 完整插入一条记录-->
+	<insert id="insert" parameterType="com.tsbx.business.channel.pojo.MesChannel">
+		insert into mes_channel (id, channel_name, channel_type, mes_type_code, mes_company_code,
+			channel_key, valid_status, create_time, update_time, flag
+			)
+		values(#{id,jdbcType=VARCHAR}, #{channelName,jdbcType=VARCHAR}, #{channelType,jdbcType=VARCHAR}, #{mesTypeCode,jdbcType=VARCHAR}, #{mesCompanyCode,jdbcType=VARCHAR},
+			#{channelKey,jdbcType=VARCHAR}, #{validStatus,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}
+			)
+	</insert>
+
+	<!-- 插入一条记录(为空的字段不操作) -->
+	<insert id="insertSelective" parameterType="com.tsbx.business.channel.pojo.MesChannel">
+		insert into mes_channel
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				id,
+			</if>
+			<if test="channelName != null" >
+				channel_name,
+			</if>
+			<if test="channelType != null" >
+				channel_type,
+			</if>
+			<if test="mesTypeCode != null" >
+				mes_type_code,
+			</if>
+			<if test="mesCompanyCode != null" >
+				mes_company_code,
+			</if>
+			<if test="channelKey != null" >
+				channel_key,
+			</if>
+			<if test="validStatus != null" >
+				valid_status,
+			</if>
+			<if test="createTime != null" >
+				create_time,
+			</if>
+			<if test="updateTime != null" >
+				update_time,
+			</if>
+			<if test="flag != null" >
+				flag,
+			</if>
+		</trim>
+		values <trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null" >
+				#{id},
+			</if>
+			<if test="channelName != null" >
+				#{channelName},
+			</if>
+			<if test="channelType != null" >
+				#{channelType},
+			</if>
+			<if test="mesTypeCode != null" >
+				#{mesTypeCode},
+			</if>
+			<if test="mesCompanyCode != null" >
+				#{mesCompanyCode},
+			</if>
+			<if test="channelKey != null" >
+				#{channelKey},
+			</if>
+			<if test="validStatus != null" >
+				#{validStatus},
+			</if>
+			<if test="createTime != null" >
+				#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				#{updateTime},
+			</if>
+			<if test="flag != null" >
+				#{flag},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- 按主键删除一条记录 -->
+	<delete id="deleteByPrimaryKey" parameterType="map">
+		delete from mes_channel
+		where id = #{id}
+	</delete>
+
+	<!-- 按主键List删除多条记录 -->
+	<delete id="deleteBatchByPrimaryKeys" parameterType="map">
+		delete from mes_channel
+		where id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<!-- 更新一条记录(为空的字段不操作) -->
+	<update id="updateSelectiveByPrimaryKey" parameterType="com.tsbx.business.channel.pojo.MesChannel">
+		update mes_channel
+		<set>
+			<if test="channelName != null" >
+				channel_name=#{channelName},
+			</if>
+			<if test="channelType != null" >
+				channel_type=#{channelType},
+			</if>
+			<if test="mesTypeCode != null" >
+				mes_type_code=#{mesTypeCode},
+			</if>
+			<if test="mesCompanyCode != null" >
+				mes_company_code=#{mesCompanyCode},
+			</if>
+			<if test="channelKey != null" >
+				channel_key=#{channelKey},
+			</if>
+			<if test="validStatus != null" >
+				valid_status=#{validStatus},
+			</if>
+			<if test="createTime != null" >
+				create_time=#{createTime},
+			</if>
+			<if test="updateTime != null" >
+				update_time=#{updateTime},
+			</if>
+			<if test="flag != null" >
+				flag=#{flag},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- 完整更新一条记录 -->
+	<update id="updateByPrimaryKey" parameterType="com.tsbx.business.channel.pojo.MesChannel">
+		update mes_channel
+		set channel_name=#{channelName,jdbcType=VARCHAR},
+			channel_type=#{channelType,jdbcType=VARCHAR},
+			mes_type_code=#{mesTypeCode,jdbcType=VARCHAR},
+			mes_company_code=#{mesCompanyCode,jdbcType=VARCHAR},
+			channel_key=#{channelKey,jdbcType=VARCHAR},
+			valid_status=#{validStatus,jdbcType=VARCHAR},
+			create_time=#{createTime,jdbcType=VARCHAR},
+			update_time=#{updateTime,jdbcType=VARCHAR},
+			flag=#{flag,jdbcType=VARCHAR}
+		where id = #{id}
+	</update>
+
+	<!-- 按主键查询一条记录 -->
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from mes_channel
+		where id = #{id}
+	</select>
+
+	<!-- 按主键List查询多条记录 -->
+	<select id="selectBatchByPrimaryKeys" resultMap="BaseResultMap" parameterType="map">
+		select
+			<include refid="Base_Column_List" />
+		from mes_channel
+		where id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+</mapper>
