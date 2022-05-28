@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-@FeignClient(value = "cloud-payment-service",fallback = RemoteHystrix.class)
+@FeignClient(value = "cloud-payment-service-8001",fallback = RemoteHystrix.class)
 public interface PaymentFeignService {
 
     @GetMapping(value = "/payment/nacos/{id}")

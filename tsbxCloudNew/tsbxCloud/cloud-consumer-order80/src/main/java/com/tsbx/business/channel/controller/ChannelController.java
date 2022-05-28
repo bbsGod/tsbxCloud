@@ -1,12 +1,10 @@
 package com.tsbx.business.channel.controller;
 
 import com.tsbx.business.channel.pojo.MesChannel;
-<<<<<<< HEAD
 import com.tsbx.entities.ApiResponse;
-=======
+
 import com.tsbx.common.annotation.Log;
-import com.tsbx.common.entities.ApiResponse;
->>>>>>> 6152a1174ba115202a92329454f6931e85be25b2
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

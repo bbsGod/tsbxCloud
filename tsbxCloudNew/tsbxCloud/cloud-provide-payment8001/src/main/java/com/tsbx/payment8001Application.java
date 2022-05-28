@@ -18,7 +18,7 @@ import java.io.File;
 @MapperScan("com.tsbx.*.*.dao")
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class payment8001Application {
     public static void main(String[] args) {
         SpringApplication.run(payment8001Application.class, args);

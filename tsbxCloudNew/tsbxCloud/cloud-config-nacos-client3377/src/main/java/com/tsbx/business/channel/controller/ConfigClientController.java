@@ -24,7 +24,7 @@ public class ConfigClientController{
     @Value("${config.info}") //对应nacos配置:nacos-config-client-dev.yaml
     private String configInfo;
 
-    @Value("${share.info}") //对应nacos配置:nacos-config-client-dev.yaml
+    @Value("${share.info}") 
     private String shareInfo;
 
     @GetMapping("/config/info")
