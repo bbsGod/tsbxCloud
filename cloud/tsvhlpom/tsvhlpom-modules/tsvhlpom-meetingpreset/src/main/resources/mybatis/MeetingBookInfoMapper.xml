@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.meetingpreset.mapper.MeetingBookInfoMapper">
+
+    <resultMap id="result" type="com.tsvhlpom.meetingpreset.domain.MeetingBookInfo">
+        <result column="meetingRoom_id" property="meetingRoom_id"></result>
+        <result column="meetingRoom_name" property="meetingRoom_name"></result>
+        <result column="dept_id" property="dept_id"></result>
+        <result column="dept_name" property="dept_name"></result>
+        <result column="applyer_id" property="applyer_id"></result>
+        <result column="applyer_Name" property="applyer_Name"></result>
+        <result column="bookTime" property="bookTime"></result>
+        <result column="meet_Time" property="meet_Time"></result>
+        <result column="meeting_startTm" property="meeting_startTm"></result>
+        <result column="meeting_endTm" property="meeting_endTm"></result>
+        <result column="meeting_use" property="meeting_use"></result>
+        <result column="sp_no" property="sp_no"></result>
+        <result column="sp_status" property="sp_status"></result>
+    </resultMap>
+    <select id="getSpInfoBySpNoAndSpStatus" resultType="Integer">
+        select count(1) from web_meeting_bookinfo
+        where sp_no = #{sp_no} and sp_status in ('2','7')
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.meetingpreset.domain.MeetingBookInfo">
+        insert into web_meeting_bookinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            sp_no,meetingRoom_id,meetingRoom_name,dept_id,dept_name,applyer_id,applyer_Name,bookTime,meet_Time,meeting_use,sp_status,meeting_startTm,meeting_endTm
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{sp_no},
+            #{meetingRoom_id},
+            #{meetingRoom_name},
+            #{dept_id},
+            #{dept_name},
+            #{applyer_id},
+            #{applyer_Name},
+            #{bookTime},
+            #{meet_Time},
+            #{meeting_use},
+            #{sp_status},
+            #{meeting_startTm},
+            #{meeting_endTm}
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.tsvhlpom.meetingpreset.domain.MeetingBookInfo">
+        update web_meeting_bookinfo set sp_status = #{sp_status} where sp_no = #{sp_no}
+    </update>
+    <select id="getSpInfoBySpNo" resultMap="result">
+        select sp_no,meetingRoom_id,meetingRoom_name,dept_id,dept_name,applyer_id,applyer_Name,bookTime,meet_Time,meeting_use,sp_status,meeting_startTm,meeting_endTm
+        from web_meeting_bookinfo where sp_no = #{sp_no}
+    </select>
+
+    <select id="showInfo" resultMap="result">
+         select sp_no,meetingRoom_id,meetingRoom_name,dept_id,dept_name,applyer_id,applyer_Name,bookTime,meet_Time,meeting_use,sp_status,meeting_startTm,meeting_endTm
+        from web_meeting_bookinfo
+        where 1=1
+        <if test="meetingRoom_name !=null and meetingRoom_name!=''">and meetingRoom_name like concat('%',concat(#{meetingRoom_name},'%'))</if>
+        <if test="dept_name !=null and dept_name!=''">and dept_name like concat('%',concat(#{dept_name},'%'))</if>
+        <if test="sp_status !=null and sp_status!=''">and sp_status = #{sp_status}</if>
+        and meeting_endTm &gt; sysdate
+        order by meeting_startTm asc
+    </select>
+
+    <select id="statisticsTable" resultType="map" parameterType="com.tsvhlpom.meetingpreset.domain.StatisticsParam">
+        select a.meetingroom_name as roomName,count(1) as times from web_meeting_bookinfo a
+            where 1=1
+            and a.sp_status ='2'
+            <if test="beginmeeting_starttm !=null and endmeeting_starttm !=null">and a.meeting_starttm between #{beginmeeting_starttm} and #{endmeeting_starttm}</if>
+            <if test="beginmeeting_endtm !=null and endmeeting_endtm !=null">and a.meeting_endtm between #{beginmeeting_endtm} and #{endmeeting_endtm}</if>
+            group by a.meetingroom_name
+            order by a.meetingroom_name
+    </select>
+
+    <select id="getUnPassList" resultMap="result">
+        select sp_no from  web_meeting_bookinfo
+        where sp_status not in ('2','3','4','7')
+    </select>
+</mapper>

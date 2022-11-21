@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebBasEdrRsnItemMapper">
+    <resultMap id="result" type="com.tsvhlpom.proddata.domain.WebBasEdrRsnItem">
+        <result property="c_pk_id"      column="c_pk_id"    ></result>
+        <result property="c_prod_no"    column="c_prod_no"  ></result>
+        <result property="c_rsn_cde"    column="c_rsn_cde"  ></result>
+        <result property="c_edr_item"   column="c_edr_item" ></result>
+        <result property="c_tab_no"     column="c_tab_no"   ></result>
+        <result property="c_fld_id"     column="c_fld_id"   ></result>
+        <result property="c_oper_typ"   column="c_oper_typ" ></result>
+        <result property="c_crt_cde"    column="c_crt_cde"  ></result>
+        <result property="t_crt_tm"     column="t_crt_tm"   ></result>
+        <result property="c_upd_cde"    column="c_upd_cde"  ></result>
+        <result property="t_upd_tm"     column="t_upd_tm"   ></result>
+        <result  property="c_trans_mrk" column="c_trans_mrk"></result>
+        <result  property="t_trans_tm"  column="t_trans_tm" ></result>
+    </resultMap>
+    <sql id="selectSql">
+        select c_pk_id,c_prod_no,c_rsn_cde,c_edr_item,c_tab_no,c_fld_id,c_oper_typ,c_crt_cde,t_crt_tm,c_upd_cde,t_upd_tm,c_trans_mrk,t_trans_tm from web_bas_edr_rsn_item
+    </sql>
+    <select id="getWebBasEdrRsnItem" parameterType="string" resultMap="result">
+        <include refid="selectSql"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <insert id="insert" parameterType="com.tsvhlpom.proddata.domain.WebBasEdrRsnItem">
+        insert into web_bas_edr_rsn_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_prod_no,c_rsn_cde,c_edr_item,c_tab_no,c_fld_id,c_oper_typ,c_crt_cde,t_crt_tm,c_upd_cde,t_upd_tm,c_trans_mrk,t_trans_tm
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{c_pk_id},
+            #{c_prod_no},
+            #{c_rsn_cde},
+            #{c_edr_item},
+            #{c_tab_no},
+            #{c_fld_id},
+            #{c_oper_typ},
+            'zh',
+            sysdate,
+            'zh',
+            sysdate,
+            #{c_trans_mrk},
+            #{t_trans_tm}
+        </trim>
+    </insert>
+    <delete id="delete" parameterType="string">
+        delete from web_bas_edr_rsn_item
+        where c_pk_id = #{c_pk_id}
+    </delete>
+</mapper>

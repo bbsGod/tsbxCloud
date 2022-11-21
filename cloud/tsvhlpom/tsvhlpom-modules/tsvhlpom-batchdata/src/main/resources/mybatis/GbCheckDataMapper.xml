@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsvhlpom.batchdata.gbmonthdata.mapper.GbCheckDataMapper">
+    <!-- 校验光博险别数据使用的SQL -->
+    <select id="checkPolicyDuty" resultType="java.util.LinkedHashMap">
+        (SELECT  A.N_COST_PREM 分险别赔付成本, --分险别赔付成本13
+        A.N_COST_DISCOUNT 分险别成本折扣 --分险别成本折扣14
+        from WEB_PLY_CVRG C
+        inner join WEB_PLY_BASE B
+        on C.C_APP_NO = B.C_APP_NO AND
+        B.C_PROD_NO IN ('0335','0336','0337','0339')
+        AND C.C_PLY_NO = #{plyNo}
+        AND B.C_LATEST_MRK = '1'
+        AND B.T_INSRNC_BGN_TM >=  #{startDate}
+        AND B.T_INSRNC_BGN_TM  &lt; #{endDate}
+        left join WEB_TRD_AP_CVRG A
+        ON A.C_CVRG_CDE = C.C_CVRG_NO
+        AND  B.C_AP_ID = A.C_AP_ID
+        )
+        UNION ALL
+        (SELECT   A.N_COST_PREM 分险别赔付成本, --分险别赔付成本13
+        A.N_COST_DISCOUNT 分险别成本折扣 --分险别成本折扣14
+        from WEB_PLY_CVRG C
+        inner join WEB_PLY_BASE B
+        on C.C_APP_NO = B.C_APP_NO
+        and B.C_PROD_NO IN ('0320')
+        AND C.C_PLY_NO = #{plyNo}
+        AND  B.C_LATEST_MRK = '1'
+        AND B.T_INSRNC_BGN_TM >=  #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        left join WEB_TRD_AP_CVRG A
+        ON A.C_CVRG_CDE = C.C_CVRG_NO
+        AND  B.C_AP_ID = A.C_AP_ID)
+    </select>
+</mapper>

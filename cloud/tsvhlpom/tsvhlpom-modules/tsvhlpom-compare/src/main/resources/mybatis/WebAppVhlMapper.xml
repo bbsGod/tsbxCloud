@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppVhlMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppVhl" id="WebAppVhlResult">
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cRegOwner"    column="c_reg_owner"    />
+        <result property="cMortgageMrk"    column="c_mortgage_mrk"    />
+        <result property="cProdPlace"    column="c_prod_place"    />
+        <result property="cPlateNo"    column="c_plate_no"    />
+        <result property="cPlateColor"    column="c_plate_color"    />
+        <result property="cBodyColor"    column="c_body_color"    />
+        <result property="cEngNo"    column="c_eng_no"    />
+        <result property="cFrmNo"    column="c_frm_no"    />
+        <result property="cVin"    column="c_vin"    />
+        <result property="cModelCde"    column="c_model_cde"    />
+        <result property="cModelNme"    column="c_model_nme"    />
+        <result property="cBizMrk"    column="c_biz_mrk"    />
+        <result property="cUsageCde"    column="c_usage_cde"    />
+        <result property="cVhlTyp"    column="c_vhl_typ"    />
+        <result property="nNewPurchaseValue"    column="n_new_purchase_value"    />
+        <result property="cMfgYear"    column="c_mfg_year"    />
+        <result property="cFstRegYm"    column="c_fst_reg_ym"    />
+        <result property="nSeatNum"    column="n_seat_num"    />
+        <result property="nTonage"    column="n_tonage"    />
+        <result property="cDisplacementLvl"    column="c_displacement_lvl"    />
+        <result property="nDisplacement"    column="n_displacement"    />
+        <result property="nMonDespRate"    column="n_mon_desp_rate"    />
+        <result property="nActualValue"    column="n_actual_value"    />
+        <result property="cDductPrefCde"    column="c_dduct_pref_cde"    />
+        <result property="cFixedParkCde"    column="c_fixed_park_cde"    />
+        <result property="cTravelAreaCde"    column="c_travel_area_cde"    />
+        <result property="cGlassTyp"    column="c_glass_typ"    />
+        <result property="cDevice1Mrk"    column="c_device_1_mrk"    />
+        <result property="cDevice2Mrk"    column="c_device_2_mrk"    />
+        <result property="cDevice3Mrk"    column="c_device_3_mrk"    />
+        <result property="cDevice4Mrk"    column="c_device_4_mrk"    />
+        <result property="cDevice5Mrk"    column="c_device_5_mrk"    />
+        <result property="cDevice6Mrk"    column="c_device_6_mrk"    />
+        <result property="cDevice7Mrk"    column="c_device_7_mrk"    />
+        <result property="cDevice8Mrk"    column="c_device_8_mrk"    />
+        <result property="cDevice9Mrk"    column="c_device_9_mrk"    />
+        <result property="cDevice10Mrk"    column="c_device_10_mrk"    />
+        <result property="cInspectionCde"    column="c_inspection_cde"    />
+        <result property="cInspectTm"    column="c_inspect_tm"    />
+        <result property="cInspectorNme"    column="c_inspector_nme"    />
+        <result property="cInspectRec"    column="c_inspect_rec"    />
+        <result property="cPlateTyp"    column="c_plate_typ"    />
+        <result property="cQryCde"    column="c_qry_cde"    />
+        <result property="cAffirmCde"    column="c_affirm_cde"    />
+        <result property="nLastYearClmTms"    column="n_last_year_clm_tms"    />
+        <result property="nLastYearNcd"    column="n_last_year_ncd"    />
+        <result property="nNcdRate"    column="n_ncd_rate"    />
+        <result property="cRegVhlTyp"    column="c_reg_vhl_typ"    />
+        <result property="cEcdemicMrk"    column="c_ecdemic_mrk"    />
+        <result property="cGrpBuyContractNo"    column="c_grp_buy_contract_no"    />
+        <result property="cSpecDeclCauseCde"    column="c_spec_decl_cause_cde"    />
+        <result property="cQuestNo"    column="c_quest_no"    />
+        <result property="cRemark"    column="c_remark"    />
+        <result property="cResvTxt1"    column="c_resv_txt_1"    />
+        <result property="cResvTxt2"    column="c_resv_txt_2"    />
+        <result property="cResvTxt3"    column="c_resv_txt_3"    />
+        <result property="cResvTxt4"    column="c_resv_txt_4"    />
+        <result property="cResvTxt5"    column="c_resv_txt_5"    />
+        <result property="nResvNum1"    column="n_resv_num_1"    />
+        <result property="nResvNum2"    column="n_resv_num_2"    />
+        <result property="tResvTm1"    column="t_resv_tm_1"    />
+        <result property="tResvTm2"    column="t_resv_tm_2"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cCurModelNme"    column="c_cur_model_nme"    />
+        <result property="cUseYear"    column="c_use_year"    />
+        <result property="cTfiSpecialMrk"    column="c_tfi_special_mrk"    />
+        <result property="cTfiReinsureMrk"    column="c_tfi_reinsure_mrk"    />
+        <result property="cShortRsn"    column="c_short_rsn"    />
+        <result property="cLicenseTyp"    column="c_license_typ"    />
+        <result property="cIdcardTyp"    column="c_idcard_typ"    />
+        <result property="tTransferTm"    column="t_transfer_tm"    />
+        <result property="cOldLcnNo"    column="c_old_lcn_no"    />
+        <result property="cProconfirmNo"    column="c_proconfirm_no"    />
+        <result property="cSearchCode"    column="c_search_code"    />
+        <result property="cBrandId"    column="c_brand_id"    />
+        <result property="cNameChoice"    column="c_name_choice"    />
+        <result property="cAliasId"    column="c_alias_id"    />
+        <result property="cNewMrk"    column="c_new_mrk"    />
+        <result property="cResvTxt6"    column="c_resv_txt_6"    />
+        <result property="cResvTxt7"    column="c_resv_txt_7"    />
+        <result property="cResvTxt8"    column="c_resv_txt_8"    />
+        <result property="cResvTxt9"    column="c_resv_txt_9"    />
+        <result property="cResvTxt10"    column="c_resv_txt_10"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="cRiskFlag"    column="c_risk_flag"    />
+        <result property="cUseTypSrc"    column="c_use_typ_src"    />
+        <result property="cChgOwnerFlag"    column="c_chg_owner_flag"    />
+        <result property="cLoanVehicleFlag"    column="c_loan_vehicle_flag"    />
+        <result property="tTransferDate"    column="t_transfer_date"    />
+        <result property="cStatus"    column="c_status"    />
+        <result property="cResvTxt11"    column="c_resv_txt_11"    />
+        <result property="cResvTxt12"    column="c_resv_txt_12"    />
+        <result property="cResvTxt13"    column="c_resv_txt_13"    />
+        <result property="cResvTxt14"    column="c_resv_txt_14"    />
+        <result property="cResvTxt15"    column="c_resv_txt_15"    />
+        <result property="cVhlRelCde"    column="c_vhl_rel_cde"    />
+        <result property="nResvNum3"    column="n_resv_num_3"    />
+        <result property="nResvNum4"    column="n_resv_num_4"    />
+        <result property="nResvNum5"    column="n_resv_num_5"    />
+        <result property="cVhlcategoryCde"    column="c_vhlcategory_cde"    />
+        <result property="cOrigVhlcategoryCde"    column="c_orig_vhlcategory_cde"    />
+        <result property="cOrigProdPlace"    column="c_orig_prod_place"    />
+        <result property="cOrigModelNme"    column="c_orig_model_nme"    />
+        <result property="cOrigModelCde"    column="c_orig_model_cde"    />
+        <result property="nOrigSeatMin"    column="n_orig_seat_min"    />
+        <result property="nOrigSeatMax"    column="n_orig_seat_max"    />
+        <result property="nOrigTonage"    column="n_orig_tonage"    />
+        <result property="nOrigDisplacement"    column="n_orig_displacement"    />
+        <result property="nOrigNewPurchaseUnity"    column="n_orig_new_purchase_unity"    />
+        <result property="nOrigNewPurchaseLocal"    column="n_orig_new_purchase_local"    />
+        <result property="nOrigQualityMin"    column="n_orig_quality_min"    />
+        <result property="nOrigQualityMax"    column="n_orig_quality_max"    />
+        <result property="cResvTxt16"    column="c_resv_txt_16"    />
+        <result property="cResvTxt17"    column="c_resv_txt_17"    />
+        <result property="cResvTxt18"    column="c_resv_txt_18"    />
+        <result property="cResvTxt19"    column="c_resv_txt_19"    />
+        <result property="cResvTxt20"    column="c_resv_txt_20"    />
+        <result property="cRenewalFlag"    column="c_renewal_flag"    />
+        <result property="cVhlPriceType"    column="c_vhl_price_type"    />
+        <result property="cModelNmeSearch"    column="c_model_nme_search"    />
+        <result property="cNewVehicleFlag"    column="c_new_vehicle_flag"    />
+        <result property="cPrintDisplacement"    column="c_print_displacement"    />
+        <result property="cHighriskShow"    column="c_highrisk_show"    />
+        <result property="cReducCarShow"    column="c_reduc_car_show"    />
+        <result property="familyName"    column="family_name"    />
+        <result property="cFuelType"    column="c_fuel_type"    />
+        <result property="cCertificateType"    column="c_certificate_type"    />
+        <result property="cCertificateNo"    column="c_certificate_no"    />
+        <result property="tCertificateDate"    column="t_certificate_date"    />
+        <result property="cSOrDFlag"    column="c_s_or_d_flag"    />
+        <result property="nReducePrm"    column="n_reduce_prm"    />
+        <result property="cReduceFormula"    column="c_reduce_formula"    />
+        <result property="nReduceDay"    column="n_reduce_day"    />
+        <result property="cBusiClass"    column="c_busi_class"    />
+        <result property="cModelCode"    column="c_model_code"    />
+        <result property="cModelIdCode"    column="c_model_id_code"    />
+        <result property="cTradeName"    column="c_trade_name"    />
+        <result property="cTradeCode"    column="c_trade_code"    />
+        <result property="cBrand"    column="c_brand"    />
+        <result property="cBrandCode"    column="c_brand_code"    />
+        <result property="cSeries"    column="c_series"    />
+        <result property="cSeriesCode"    column="c_series_code"    />
+        <result property="cCarName"    column="c_car_name"    />
+        <result property="cNoticeType"    column="c_notice_type"    />
+        <result property="cConfigType"    column="c_config_type"    />
+        <result property="cCategoryName"    column="c_category_name"    />
+        <result property="cCategoryCode"    column="c_category_code"    />
+        <result property="cDeptName"    column="c_dept_name"    />
+        <result property="cDeptCode"    column="c_dept_code"    />
+        <result property="cNcd"    column="c_ncd"    />
+        <result property="cNcdReason"    column="c_ncd_reason"    />
+        <result property="nTrafIrr"    column="n_traf_irr"    />
+        <result property="nInsureYears"    column="n_insure_years"    />
+        <result property="nClaimTimes"    column="n_claim_times"    />
+        <result property="cClaimAdjustLevel"    column="c_claim_adjust_level"    />
+        <result property="cOcrUuId"    column="c_ocr_uu_id"    />
+        <result property="cModelEneryType"    column="c_model_enery_type"    />
+        <result property="cPureRange"    column="c_pure_range"    />
+        <result property="cOtherEneryTypeDesc"    column="c_other_enery_type_desc"    />
+        <result property="cPrintUsagecde"    column="c_print_usagecde"    />
+        <result property="cPrintUsagecdeFlag"    column="c_print_usagecde_flag"    />
+        <result property="nEmotoPower"    column="n_emoto_power"    />
+        <result property="nMaxSpeed"    column="n_max_speed"    />
+    </resultMap>
+
+    <sql id="selectWebAppVhlVo">
+        select c_app_no, c_reg_owner, c_mortgage_mrk, c_prod_place, c_plate_no, c_plate_color, c_body_color, c_eng_no, c_frm_no, c_vin, c_model_cde, c_model_nme, c_biz_mrk, c_usage_cde, c_vhl_typ, n_new_purchase_value, c_mfg_year, c_fst_reg_ym, n_seat_num, n_tonage, c_displacement_lvl, n_displacement, n_mon_desp_rate, n_actual_value, c_dduct_pref_cde, c_fixed_park_cde, c_travel_area_cde, c_glass_typ, c_device_1_mrk, c_device_2_mrk, c_device_3_mrk, c_device_4_mrk, c_device_5_mrk, c_device_6_mrk, c_device_7_mrk, c_device_8_mrk, c_device_9_mrk, c_device_10_mrk, c_inspection_cde, c_inspect_tm, c_inspector_nme, c_inspect_rec, c_plate_typ, c_qry_cde, c_affirm_cde, n_last_year_clm_tms, n_last_year_ncd, n_ncd_rate, c_reg_vhl_typ, c_ecdemic_mrk, c_grp_buy_contract_no, c_spec_decl_cause_cde, c_quest_no, c_remark, c_resv_txt_1, c_resv_txt_2, c_resv_txt_3, c_resv_txt_4, c_resv_txt_5, n_resv_num_1, n_resv_num_2, t_resv_tm_1, t_resv_tm_2, c_crt_cde, t_crt_tm, c_upd_cde, t_upd_tm, c_cur_model_nme, c_use_year, c_tfi_special_mrk, c_tfi_reinsure_mrk, c_short_rsn, c_license_typ, c_idcard_typ, t_transfer_tm, c_old_lcn_no, c_proconfirm_no, c_search_code, c_brand_id, c_name_choice, c_alias_id, c_new_mrk, c_resv_txt_6, c_resv_txt_7, c_resv_txt_8, c_resv_txt_9, c_resv_txt_10, c_trans_mrk, t_trans_tm, c_risk_flag, c_use_typ_src, c_chg_owner_flag, c_loan_vehicle_flag, t_transfer_date, c_status, c_resv_txt_11, c_resv_txt_12, c_resv_txt_13, c_resv_txt_14, c_resv_txt_15, c_vhl_rel_cde, n_resv_num_3, n_resv_num_4, n_resv_num_5, c_vhlcategory_cde, c_orig_vhlcategory_cde, c_orig_prod_place, c_orig_model_nme, c_orig_model_cde, n_orig_seat_min, n_orig_seat_max, n_orig_tonage, n_orig_displacement, n_orig_new_purchase_unity, n_orig_new_purchase_local, n_orig_quality_min, n_orig_quality_max, c_resv_txt_16, c_resv_txt_17, c_resv_txt_18, c_resv_txt_19, c_resv_txt_20, c_renewal_flag, c_vhl_price_type, c_model_nme_search, c_new_vehicle_flag, c_print_displacement, c_highrisk_show, c_reduc_car_show, family_name, c_fuel_type, c_certificate_type, c_certificate_no, t_certificate_date, c_s_or_d_flag, n_reduce_prm, c_reduce_formula, n_reduce_day, c_busi_class, c_model_code, c_model_id_code, c_trade_name, c_trade_code, c_brand, c_brand_code, c_series, c_series_code, c_car_name, c_notice_type, c_config_type, c_category_name, c_category_code, c_dept_name, c_dept_code, c_ncd, c_ncd_reason, n_traf_irr, n_insure_years, n_claim_times, c_claim_adjust_level, c_ocr_uu_id, c_model_enery_type, c_pure_range, c_other_enery_type_desc, c_print_usagecde, c_print_usagecde_flag, n_emoto_power, n_max_speed from web_app_vhl
+    </sql>
+    <select id="selectWebAppVhlList" parameterType="String" resultMap="WebAppVhlResult">
+        <include refid="selectWebAppVhlVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

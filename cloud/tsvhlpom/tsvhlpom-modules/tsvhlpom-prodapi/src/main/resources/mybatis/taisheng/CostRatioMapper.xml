@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prodapi.taisheng.mapper.CostRatioMapper">
+    <resultMap id="costRatioResult" type="com.tsvhlpom.prodapi.taisheng.VO.CostRatio">
+        <result property="affiliation" column="affiliation"></result>
+        <result property="premiumType" column="premiumType"></result>
+        <result property="ratio" column="ratio"></result>
+        <result property="expenses" column="expenses"></result>
+    </resultMap>
+    <select id="getCostRatio" resultMap="costRatioResult">
+        SELECT
+            decode(a.c_feetyp_cde,'S','01','02') as affiliation,
+            '01' as premiumType,
+            a.n_fee_prop*100 as ratio,
+            a.n_fee as expenses
+            FROM web_ply_fee a
+            WHERE a.c_app_no = #{appNo}
+            and a.c_feetyp_cde = 'S'
+
+    </select>
+</mapper>

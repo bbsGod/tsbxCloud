@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsvhlpom.batchdata.gbmonthdata.mapper.MidDataMapper">
+    <insert id="savePacketTempDO" parameterType="com.tsvhlpom.batchdata.gbmonthdata.domian.PacketTempDO">
+        insert into web_trd_packet_temp_new(C_PLY_NO, C_TYPE, N_CLAIM, N_CLAIM_AMOUNT_SUM, N_CLAIM_ADJUST_VALUE,
+        C_CLAIM_ADJUST_REASON, C_NO_CLAIM_ADJUST_REASON, C_BGN_TM, C_END_TM, N_ORIG_YEARS, T_CRT_TM,C_LAST_MRK)
+        values (#{plyNo}, #{type}, #{claim}, #{claimAmountSum}, #{claimAdjustValue}, #{claimAdjustReason},
+        #{noClaimAdjustReason}, #{bgnTm}, #{endTm}, #{origYears}, #{crtTm}, #{lastMrk})
+    </insert>
+
+    <resultMap id="queryDataResultMap" type="java.util.Map">
+        <result property="plyNo" column="plyNo" />
+        <result property="tradeType" column="tradeType" />
+        <result property="dptCde" column="dptCde" />
+        <result property="packBody" column="packBody" jdbcType="LONGVARBINARY" javaType="String"/>
+    </resultMap>
+    <select id="queryData" resultMap="queryDataResultMap" >
+        SELECT b.c_ply_no as plyNo, p.c_trade_typ as tradeType ,
+        b.c_dpt_cde as dptCde, '' as packBody
+        FROM web_ply_base b,web_ply_vhl v,web_trd_app_send_packet p
+        WHERE b.c_app_no=v.c_app_no AND v.c_qry_cde=p.c_qry_cde AND
+        (p.c_trade_typ='21_return' OR p.c_trade_typ='01_return')
+        AND  b.t_insrnc_bgn_tm >=  #{startDate}
+        AND  b.t_insrnc_bgn_tm &lt; #{endDate}
+        <if test = "type == 'SY'">
+            AND b.c_prod_no in ('0325','0326','0327','0329','0335','0336','0337','0339','0332')
+        </if>
+        <if test = "type == 'JQ'">
+            AND b.c_prod_no='0320'
+        </if>
+        AND b.c_app_typ='A'
+    </select>
+    <resultMap id="packetResult" type="java.util.Map">
+        <result property="packBody" column="packBody" jdbcType="VARBINARY" javaType="String"></result>
+    </resultMap>
+    <select id="getPacket" resultMap="packetResult" >
+       SELECT p.c_send_packet as packBody  FROM web_trd_app_send_packet p ,web_ply_vhl v
+       where v.c_qry_cde=p.c_qry_cde AND p.c_trade_typ = #{tradeType}
+       and v.c_ply_no = #{plyNo}
+       order by p.t_send_tm desc
+    </select>
+</mapper>

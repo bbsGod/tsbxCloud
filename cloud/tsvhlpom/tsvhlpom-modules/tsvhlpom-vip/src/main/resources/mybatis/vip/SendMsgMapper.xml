@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.vip.mapper.SendMsgMapper">
+    <resultMap id="sendMsgResult" type="com.tsvhlpom.vip.domain.SendMsg">
+        <result property="plyNo" column="plyNo"></result>
+        <result property="phoneNo" column="phoneNo"></result>
+        <result property="insuredEndDate" column="insuredEndDate"></result>
+        <result property="status" column="status"></result>
+    </resultMap>
+    <select id="getSpCustList" resultMap="sendMsgResult">
+        SELECT
+        a.c_ply_no as plyNo,
+        a.t_insrnc_end_tm as insuredEndDate,
+        decode(c.c_mobile,
+              '',
+              (SELECT q.c_mobile
+                 FROM web_ply_applicant q
+                WHERE q.c_app_no = a.c_app_no
+                  and q.c_certf_cde = c.c_certf_cde
+                  and q.c_app_nme = c.c_insured_nme),
+              c.c_mobile) as phoneNo,
+        case (SELECT count(1)
+        FROM web_ply_cvrg q
+        WHERE q.c_app_no = a.c_app_no
+        and q.c_cvrg_no = '033616')
+        when 1 then 1
+        else 0
+        end as status
+        FROM web_ply_base a, web_bas_sp_cust b, web_ply_insured c
+        WHERE a.c_sp_cust = b.c_sp_cust_id
+        and a.c_app_no = c.c_app_no
+        and a.c_prod_no like '03%'
+        and b.c_service_flag = '0'
+        and a.t_insrnc_end_tm &gt; sysdate
+        and a.c_ply_sts <![CDATA[ <> ]]> 'T'
+        and a.c_latest_mrk = '1'
+        order by  c.c_mobile,a.c_prod_no desc
+    </select>
+    <select id="getVIPPlyInfoList" resultMap="sendMsgResult">
+        SELECT a.c_ply_no as plyNo,
+        b.t_insrnc_end_tm as insuredEndDate,
+        q.phoneNo as phoneNo,
+        case (SELECT count(1)
+        FROM web_ply_cvrg cvrg
+        WHERE cvrg.c_app_no = b.c_app_no
+        and cvrg.c_cvrg_no = '033616')
+        when 1 then 1
+        else 0
+        end as status
+        FROM web_ply_vhl a, web_ply_base b, VIP_main q
+        WHERE a.c_app_no = b.c_app_no
+        and b.t_insrnc_end_tm &gt; sysdate
+        and b.c_ply_sts <![CDATA[ <> ]]> 'T'
+        and b.c_prod_no like '03%'
+        and b.c_latest_mrk = '1'
+        and (a.c_plate_no = q.plateNo or a.c_frm_no = q.frmNo)
+        union all
+        SELECT '' as plyNo,null as insuredEndDate,vip.phoneno as phoneNo, null
+        FROM VIP_main vip
+    </select>
+</mapper>

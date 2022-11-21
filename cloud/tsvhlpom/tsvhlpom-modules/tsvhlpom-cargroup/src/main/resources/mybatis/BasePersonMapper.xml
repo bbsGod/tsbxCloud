@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.cargroup.mapper.BasePersonMapper">
+    <resultMap id="result" type="com.tsvhlpom.cargroup.domain.BasePerson">
+        <result column="sp_id" property="sp_id"></result>
+        <result column="sp_name" property="sp_name"></result>
+        <result column="name" property="name"></result>
+        <result column="dept" property="dept"></result>
+        <result column="service_flag" property="service_flag"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select  sp_id,sp_name,name,dept,service_flag from web_bas_sp_person
+    </sql>
+    <update id="update" parameterType="com.tsvhlpom.cargroup.domain.BasePerson">
+        update web_bas_sp_person
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sp_name != null">sp_name = #{sp_name},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="dept != null">dept = #{dept},</if>
+            <if test="service_flag != null">service_flag = #{service_flag},</if>
+        </trim>
+        where sp_id = #{sp_id}
+    </update>
+    <delete id="delete">
+        delete from web_bas_sp_person where sp_id in
+        <foreach item="sp_id" collection="array" open="(" separator="," close=")">
+            #{sp_id}
+        </foreach>
+    </delete>
+    <select id="getPersonList" parameterType="com.tsvhlpom.cargroup.domain.BasePerson" resultMap="result">
+        <include refid="selectSql"></include>
+        <where>
+            1=1
+            <if test="sp_id != null and sp_id !=''">and sp_id = #{sp_id}</if>
+            <if test="sp_name != null and sp_name !=''">and sp_name like concat('%',concat(#{sp_name},'%'))</if>
+            <if test="name != null and name !=''">and name = #{name}</if>
+            <if test="dept != null and dept !=''">and dept = #{dept}</if>
+        </where>
+    </select>
+    <select id="getPersonById" resultMap="result">
+        <include refid="selectSql"></include>
+        where sp_id = #{sp_id}
+    </select>
+    <insert id="insert" parameterType="com.tsvhlpom.cargroup.domain.BasePerson">
+        insert into web_bas_sp_person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            sp_id,sp_name,name,dept,service_flag
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{sp_id},
+            #{sp_name},
+            #{name},
+            #{dept},
+            #{service_flag},
+        </trim>
+    </insert>
+</mapper>

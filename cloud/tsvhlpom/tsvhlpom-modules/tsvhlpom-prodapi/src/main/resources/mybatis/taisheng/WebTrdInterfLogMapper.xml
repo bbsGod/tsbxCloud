@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prodapi.taisheng.mapper.WebTrdInterfLogMapper">
+    <resultMap id="logResult" type="com.tsvhlpom.prodapi.taisheng.VO.WebTrdInterfLog">
+        <result property="c_pk_id" column="c_pk_id"></result>
+        <result property="c_type" column="c_type"></result>
+        <result property="c_com_id" column="c_com_id" jdbcType="VARCHAR"></result>
+        <result property="c_com_name" column="c_com_name" jdbcType="VARCHAR"></result>
+        <result property="c_resquest" column="c_resquest"></result>
+        <result property="c_response" column="c_response"></result>
+        <result property="c_token" column="c_token"></result>
+        <result property="n_expire_in" column="n_expire_in"></result>
+        <result property="t_crt_tm" column="t_crt_tm"></result>
+        <result property="c_status" column="c_status"></result>
+        <result property="c_app_no" column="c_app_no"></result>
+    </resultMap>
+
+    <insert id="saveLog" parameterType="com.tsvhlpom.prodapi.taisheng.VO.WebTrdInterfLog">
+        insert into web_trd_interf_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_type,c_com_id,c_com_name,c_resquest,c_response,c_token,n_expire_in,t_crt_tm,c_status,c_app_no
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_type},
+            #{c_com_id},
+            #{c_com_name},
+            #{c_resquest},
+            #{c_response},
+            #{c_token},
+            #{n_expire_in},
+            sysdate,
+            #{c_status},
+            #{c_app_no}
+        </trim>
+    </insert>
+    <select id="selectLog" parameterType="string" resultType="java.lang.Integer">
+        select count(1) from web_trd_interf_log where c_app_no = #{appNo}
+    </select>
+    <update id="updateLog" parameterType="com.tsvhlpom.prodapi.taisheng.VO.WebTrdInterfLog">
+        update web_trd_interf_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_type != null">c_type = #{c_type},</if>
+            <if test="c_com_id != null">c_com_id = #{c_com_id},</if>
+            <if test="c_com_name != null">c_com_name = #{c_com_name},</if>
+            <if test="c_resquest != null">c_resquest = #{c_resquest},</if>
+            <if test="c_response != null">c_response = #{c_response},</if>
+            <if test="c_token != null">c_token = #{c_token},</if>
+            <if test="n_expire_in != null">n_expire_in = #{n_expire_in},</if>
+            <if test="c_status != null">c_status = #{c_status},</if>
+        </trim>
+        where c_app_no = #{c_app_no}
+    </update>
+    <select id="getFailedList" resultType="java.util.Map">
+        SELECT base.c_app_no,base.c_app_typ
+        FROM  web_ply_base base
+        WHERE base.c_prod_no like '03%'
+        and (base.c_issue_src &lt;&gt; '6'  or base.c_issue_src is null)
+        <if test="appNo!=null and appNo !=''">and base.c_app_no = #{appNo}</if>
+        <if test="startDate!=null and endDate !=null">and base.t_crt_tm between #{startDate} and #{endDate}</if>
+        and base.t_crt_tm > date '2022-02-01'
+        and base.c_brkr_cde in (select broker.c_brkr_cde from web_trd_broker_info broker where broker.c_id = 'D5FE81B37000764BE0530100007FD60B')
+        and not exists (SELECT * FROM web_trd_interf_log log WHERE log.c_app_no = base.c_app_no and log.c_status = '0' and c_type='1')
+        order by base.c_app_typ
+    </select>
+</mapper>

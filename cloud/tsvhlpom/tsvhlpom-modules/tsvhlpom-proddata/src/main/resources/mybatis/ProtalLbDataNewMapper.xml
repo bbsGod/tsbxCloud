@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.PortalLbDataNewMapper">
+    <resultMap id="portalLbDataNew" type="com.tsvhlpom.proddata.domain.PortalLbDataNew">
+        <result property="c_module"    column="c_module"    />
+        <result property="c_server"    column="c_server"    />
+        <result property="n_count"    column="n_count"    />
+    </resultMap>
+    <sql id="selectPortalLbDataNew">
+        select c_module,c_server,n_count from tsportal.portal_lb_data_new
+    </sql>
+
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.PortalLbDataNew">
+        update tsportal.portal_lb_data_new set c_module = #{c_module},c_server = #{c_server},n_count = #{n_count}
+        where c_module = #{c_module_old} and c_server = #{c_server_old}
+    </update>
+    <delete id="delete" parameterType="com.tsvhlpom.proddata.domain.PortalLbDataNew">
+        delete from tsportal.portal_lb_data_new
+        where c_module = #{c_module} and c_server = #{c_server}
+    </delete>
+    <select id="getPortalLbDataNew" parameterType="string" resultMap="portalLbDataNew">
+        <include refid="selectPortalLbDataNew"></include>
+        where c_module = #{c_module} and c_server = #{c_server}
+    </select>
+    <select id="getPortalLbDataNewList" parameterType="string" resultMap="portalLbDataNew">
+        <include refid="selectPortalLbDataNew"></include>
+        <where>
+            1=1
+            <if test="c_module != null and c_module !=''">and c_module = #{c_module}</if>
+        </where>
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.proddata.domain.PortalLbDataNew">
+        insert into tsportal.portal_lb_data_new
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_module,c_server,n_count
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{c_module},
+            #{c_server},
+            #{n_count},
+        </trim>
+    </insert>
+</mapper>

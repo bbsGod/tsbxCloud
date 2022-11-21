@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsvhlpom.batchdata.vhlplatdatacheck.mapper.VhlPlatDataCheckMapper">
+    <resultMap id="trdAppSendPacket" type="com.tsvhlpom.batchdata.vhlplatdatacheck.domain.TrdAppSendPacketDO">
+        <result column="C_QRY_CDE" property="CQryCde" />
+        <result column="T_SEND_TM" property="TSendTm" />
+        <result column="C_PLATE_NO" property="CPlateNo" />
+        <result column="C_ENG_NO" property="CEngNo" />
+    </resultMap>
+    <resultMap id="csendpacket" type="com.tsvhlpom.batchdata.vhlplatdatacheck.domain.TrdAppSendPacketDO">
+        <result column="c_send_packet" property="CSendPacket" />
+    </resultMap>
+    <select id="getQueryData" resultMap="trdAppSendPacket">
+        (select C_QRY_CDE,T_SEND_TM,C_PLATE_NO,C_ENG_NO
+        FROM WEB_TRD_APP_SEND_PACKET
+        where c_trade_typ = '01_return'
+        and c_resv_txt_4 like CONCAT(#{dptCde}, '%')
+        and t_send_tm between #{startDate} and #{endDate}
+        <if test="prodNo == 'SY'">
+            and c_resv_txt_5 &lt; &gt;   '0320'
+        </if>
+        <if test = "prodNo == 'JQ'">
+            and c_resv_txt_5 = '0320'
+        </if>
+        )
+        UNION All
+        (select C_QRY_CDE,T_SEND_TM,C_PLATE_NO,C_ENG_NO FROM WEB_TRD_APP_SEND_PACKET
+        where c_trade_typ = '21_return'
+        and c_resv_txt_4 like CONCAT(#{dptCde}, '%')
+        and t_send_tm between #{startDate} and #{endDate}
+        <if test="prodNo == 'SY'">
+            and c_resv_txt_5 &lt; &gt;   '0320'
+        </if>
+        <if test = "prodNo == 'JQ'">
+            and c_resv_txt_5 = '0320'
+        </if>
+        )
+    </select>
+
+    <select id="getVerifyData" resultType="java.lang.String">
+        SELECT '&lt;RECORD> &lt;DISTRICT_CODE>'||#{districtCode}||'&lt;/DISTRICT_CODE>' ||
+        '&lt;COMPANY_CODE>TSBX&lt;/COMPANY_CODE>'  ||
+        '&lt;POLICY_NO>'||A.C_PLY_NO||'&lt;/POLICY_NO>'  ||
+        '&lt;QUERY_SEQUENCE_NO>'||B.C_QRY_CDE||'&lt;/QUERY_SEQUENCE_NO>'  ||
+        '&lt;CONFIRMSEQUENCE_NO>'||B.C_AFFIRM_CDE||'&lt;/CONFIRMSEQUENCE_NO>'  ||
+        '&lt;CONFIRM_DATE>'||TO_CHAR(T.T_SEND_TM,'YYYYMMDD')||'&lt;/CONFIRM_DATE>'  ||
+        '&lt;BILL_DATE>'||TO_CHAR(A.T_APP_TM,'YYYYMMDD')||'&lt;/BILL_DATE>'  ||
+        '&lt;START_DATE>'||TO_CHAR(A.T_INSRNC_BGN_TM,'YYYYMMDD')||'&lt;/START_DATE>'  ||
+        '&lt;END_DATE>'||TO_CHAR(A.T_INSRNC_END_TM,'YYYYMMDD')||'&lt;/END_DATE>'  ||
+        '&lt;LICENSE_TYPE>'||B.C_PLATE_TYP||'&lt;/LICENSE_TYPE>'  ||
+        '&lt;MOTOR_TYPE_CODE>'||( SELECT C_CODE FROM WEB_BAS_TRD_CODE WHERE C_CLASS = '1103' AND  C_INTER_CODE LIKE '%' || B.C_VHL_TYP || '%' AND ROWNUM=1 )||'&lt;/MOTOR_TYPE_CODE>'  ||
+        '&lt;USE_NATURE_CODE>'||( SELECT C_CODE FROM WEB_BAS_TRD_CODE WHERE C_CLASS = '1104' AND  C_INTER_CODE LIKE '%' || B.C_USAGE_CDE || '%' AND ROWNUM=1 )||'&lt;/USE_NATURE_CODE>'  ||
+        '&lt;LICENSE_NO>'||B.C_PLATE_NO||'&lt;/LICENSE_NO>'  ||
+       '&lt;FRAME_NO>'||B.C_FRM_NO||'&lt;/FRAME_NO>'  ||
+        '&lt;ENGINE_NO>'||B.C_ENG_NO||'&lt;/ENGINE_NO>'  ||
+        '&lt;PREMIUM>'||A.N_PRM||'&lt;/PREMIUM>&lt;/RECORD>'
+    FROM WEB_PLY_BASE A, WEB_PLY_VHL B, ( SELECT C_QRY_CDE  ,MAX(T_SEND_TM) AS T_SEND_TM  FROM WEB_TRD_APP_SEND_PACKET WHERE C_TRADE_TYP = '02'  GROUP BY C_QRY_CDE ) T
+        WHERE T.C_QRY_CDE = B.C_QRY_CDE
+        AND A.C_APP_NO = B.C_APP_NO
+        AND T.T_SEND_TM BETWEEN #{startDate} AND #{endDate}
+        AND A.C_DPT_CDE LIKE CONCAT(#{dptCde}, '%')
+        AND A.N_EDR_PRJ_NO = '0' AND A.C_PLY_STS!='T'
+        <if test="prodNo == 'SY'">
+            AND A.C_PROD_NO IN ('0336','0339','0332')
+        </if>
+        <if test = "prodNo == 'JQ'">
+            AND A.C_PROD_NO IN ('0320')
+        </if>
+
+    </select>
+    <select id="getCSendPacket"  resultMap="csendpacket">
+        select  C_SEND_PACKET from WEB_TRD_APP_SEND_PACKET where  c_qry_cde = #{CQryCde} and c_trade_typ in ('21_return','01_return')
+    </select>
+</mapper>

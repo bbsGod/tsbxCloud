@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebAppVhlMapper">
+    <resultMap id="result" type="com.tsvhlpom.proddata.domain.WebAppVhl">
+        <result property="c_app_no" column="c_app_no"></result>
+        <result property="c_model_enery_type" column="c_model_enery_type"></result>
+        <result property="c_print_usagecde" column="c_print_usagecde"></result>
+        <result property="c_print_usagecde_flag" column="c_print_usagecde_flag"></result>
+    </resultMap>
+    <sql id="selectAppVhl">
+        select c_app_no,c_model_enery_type,c_print_usagecde,c_print_usagecde_flag FROM web_app_vhl
+    </sql>
+    <select id="getList" parameterType="com.tsvhlpom.proddata.domain.WebAppVhl" resultMap="result">
+        <include refid="selectAppVhl"></include>
+        where c_app_no = #{c_app_no}
+    </select>
+    <select id="getAppVhl" parameterType="string" resultMap="result">
+        <include refid="selectAppVhl"></include>
+        where c_app_no = #{c_app_no}
+    </select>
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.WebAppVhl">
+        update web_app_vhl set c_model_enery_type = #{c_model_enery_type}
+        where c_app_no = #{c_app_no}
+    </update>
+    <update id="updateply" parameterType="com.tsvhlpom.proddata.domain.WebAppVhl">
+        update web_ply_vhl set c_model_enery_type = #{c_model_enery_type}
+        where c_app_no = #{c_app_no}
+    </update>
+
+    <update id="updatePrint" parameterType="com.tsvhlpom.proddata.domain.WebAppVhl">
+        update web_app_vhl set c_print_usagecde_flag = #{c_print_usagecde_flag},c_print_usagecde = #{c_print_usagecde}
+        where c_app_no = #{c_app_no}
+    </update>
+
+    <update id="updatePlyPrint" parameterType="com.tsvhlpom.proddata.domain.WebAppVhl">
+        update web_ply_vhl set c_print_usagecde_flag = #{c_print_usagecde_flag},c_print_usagecde = #{c_print_usagecde}
+        where c_app_no = #{c_app_no}
+    </update>
+</mapper>

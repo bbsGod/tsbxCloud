@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prodapi.taisheng.mapper.PolicyRiskMapper">
+    <resultMap id="riskResult" type="com.tsvhlpom.prodapi.taisheng.VO.PolicyRisk">
+        <result property="name" column="name"></result>
+        <result property="coverage" column="coverage"></result>
+        <result property="premium" column="premium"></result>
+        <result property="discount" column="discount"></result>
+        <result property="deduction" column="deduction"></result>
+        <result property="primary" column="primary"></result>
+    </resultMap>
+    <select id="getPolicyRiskList" resultMap="riskResult">
+                SELECT (SELECT q.c_nme_cn
+                  FROM web_prd_cvrg q
+                 WHERE q.c_kind_no = '03'
+                   and q.c_cvrg_no = a.c_cvrg_no) as name,
+               a.n_amt as coverage,
+               a.n_prm as premium,
+               a.n_dis_coef as discount,
+               'false' as deduction,
+               decode((SELECT q.c_rdr_typ
+                        FROM web_prd_cvrg q
+                       WHERE q.c_kind_no = '03'
+                         and q.c_cvrg_no = a.c_cvrg_no),
+                      '0',
+                      'true',
+                      'flase') as primary
+          FROM web_ply_cvrg a
+         WHERE a.c_app_no = #{appNo}
+    </select>
+</mapper>

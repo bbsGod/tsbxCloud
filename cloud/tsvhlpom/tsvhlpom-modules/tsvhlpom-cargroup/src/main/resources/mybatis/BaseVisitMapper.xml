@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.cargroup.mapper.BaseVisitMapper">
+    <resultMap id="result" type="com.tsvhlpom.cargroup.domain.BaseVisit">
+        <result property="c_pk_id" column="c_pk_id"></result>
+        <result property="c_id" column="c_id"></result>
+        <result property="c_visit_status" column="c_visit_status"></result>
+        <result property="c_visit_emp" column="c_visit_emp"></result>
+        <result property="c_visit_Tm" column="c_visit_Tm"></result>
+        <result property="c_remark" column="c_remark"></result>
+    </resultMap>
+
+    <sql id="selectVisit">
+        select c_pk_id,c_id,c_visit_status,c_visit_emp,c_visit_Tm,c_remark  from web_bas_sp_visit
+    </sql>
+
+    <select id="getVisitList" resultMap="result">
+        <include refid="selectVisit"></include>
+        where c_id = #{c_id}
+        order by c_visit_Tm
+    </select>
+
+    <insert id="insert" parameterType="com.tsvhlpom.cargroup.domain.BaseVisit">
+        insert into web_bas_sp_visit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_id, c_visit_status, c_visit_emp,c_visit_Tm,c_remark
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_id},
+            #{c_visit_status},
+            #{c_visit_emp},
+            <if test="c_visit_Tm !=null">#{c_visit_Tm},</if>
+            <if test="c_visit_Tm ==null">sysdate,</if>
+            #{c_remark}
+        </trim>
+    </insert>
+</mapper>

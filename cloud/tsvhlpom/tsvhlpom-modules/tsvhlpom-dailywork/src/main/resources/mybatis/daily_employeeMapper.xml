@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.dailywork.mapper.Daily_employeeMapper">
+    <resultMap id="result" type="com.tsvhlpom.dailywork.domain.Daily_employee">
+        <result property="pkid" column="pkid"></result>
+        <result property="emp_id" column="emp_id"></result>
+        <result property="emp_name" column="emp_name"></result>
+        <result property="emp_team" column="emp_team"></result>
+        <result property="team_type" column="team_type"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select pkid,emp_id,emp_name,emp_team,team_type from Daily_employee
+    </sql>
+    <select id="getEmployeeList" resultMap="result" parameterType="com.tsvhlpom.dailywork.domain.Daily_employee">
+        <include refid="selectSql"></include>
+        <where>
+            1=1
+            <if test="emp_team!=null and emp_team !=''">and emp_team=#{emp_team}</if>
+            <if test="emp_name!=null and emp_name !=''">and emp_name=#{emp_name}</if>
+        </where>
+    </select>
+    <select id="getEmployee" resultMap="result">
+        <include refid="selectSql"></include>
+        where pkid=#{pkid}
+    </select>
+    <insert id="saveEmployee" parameterType="com.tsvhlpom.dailywork.domain.Daily_employee">
+        insert into Daily_employee
+        values (
+        sys_guid(),#{emp_id},#{emp_name},#{emp_team},#{team_type}
+        )
+    </insert>
+    <update id="updateEmployee" parameterType="com.tsvhlpom.dailywork.domain.Daily_employee">
+        update Daily_employee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="emp_id != null">emp_id = #{emp_id},</if>
+            <if test="emp_name != null">emp_name = #{emp_name},</if>
+            <if test="emp_team != null">emp_team = #{emp_team},</if>
+            <if test="team_type != null">team_type = #{team_type},</if>
+        </trim>
+        where pkid = #{pkid}
+    </update>
+    <delete id="deleteEmployee">
+        delete from Daily_employee where pkid in
+        <foreach item="pkid" collection="array" open="(" separator="," close=")">
+            #{pkid}
+        </foreach>
+    </delete>
+    <select id="getEmployeeInfo" resultMap="result" parameterType="string">
+        <include refid="selectSql"></include>
+        where emp_id=#{emp_id}
+    </select>
+</mapper>

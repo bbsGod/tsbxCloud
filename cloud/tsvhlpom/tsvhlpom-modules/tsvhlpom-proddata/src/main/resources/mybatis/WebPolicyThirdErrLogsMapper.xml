@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebPolicyThirdErrLogsMapper">
+
+    <resultMap type="com.tsvhlpom.proddata.domain.WebPolicyThirdErrLogs" id="WebPolicyThirdErrLogsResult">
+        <result property="cpkId"    column="c_pk_id"    />
+        <result property="cappNo"    column="c_app_no"    />
+        <result property="cerrMessage"    column="c_err_message"    />
+        <result property="cstatus"    column="c_status"    />
+        <result property="tsendTime"    column="t_send_time"    />
+        <result property="cresponseMessage"    column="c_response_message"    />
+    </resultMap>
+
+    <sql id="selectWebPolicyThirdErrLogsVo">
+        select c_pk_id, c_app_no, c_err_message, c_status, t_send_time, c_response_message from web_policy_third_err_logs
+    </sql>
+
+    <select id="selectWebPolicyThirdErrLogsList" parameterType="com.tsvhlpom.proddata.domain.WebPolicyThirdErrLogs" resultMap="WebPolicyThirdErrLogsResult">
+        <include refid="selectWebPolicyThirdErrLogsVo"/>
+        <where>
+            <if test="cpkId != null  and cpkId != ''"> and c_pk_id = #{cpkId}</if>
+            <if test="cappNo != null  and cappNo != ''"> and c_app_no = #{cappNo}</if>
+            <if test="cerrMessage != null  and cerrMessage != ''"> and c_err_message = #{cerrMessage}</if>
+            <if test="cstatus != null  and cstatus != ''"> and c_status = #{cstatus}</if>
+            <if test="tsendTime != null "> and t_send_time between to_date(concat(to_char(#{tsendTime},'yyyy-mm-dd'),' 00:00:00'),'yyyy-mm-dd hh24:mi:ss') and to_date(concat(to_char(#{tsendTime},'yyyy-mm-dd'),' 23:59:59'),'yyyy-mm-dd hh24:mi:ss') </if>
+            <if test="cresponseMessage != null  and cresponseMessage != ''"> and c_response_message = #{cresponseMessage}</if>
+        </where>
+    </select>
+
+    <select id="selectWebPolicyThirdErrLogsByCPkId" parameterType="String" resultMap="WebPolicyThirdErrLogsResult">
+        <include refid="selectWebPolicyThirdErrLogsVo"/>
+        where c_pk_id = #{cpkId}
+    </select>
+
+    <insert id="insertWebPolicyThirdErrLogs" parameterType="com.tsvhlpom.proddata.domain.WebPolicyThirdErrLogs">
+        insert into web_policy_third_err_logs (c_pk_id,c_app_no,c_status,t_send_time,c_response_message)
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            <if test="cappNo != null and cappNo != ''">#{cappNo},</if>
+            <if test="cstatus != null">#{cstatus},</if>
+            <if test="tsendTime != null">#{tsendTime},</if>
+            <if test="cresponseMessage != null">#{cresponseMessage},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWebPolicyThirdErrLogs" parameterType="com.tsvhlpom.proddata.domain.WebPolicyThirdErrLogs">
+        update web_policy_third_err_logs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cappNo != null and cappNo != ''">c_app_no = #{cappNo},</if>
+            <if test="cerrMessage != null">c_err_message = #{cerrMessage},</if>
+            <if test="cstatus != null">c_status = #{cstatus},</if>
+            <if test="tsendTime != null">t_send_time = #{tsendTime},</if>
+            <if test="cresponseMessage != null">c_response_message = #{cresponseMessage},</if>
+        </trim>
+        where c_pk_id = #{cpkId}
+    </update>
+
+    <delete id="deleteWebPolicyThirdErrLogsByCPkId" parameterType="String">
+        delete from web_policy_third_err_logs where c_pk_id = #{cpkId}
+    </delete>
+
+    <delete id="deleteWebPolicyThirdErrLogsByCPkIds" parameterType="String">
+        delete from web_policy_third_err_logs where c_pk_id in
+        <foreach item="cpkId" collection="array" open="(" separator="," close=")">
+            #{cpkId}
+        </foreach>
+    </delete>
+</mapper>

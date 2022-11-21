@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.BasConfigMapper">
+    <resultMap id="BasConfig" type="com.tsvhlpom.proddata.domain.BasConfig">
+        <result property="c_pk_id"    column="c_pk_id"    />
+        <result property="c_conf_group"    column="c_conf_group"    />
+        <result property="c_conf_id"    column="c_conf_id"    />
+        <result property="c_conf_nme"    column="c_conf_nme"    />
+        <result property="c_conf_value"    column="c_conf_value"    />
+        <result property="c_crt_cde"    column="c_crt_cde"    />
+        <result property="t_crt_tm"    column="t_crt_tm"    />
+        <result property="c_upd_cde"    column="c_upd_cde"    />
+        <result property="t_upd_tm"    column="t_upd_tm"    />
+    </resultMap>
+    <sql id="selectBasConfig">
+        select c_pk_id,c_conf_group,c_conf_id,c_conf_nme,c_conf_value,c_crt_cde,t_crt_tm,c_upd_cde,t_upd_tm from web_bas_config
+    </sql>
+
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.BasConfig">
+        update web_bas_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_conf_group != null">c_conf_group = #{c_conf_group},</if>
+            <if test="c_conf_id != null">c_conf_id = #{c_conf_id},</if>
+            <if test="c_conf_nme != null">c_conf_nme = #{c_conf_nme},</if>
+            <if test="c_conf_value != null">c_conf_value = #{c_conf_value},</if>
+            <if test="c_upd_cde != null">c_upd_cde = #{c_upd_cde},</if>
+            t_upd_tm = sysdate,
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="delete">
+        delete from web_bas_config where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+    <select id="getBasConfig" parameterType="string" resultMap="BasConfig">
+        <include refid="selectBasConfig"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <select id="getBasConfigList" parameterType="com.tsvhlpom.proddata.domain.BasConfig" resultMap="BasConfig">
+        <include refid="selectBasConfig"></include>
+        <where>
+            1=1
+            <if test="c_pk_id != null and c_pk_id !=''">and c_pk_id = #{c_pk_id}</if>
+            <if test="c_conf_group != null and c_conf_group !=''">and c_conf_group = #{c_conf_group}</if>
+            <if test="c_conf_id != null and c_conf_id !=''">and c_conf_id = #{c_conf_id}</if>
+            <if test="c_conf_nme != null and c_conf_nme !=''">and c_conf_nme like concat(concat('%', #{c_conf_nme}),'%')</if>
+        </where>
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.proddata.domain.BasConfig">
+        insert into web_bas_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_conf_group,c_conf_id,c_conf_nme,c_conf_value,c_crt_cde,t_crt_tm,c_upd_cde,t_upd_tm
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_conf_group},
+            #{c_conf_id},
+            #{c_conf_nme},
+            #{c_conf_value},
+            #{c_crt_cde},
+            sysdate,
+            'admin',
+            sysdate
+        </trim>
+    </insert>
+</mapper>

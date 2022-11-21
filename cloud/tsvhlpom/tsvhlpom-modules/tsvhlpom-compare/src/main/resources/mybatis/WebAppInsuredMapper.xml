@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppInsuredMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppInsured" id="WebAppInsuredResult">
+        <result property="cPkId"    column="c_pk_id"    />
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cRowId"    column="c_row_id"    />
+        <result property="nSeqNo"    column="n_seq_no"    />
+        <result property="cInsuredCde"    column="c_insured_cde"    />
+        <result property="cInsuredNme"    column="c_insured_nme"    />
+        <result property="cInsuredCls"    column="c_insured_cls"    />
+        <result property="cRelInsuredCde"    column="c_rel_insured_cde"    />
+        <result property="cCertfCls"    column="c_certf_cls"    />
+        <result property="cCertfCde"    column="c_certf_cde"    />
+        <result property="cClntMrk"    column="c_clnt_mrk"    />
+        <result property="cCusLvl"    column="c_cus_lvl"    />
+        <result property="cStkMrk"    column="c_stk_mrk"    />
+        <result property="cTrdCde"    column="c_trd_cde"    />
+        <result property="cSubTrdCde"    column="c_sub_trd_cde"    />
+        <result property="cCntrNme"    column="c_cntr_nme"    />
+        <result property="cTel"    column="c_tel"    />
+        <result property="cMobile"    column="c_mobile"    />
+        <result property="cCountry"    column="c_country"    />
+        <result property="cProvince"    column="c_province"    />
+        <result property="cCity"    column="c_city"    />
+        <result property="cCounty"    column="c_county"    />
+        <result property="cSuffixAddr"    column="c_suffix_addr"    />
+        <result property="cClntAddr"    column="c_clnt_addr"    />
+        <result property="cZipCde"    column="c_zip_cde"    />
+        <result property="cEmail"    column="c_email"    />
+        <result property="cResidAddr"    column="c_resid_addr"    />
+        <result property="cResidZip"    column="c_resid_zip"    />
+        <result property="cWorkDpt"    column="c_work_dpt"    />
+        <result property="cWorkDptAddr"    column="c_work_dpt_addr"    />
+        <result property="cWorkDptZip"    column="c_work_dpt_zip"    />
+        <result property="cSex"    column="c_sex"    />
+        <result property="tBirthday"    column="t_birthday"    />
+        <result property="cHealthCde"    column="c_health_cde"    />
+        <result property="cHealthDesc"    column="c_health_desc"    />
+        <result property="cOccupCde"    column="c_occup_cde"    />
+        <result property="cSidelineMrk"    column="c_sideline_mrk"    />
+        <result property="cPosition"    column="c_position"    />
+        <result property="cDuty"    column="c_duty"    />
+        <result property="nIncome"    column="n_income"    />
+        <result property="cEduLvlCde"    column="c_edu_lvl_cde"    />
+        <result property="cMrgCde"    column="c_mrg_cde"    />
+        <result property="cChldStsCde"    column="c_chld_sts_cde"    />
+        <result property="nDrvAge"    column="n_drv_age"    />
+        <result property="cConveyanceCde"    column="c_conveyance_cde"    />
+        <result property="cInsHistory"    column="c_ins_history"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="cResvTxt1"    column="c_resv_txt_1"    />
+        <result property="cResvTxt2"    column="c_resv_txt_2"    />
+        <result property="cResvTxt3"    column="c_resv_txt_3"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="cCusRiskLvl"    column="c_cus_risk_lvl"    />
+        <result property="cBusNo"    column="c_bus_no"    />
+        <result property="cTaxNo"    column="c_tax_no"    />
+        <result property="tCertfEndTm"    column="t_certf_end_tm"    />
+        <result property="cLegalNme"    column="c_legal_nme"    />
+        <result property="cLegalCertfCls"    column="c_legal_certf_cls"    />
+        <result property="cLegalCertfCde"    column="c_legal_certf_cde"    />
+        <result property="tLegalCertfEndTm"    column="t_legal_certf_end_tm"    />
+        <result property="cVipMrk"    column="c_vip_mrk"    />
+        <result property="cTowns"    column="c_towns"    />
+        <result property="cVillage"    column="c_village"    />
+        <result property="tCertfBgnTm"    column="t_certf_bgn_tm"    />
+        <result property="cNation"    column="c_nation"    />
+        <result property="cSignGov"    column="c_sign_gov"    />
+        <result property="cSubjectNumber"    column="c_subject_number"    />
+        <result property="cCustomerInfo"    column="c_customer_info"    />
+        <result property="cHmtResidentsPassCde"    column="c_hmt_residents_pass_cde"    />
+        <result property="cLongTimeFlag"    column="c_long_time_flag"    />
+        <result property="cCounterGuaranteeNo"    column="c_counter_guarantee_no"    />
+        <result property="tCounterGuaranteeBgnTm"    column="t_counter_guarantee_bgn_tm"    />
+        <result property="tCounterGuaranteeEndTm"    column="t_counter_guarantee_end_tm"    />
+        <result property="cCustomerGender"    column="c_customer_gender"    />
+        <result property="cBusinessScope"    column="c_business_scope"    />
+        <result property="cSocialInsurance"    column="c_social_insurance"    />
+        <result property="cRelCde"    column="c_rel_cde"    />
+        <result property="cHoldingNme"    column="c_holding_nme"    />
+        <result property="cHoldingCertfCls"    column="c_holding_certf_cls"    />
+        <result property="cHoldingCertfCde"    column="c_holding_certf_cde"    />
+        <result property="tHoldingCertfEndTm"    column="t_holding_certf_end_tm"    />
+        <result property="cChargeNme"    column="c_charge_nme"    />
+        <result property="cChargeCertfCls"    column="c_charge_certf_cls"    />
+        <result property="cChargeCertfCde"    column="c_charge_certf_cde"    />
+        <result property="tChargeCertfEndTm"    column="t_charge_certf_end_tm"    />
+        <result property="cOccupationalGrade"    column="c_occupational_grade"    />
+        <result property="cPerpetual"    column="c_perpetual"    />
+        <result property="cCntrNmeTel"    column="c_cntr_nme_tel"    />
+        <result property="cCntrNme2"    column="c_cntr_nme2"    />
+        <result property="cCntrNme2Tel"    column="c_cntr_nme2_tel"    />
+        <result property="cFinancialLicense"    column="c_financial_license"    />
+        <result property="cPerHealthNotice"    column="c_per_health_notice"    />
+        <result property="cMalignantTumor"    column="c_malignant_tumor"    />
+        <result property="cGeneralMedical"    column="c_general_medical"    />
+        <result property="tCertfFinalTm"    column="t_certf_final_tm"    />
+        <result property="cLongTimeSign"    column="c_long_time_sign"    />
+        <result property="nChangeTime"    column="n_change_time"    />
+        <result property="cSocialSecurity"    column="c_social_security"    />
+        <result property="cBankIdentification"    column="c_bank_identification"    />
+        <result property="nAge"    column="n_age"    />
+        <result property="cHealthCondition"    column="c_health_condition"    />
+        <result property="cNewCitizen"    column="c_new_citizen"    />
+    </resultMap>
+
+    <sql id="selectWebAppInsuredVo">
+        select c_pk_id, c_app_no, c_row_id, n_seq_no, c_insured_cde, c_insured_nme, c_insured_cls, c_rel_insured_cde, c_certf_cls, c_certf_cde, c_clnt_mrk, c_cus_lvl, c_stk_mrk, c_trd_cde, c_sub_trd_cde, c_cntr_nme, c_tel, c_mobile, c_country, c_province, c_city, c_county, c_suffix_addr, c_clnt_addr, c_zip_cde, c_email, c_resid_addr, c_resid_zip, c_work_dpt, c_work_dpt_addr, c_work_dpt_zip, c_sex, t_birthday, c_health_cde, c_health_desc, c_occup_cde, c_sideline_mrk, c_position, c_duty, n_income, c_edu_lvl_cde, c_mrg_cde, c_chld_sts_cde, n_drv_age, c_conveyance_cde, c_ins_history, t_upd_tm, c_upd_cde, t_crt_tm, c_crt_cde, c_resv_txt_1, c_resv_txt_2, c_resv_txt_3, c_trans_mrk, t_trans_tm, c_cus_risk_lvl, c_bus_no, c_tax_no, t_certf_end_tm, c_legal_nme, c_legal_certf_cls, c_legal_certf_cde, t_legal_certf_end_tm, c_vip_mrk, c_towns, c_village, t_certf_bgn_tm, c_nation, c_sign_gov, c_subject_number, c_customer_info, c_hmt_residents_pass_cde, c_long_time_flag, c_counter_guarantee_no, t_counter_guarantee_bgn_tm, t_counter_guarantee_end_tm, c_customer_gender, c_business_scope, c_social_insurance, c_rel_cde, c_holding_nme, c_holding_certf_cls, c_holding_certf_cde, t_holding_certf_end_tm, c_charge_nme, c_charge_certf_cls, c_charge_certf_cde, t_charge_certf_end_tm, c_occupational_grade, c_perpetual, c_cntr_nme_tel, c_cntr_nme2, c_cntr_nme2_tel, c_financial_license, c_per_health_notice, c_malignant_tumor, c_general_medical, t_certf_final_tm, c_long_time_sign, n_change_time, c_social_security, c_bank_identification, n_age, c_health_condition, c_new_citizen from web_app_insured
+    </sql>
+    <select id="selectWebAppInsuredList" parameterType="String" resultMap="WebAppInsuredResult">
+        <include refid="selectWebAppInsuredVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

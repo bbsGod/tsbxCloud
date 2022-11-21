@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebBasNoVhlFeePropConfMapper">
+    <resultMap id="result" type="com.tsvhlpom.proddata.domain.WebBasNoVhlFeePropConf">
+        <result property="c_pk_id" column="c_pk_id"></result>
+        <result property="c_scheme_list" column="c_scheme_list"></result>
+        <result property="c_vhl_typ" column="c_vhl_typ"></result>
+    </resultMap>
+    <sql id="selectNovhl">
+        select c_pk_id,c_scheme_list,c_vhl_typ FROM web_bas_novhl_feeprop_conf
+    </sql>
+    <select id="getList" parameterType="com.tsvhlpom.proddata.domain.WebBasNoVhlFeePropConf" resultMap="result">
+        <include refid="selectNovhl"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <select id="getNoVhlConfig" parameterType="string" resultMap="result">
+        <include refid="selectNovhl"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.WebBasNoVhlFeePropConf">
+        update web_bas_novhl_feeprop_conf set c_scheme_list = #{c_scheme_list},c_vhl_typ = #{c_vhl_typ} where c_pk_id = #{c_pk_id}
+    </update>
+</mapper>

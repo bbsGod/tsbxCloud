@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppAcctinfoMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppAcctinfo" id="WebAppAcctinfoResult">
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cAcctNme"    column="c_acct_nme"    />
+        <result property="cAcctNo"    column="c_acct_no"    />
+        <result property="cBankRelCde"    column="c_bank_rel_cde"    />
+        <result property="cBankPro"    column="c_bank_pro"    />
+        <result property="cBankArea"    column="c_bank_area"    />
+        <result property="cBankCde"    column="c_bank_cde"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+    </resultMap>
+    <sql id="selectWebAppAcctinfoVo">
+        select c_app_no, c_acct_nme, c_acct_no, c_bank_rel_cde, c_bank_pro, c_bank_area, c_bank_cde, c_crt_cde, t_crt_tm, c_upd_cde, t_upd_tm, c_trans_mrk, t_trans_tm from web_app_acctinfo
+    </sql>
+
+
+    <select id="selectWebAppAcctinfoList" parameterType="String" resultMap="WebAppAcctinfoResult">
+        <include refid="selectWebAppAcctinfoVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

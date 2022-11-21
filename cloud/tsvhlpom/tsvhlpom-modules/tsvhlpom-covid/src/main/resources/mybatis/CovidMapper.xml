@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.covid19.mapper.CovidMapper">
+    <resultMap id="result" type="com.tsvhlpom.covid19.domain.Covid">
+        <result property="c_pk_id" column="c_pk_id"></result>
+        <result property="c_dept" column="c_dept"></result>
+        <result property="c_name" column="c_name"></result>
+        <result property="c_id_no" column="c_id_no"></result>
+        <result property="c_phone" column="c_phone"></result>
+        <result property="c_health_color" column="c_health_color"></result>
+        <result property="c_tour_color" column="c_tour_color"></result>
+        <result property="c_health_img" column="c_health_img"></result>
+        <result property="c_tour_img" column="c_tour_img"></result>
+        <result property="t_create_tm" column="t_create_tm"></result>
+        <result property="c_parent_dept" column="c_parent_dept"></result>
+        <result property="c_test_nos" column="c_test_nos"></result>
+        <result property="c_test_result" column="c_test_result"></result>
+        <result property="c_test_img" column="c_test_img"></result>
+    </resultMap>
+
+    <sql id="selectSql">
+        select   c_pk_id, (select dept_name from sys_dept where c_dept = dept_id) as c_dept,c_name,c_id_no,c_phone,
+               c_health_color,c_tour_color,c_health_img,c_tour_img,t_create_tm,
+                 (select dept_name from sys_dept where c_parent_dept = dept_id) as c_parent_dept,
+                  c_test_nos,c_test_result,c_test_img from web_covid_main
+    </sql>
+
+    <select id="getCovidList" resultMap="result">
+        <include refid="selectSql"></include>
+        where 1=1
+        <if test="c_parent_dept !=null and c_parent_dept !=''">and c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept !=null and c_dept !=''">and c_dept = #{c_dept}</if>
+        <if test="c_name !=null and c_name !=''">and c_name = #{c_name}</if>
+        <if test="c_health_color !=null and c_health_color !=''">and c_health_color = #{c_health_color}</if>
+        <if test="c_tour_color !=null and c_tour_color !=''">and c_tour_color = #{c_tour_color}</if>
+        <if test="c_tour_color !=null">and c_tour_color = #{c_tour_color}</if>
+        <if test="params!=null and  params.beginTime !=null">and t_create_tm between to_date(concat(#{params.beginTime},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss') and to_date(concat(#{params.endTime},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')</if>
+        order by t_create_tm desc
+    </select>
+
+
+
+
+    <insert id="save" parameterType="com.tsvhlpom.covid19.domain.Covid">
+        insert into web_covid_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_dept,c_name,c_id_no,c_phone,c_health_color,c_tour_color,c_health_img,c_tour_img,t_create_tm,c_parent_dept,
+            c_test_nos,c_test_result,c_test_img
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_dept},
+            #{c_name},
+            #{c_id_no},
+            #{c_phone},
+            #{c_health_color},
+            #{c_tour_color},
+            #{c_health_img},
+            #{c_tour_img},
+            sysdate,
+            #{c_parent_dept},
+            #{c_test_nos},
+            #{c_test_result},
+            #{c_test_img},
+
+        </trim>
+    </insert>
+
+
+    <select id="getSumStatistics" resultType="java.util.HashMap">
+        SELECT  count(distinct(c_phone))AS COUNTS FROM WEB_COVID_MAIN   WHERE 1=1
+        <if test="day!=null"> and t_create_tm between to_date(concat(#{day},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+            and to_date(concat(#{day},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept!=null and c_dept !=''">and c_dept = #{c_dept}</if>
+    </select>
+
+    <select id="getSumExceptionStatistics" resultType="java.util.HashMap">
+        SELECT  count(distinct(c_phone))AS COUNTS FROM WEB_COVID_MAIN   WHERE 1=1
+        and (c_health_color &lt;&gt; '0' or c_tour_color not in ('0','3'))
+        <if test="day!=null"> and t_create_tm between to_date(concat(#{day},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+            and to_date(concat(#{day},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept!=null and c_dept !=''">and c_dept = #{c_dept}</if>
+    </select>
+
+
+
+    <select id="geteleCounts" resultType="java.util.HashMap">
+        SELECT  count(distinct(c_phone))AS COUNTS FROM web_covid_emplyee  WHERE 1=1
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept!=null and c_dept !=''">and c_dept = #{c_dept}</if>
+    </select>
+    <select id="getGroupExceptionStatistics" resultType="java.util.HashMap">
+        SELECT
+        <choose>
+            <when test="c_parent_dept!=null and c_parent_dept !=''">
+                (SELECT replace(replace(DEPT_NAME,'中支',''),'分公司','')DEPT_NAME FROM SYS_DEPT WHERE DEPT_ID = m.C_DEPT) AS DPT,
+            </when>
+            <otherwise>
+                (SELECT replace(DEPT_NAME,'分公司','') FROM SYS_DEPT WHERE DEPT_ID = m.C_PARENT_DEPT) AS DPT,
+            </otherwise>
+        </choose>
+        count(distinct(m.c_phone)) AS EXCEPTIONCOUNTS
+        FROM WEB_COVID_MAIN m
+        where 1=1
+        and (c_health_color &lt;&gt; '0' or c_tour_color not in ('0','3'))
+        <if test="day!=null and day!=''">and m.t_create_tm between to_date(concat(#{day},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+            and to_date(concat(#{day},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and m.c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept!=null and c_dept !=''">and m.c_dept = #{c_dept}</if>
+        GROUP BY
+        <choose>
+            <when test="c_parent_dept!=null and c_parent_dept !=''">
+                m.c_dept
+                ORDER BY m.c_dept ASC
+            </when>
+            <otherwise>
+                m.C_PARENT_DEPT
+                ORDER BY m.C_PARENT_DEPT ASC
+            </otherwise>
+        </choose>
+
+
+
+    </select>
+
+
+    <select id="getGroupStatistics" resultType="java.util.HashMap">
+        select
+        <choose>
+            <when test="c_parent_dept!=null and c_parent_dept !=''">
+                (SELECT replace(replace(DEPT_NAME,'中支',''),'分公司','')DEPT_NAME FROM SYS_DEPT WHERE DEPT_ID = DPT_ID) AS DPT,
+            </when>
+            <otherwise>
+                (SELECT replace(DEPT_NAME,'分公司','') FROM SYS_DEPT WHERE DEPT_ID = DPT_ID) AS DPT,
+            </otherwise>
+        </choose>
+        sum(COUNTS) as COUNTS,sum(UNCOUNTS) as UNCOUNTS,sum(ExceptionCOUNTS) as ExceptionCOUNTS
+        from
+        ((SELECT
+            <choose>
+                <when test="c_parent_dept!=null and c_parent_dept !=''">m.C_DEPT AS DPT_ID,
+                </when>
+                <otherwise>
+                    m.C_PARENT_DEPT AS DPT_ID,
+                </otherwise>
+            </choose>
+        count(distinct(m.c_phone)) AS COUNTS ,
+        0 as EXCEPTIONCOUNTS,
+        <choose>
+            <when test="c_parent_dept!=null and c_parent_dept !=''">
+                (SELECT count(1) FROM web_covid_emplyee WHERE C_DEPT = m.C_DEPT) -count(distinct(m.c_phone)) AS UNCOUNTS
+            </when>
+            <otherwise>
+                (SELECT count(1) FROM web_covid_emplyee WHERE C_PARENT_DEPT = m.C_PARENT_DEPT) -count(distinct(m.c_phone)) AS UNCOUNTS
+            </otherwise>
+        </choose>
+        FROM WEB_COVID_MAIN m
+        <if test="day!=null and day!=''">WHERE m.t_create_tm between to_date(concat(#{day},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+            and to_date(concat(#{day},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and m.c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept!=null and c_dept !=''">and m.c_dept = #{c_dept}</if>
+        GROUP BY
+        <choose>
+            <when test="c_parent_dept!=null and c_parent_dept !=''">
+                m.c_dept
+
+            </when>
+            <otherwise>
+                m.C_PARENT_DEPT
+
+            </otherwise>
+        </choose>)
+        union all
+        (SELECT
+        <choose>
+            <when test="c_parent_dept!=null and c_parent_dept !=''">m.C_DEPT AS DPT_ID,
+            </when>
+            <otherwise>
+                m.C_PARENT_DEPT AS DPT_ID,
+            </otherwise>
+        </choose>
+        0 as COUNTS,
+        count(distinct(m.c_phone)) AS EXCEPTIONCOUNTS ,
+        0 as UNCOUNTS
+        FROM WEB_COVID_MAIN m
+        where 1=1 and (m.c_health_color &lt;&gt;'0' or m.c_tour_color not in ('0','3'))
+        <if test="day!=null and day!=''">and  m.t_create_tm between to_date(concat(#{day},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+            and to_date(concat(#{day},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and m.c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept!=null and c_dept !=''">and m.c_dept = #{c_dept}</if>
+        GROUP BY
+        <choose>
+            <when test="c_parent_dept!=null and c_parent_dept !=''">
+                m.c_dept
+
+            </when>
+            <otherwise>
+                m.C_PARENT_DEPT
+
+            </otherwise>
+        </choose>)
+        )
+        group by DPT_ID
+        order by DPT_ID asc
+
+    </select>
+
+
+    <resultMap id="doneList" type="com.tsvhlpom.covid19.domain.DoneList">
+        <result column="c_parent_dept" property="c_parent_dept"></result>
+        <result column="c_dept" property="c_dept"></result>
+        <result column="c_done" property="c_done"></result>
+        <result column="c_undone" property="c_undone"></result>
+    </resultMap>
+    <select id="getDoneResult" resultMap="doneList">
+        SELECT c_parent_dept,c_dept,sum(c_done) as c_done ,sum(c_undone) as c_undone FROM (
+        SELECT
+        (SELECT q.dept_name FROM sys_dept q WHERE q.dept_id = a.c_parent_dept) as c_parent_dept,
+        (SELECT q.dept_name FROM sys_dept q WHERE q.dept_id = a.c_dept) as c_dept,
+        count(1) as c_done,
+        0 as c_undone
+        FROM web_covid_emplyee a
+        where 1 = 1<if test="c_dept!=null and c_dept !=''">and a.c_dept = #{c_dept}</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and a.c_parent_dept = #{c_parent_dept}</if>
+        and
+        exists (SELECT * FROM web_covid_main b
+        where a.c_name = b.c_name
+        and a.c_phone = b.c_phone
+        <if test="day!=null and day!=''">and b.t_create_tm between to_date(concat(#{day},' 00:00:00'),
+            'yyyy-mm-dd hh24:mi:ss')
+            and to_date(concat(#{day},' 23:59:59'),
+            'yyyy-mm-dd hh24:mi:ss')</if>
+                   )
+         group by a.c_parent_dept, a.c_dept
+        union all
+        SELECT
+        (SELECT q.dept_name FROM sys_dept q WHERE q.dept_id = a.c_parent_dept) as c_parent_dept,
+        (SELECT q.dept_name FROM sys_dept q WHERE q.dept_id = a.c_dept) as c_dept,
+        0 as c_done,
+        count(1) as c_undone
+          FROM web_covid_emplyee a
+         where 1 = 1
+        <if test="c_dept!=null and c_dept !=''"> and a.c_dept = #{c_dept}</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and a.c_parent_dept = #{c_parent_dept}</if>
+           and not exists (SELECT *  FROM web_covid_main b
+                 where a.c_name = b.c_name
+                   and a.c_phone = b.c_phone
+                    <if test="day!=null and day!=''">and b.t_create_tm between to_date(concat(#{day},' 00:00:00'),
+                        'yyyy-mm-dd hh24:mi:ss')
+                        and to_date(concat(#{day},' 23:59:59'),
+                        'yyyy-mm-dd hh24:mi:ss')</if>
+                   )
+         group by a.c_parent_dept, a.c_dept
+         )group by c_parent_dept, c_dept
+
+    </select>
+    <select id="getUndoneDetial" resultType="string">
+         select a.c_name as c_name from web_covid_emplyee a
+                   where a.c_dept = (select q.dept_id from sys_dept q where q.dept_name = #{c_dept})
+                   and a.c_parent_dept = (select q.dept_id from sys_dept q where q.dept_name = #{c_parent_dept})
+                    and not exists (SELECT *  FROM web_covid_main b
+                 where a.c_name = b.c_name
+                   and a.c_phone = b.c_phone
+                   and b.t_create_tm between to_date(concat(#{day},' 00:00:00'),
+                        'yyyy-mm-dd hh24:mi:ss')
+                        and to_date(concat(#{day},' 23:59:59'),
+                        'yyyy-mm-dd hh24:mi:ss')
+                        )
+    </select>
+
+</mapper>

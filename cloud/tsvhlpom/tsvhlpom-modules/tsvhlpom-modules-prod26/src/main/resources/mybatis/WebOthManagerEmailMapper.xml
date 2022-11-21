@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prod26.mapper.WebOthManagerEmailMapper">
+    <resultMap id="result" type="com.tsvhlpom.prod26.domain.WebOthManagerEmail">
+        <result property="c_email" column="c_email"></result>
+        <result property="c_dpt_cde" column="c_dpt_cde"></result>
+    </resultMap>
+    <sql id="selectEmail">
+        select c_email,c_dpt_cde FROM web_oth_manager_email
+    </sql>
+    <select id="getWebOthManagerEmailList" parameterType="com.tsvhlpom.prod26.domain.WebOthManagerEmail" resultMap="result">
+        <include refid="selectEmail"></include>
+        where c_dpt_cde = #{c_dpt_cde}
+    </select>
+    <update id="update" parameterType="com.tsvhlpom.prod26.domain.WebOthManagerEmail">
+        update web_oth_manager_email set c_email = #{c_email} where c_dpt_cde = #{c_dpt_cde}
+    </update>
+</mapper>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.cargroup.mapper.BaseCustomersMapper">
+    <resultMap id="result" type="com.tsvhlpom.cargroup.domain.BaseCustomers">
+        <result column="c_pk_id" property="c_pk_id"></result>
+        <result column="c_sp_cust_id" property="c_sp_cust_id"></result>
+        <result column="c_sp_cust_nme" property="c_sp_cust_nme"></result>
+        <result column="c_nme" property="c_nme"></result>
+        <result column="c_mobile" property="c_mobile"></result>
+        <result column="c_reg_owner" property="c_reg_owner"></result>
+        <result column="c_plate_no" property="c_plate_no"></result>
+        <result column="c_fst_reg_ym" property="c_fst_reg_ym"></result>
+        <result column="c_model_nme" property="c_model_nme"></result>
+        <result column="c_travel_mile" property="c_travel_mile"></result>
+        <result column="t_insrnc_bgn_tm" property="t_insrnc_bgn_tm"></result>
+        <result column="c_frm_no" property="c_frm_no"></result>
+        <result column="c_eng_no" property="c_eng_no"></result>
+        <result column="t_create_date" property="t_create_date"></result>
+        <result column="c_visit_status" property="c_visit_status"></result>
+        <result column="c_visit_emp" property="c_visit_emp"></result>
+        <result column="c_visit_Tm" property="c_visit_Tm"></result>
+        <result column="c_price_status" property="c_price_status"></result>
+        <result column="c_is_visit" property="c_is_visit"></result>
+        <result column="c_is_notsuccess" property="c_is_notsuccess"></result>
+        <result column="c_remark" property="c_remark"></result>
+        <result column="c_cus_typ" property="c_cus_typ"></result>
+        <result column="c_is_wxfriend" property="c_is_wxfriend"></result>
+        <result column="c_cus_typDesc" property="c_cus_typDesc"></result>
+    </resultMap>
+
+    <sql id="selectCustomer">
+        select c_pk_id,c_sp_cust_id,(select a.c_sp_cust_nme from web_bas_sp_cust a where a.c_sp_cust_id = q.c_sp_cust_id) as c_sp_cust_nme, c_nme, c_mobile, c_reg_owner,c_plate_no,c_fst_reg_ym,c_model_nme,c_travel_mile,t_insrnc_bgn_tm,c_frm_no,c_eng_no,t_create_date,
+        c_visit_status,c_visit_emp,c_visit_Tm,c_price_status,c_is_visit,c_is_notsuccess,c_remark,c_cus_typ,c_is_wxfriend,c_cus_typDesc
+        from web_bas_customers q
+    </sql>
+
+    <select id="getListForUpdate" resultMap="result">
+        <include refid="selectCustomer"></include>
+        where 1=1
+        <if test="c_reg_owner!=null and c_reg_owner!=''">and c_reg_owner = #{c_reg_owner}</if>
+        <if test="c_plate_no!=null and c_plate_no!=''">and c_plate_no = #{c_plate_no}</if>
+        <if test="c_sp_cust_nme!=null and c_sp_cust_nme!=''"> and c_sp_cust_id in (select c_sp_cust_id from web_bas_sp_cust where c_sp_cust_nme like concat('%',concat(#{c_sp_cust_nme},'%')))</if>
+    </select>
+    <select id="getBaseCustomersList" resultMap="result">
+        <include refid="selectCustomer"></include>
+        where 1=1
+        <if test="c_is_wxfriend!=null and c_is_wxfriend!=''">and c_is_wxfriend = #{c_is_wxfriend}</if>
+        <if test="c_cus_typ!=null and c_cus_typ!=''">and c_cus_typ = #{c_cus_typ}</if>
+        <if test="c_nme!=null and c_nme!=''">and c_nme = #{c_nme}</if>
+        <if test="c_reg_owner!=null and c_reg_owner!=''">and c_reg_owner = #{c_reg_owner}</if>
+        <if test="c_plate_no!=null and c_plate_no!=''">and c_plate_no = #{c_plate_no}</if>
+        <if test="c_frm_no!=null and c_frm_no!=''">and c_frm_no = #{c_frm_no}</if>
+        <if test="c_mobile!=null and c_mobile!=''">and c_mobile = #{c_mobile}</if>
+        <if test="c_eng_no!=null and c_eng_no!=''">and c_eng_no = #{c_eng_no}</if>
+        <if test="c_sp_cust_nme!=null and c_sp_cust_nme!=''"> and c_sp_cust_id in (select c_sp_cust_id from web_bas_sp_cust where c_sp_cust_nme like concat('%',concat(#{c_sp_cust_nme},'%')))</if>
+         <if test="params.begininsrnac!=null and params.endinsrnac !=null">and t_insrnc_bgn_tm between  to_date(#{params.begininsrnac},'yyyy-mm-dd') and to_date(#{params.endinsrnac},'yyyy-mm-dd')</if>
+         <if test="params.begincreate!=null and params.endcreate !=null">and t_create_date between  to_date(#{params.begincreate},'yyyy-mm-dd') and to_date(#{params.endcreate},'yyyy-mm-dd')</if>
+         <if test='c_price_status !=null and c_price_status !="无"'>and c_price_status like concat('%',concat(#{c_price_status},'%'))</if>
+         <if test='c_price_status !=null and c_price_status =="无"'>and c_price_status is null </if>
+         <if test="params.startDate !=null and params.endDate !=null"> and to_char(t_insrnc_bgn_tm,'MM-dd') between #{params.startDate} and  #{params.endDate}</if>
+         <if test="c_visit_statusList !=null">
+             and c_visit_status in
+             <foreach item="c_visit_status" collection="c_visit_statusList" open="(" separator="," close=")">
+                 #{c_visit_status}
+             </foreach>
+         </if>
+        <if test="c_person_dept!=null and c_person_dept!=''">
+            and c_sp_cust_id in (select sp_id from web_bas_sp_person where dept
+            like concat('%',concat(#{c_person_dept},'%')))
+         </if>
+        <if test="c_person_name!=null and c_person_name!=''">
+            and c_sp_cust_id in (select sp_id from web_bas_sp_person where name = #{c_person_name})
+        </if>
+        <if test="c_person_flag!=null and c_person_flag!=''">
+            and c_sp_cust_id in (select sp_id from web_bas_sp_person where service_flag = #{c_person_flag})
+        </if>
+        <if test="c_dept_cde !=null and c_dept_cde !='' and c_dept_cde !='122'">
+            and  c_sp_cust_id in (select c_sp_cust_id from web_bas_sp_cust where substr(c_dpt_cde,0,4)  like concat(#{c_dept_cde},'%'))
+        </if>
+        <if test='c_visitOrPrice !=null and c_visitOrPrice =="Y"'>
+            and c_is_visit = 'Y'
+        </if>
+        <if test='c_visitOrPrice !=null and c_visitOrPrice =="N"'>
+            and c_is_visit = 'N'
+        </if>
+        <if test='c_visitOrPrice !=null and c_visitOrPrice =="NONE"'>
+            and  c_is_visit is null
+        </if>
+        order by t_create_date desc nulls last
+    </select>
+    <select id="getBaseCustomers" resultMap="result">
+        <include refid="selectCustomer"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+
+    <insert id="insert">
+        insert into web_bas_customers
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_sp_cust_id, c_nme, c_mobile, c_reg_owner,c_plate_no,c_fst_reg_ym,c_model_nme,c_travel_mile,t_insrnc_bgn_tm,c_frm_no,c_eng_no,t_create_date,
+            c_visit_status,c_visit_emp,c_visit_Tm,c_price_status,c_is_visit,c_is_notsuccess,c_remark,c_cus_typ,c_is_wxfriend,c_cus_typDesc
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_sp_cust_id},
+            #{c_nme},
+            #{c_mobile},
+            #{c_reg_owner},
+            #{c_plate_no},
+            #{c_fst_reg_ym},
+            #{c_model_nme},
+            #{c_travel_mile},
+            #{t_insrnc_bgn_tm},
+            #{c_frm_no},
+            #{c_eng_no},
+            sysdate,
+            #{c_visit_status},
+            #{c_visit_emp},
+            sysdate,
+            #{c_price_status},
+            #{c_is_visit},
+            #{c_is_notsuccess},
+            #{c_remark},
+            #{c_cus_typ},
+            #{c_is_wxfriend},
+            #{c_cus_typDesc},
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.tsvhlpom.cargroup.domain.BaseCustomers">
+        update web_bas_customers
+        <trim prefix="SET" suffixOverrides=",">
+            c_sp_cust_id = #{c_sp_cust_id},
+            c_nme = #{c_nme},
+            c_mobile = #{c_mobile},
+            c_reg_owner = #{c_reg_owner},
+            c_plate_no = #{c_plate_no},
+            c_fst_reg_ym = #{c_fst_reg_ym},
+            c_model_nme = #{c_model_nme},
+            c_travel_mile = #{c_travel_mile},
+            t_insrnc_bgn_tm = #{t_insrnc_bgn_tm},
+            c_frm_no = #{c_frm_no},
+            c_eng_no = #{c_eng_no},
+            c_visit_status = #{c_visit_status},
+            c_visit_emp = #{c_visit_emp},
+            <if test="c_visit_Tm !=null">c_visit_Tm = #{c_visit_Tm},</if>
+            <if test="c_visit_Tm ==null"> c_visit_Tm = sysdate,</if>
+            c_price_status = #{c_price_status},
+            c_is_visit = #{c_is_visit},
+            c_is_notsuccess = #{c_is_notsuccess},
+            c_cus_typ = #{c_cus_typ},
+            c_is_wxfriend = #{c_is_wxfriend},
+            c_cus_typDesc = #{c_cus_typDesc},
+            c_remark = #{c_remark}
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <update id="updateVisit" parameterType="com.tsvhlpom.cargroup.domain.BaseCustomers">
+        update web_bas_customers
+        <trim prefix="SET" suffixOverrides=",">
+            c_visit_status = #{c_visit_status},
+            c_visit_emp = #{c_visit_emp},
+            c_visit_Tm = sysdate,
+            c_price_status = #{c_price_status},
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="delete">
+        delete from web_bas_customers where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+    <select id="checkCustomerisExists" resultMap="result">
+        <include refid="selectCustomer"></include>
+        where c_sp_cust_id = #{c_sp_cust_id}
+        <if test="c_frm_no!=null and c_frm_no!=''"> and c_frm_no = #{c_frm_no}</if>
+        <if test="c_plate_no!=null and c_plate_no!=''"> and c_plate_no = #{c_plate_no}</if>
+    </select>
+
+    <select id="getBaseCustomersByPkId" resultMap="result">
+        <include refid="selectCustomer"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+
+    <update id="updateTinsrncBgnTm">
+        update web_bas_customers set t_insrnc_bgn_tm = #{insBgnTm} where c_pk_id = #{pk_id}
+    </update>
+    <update id="updateVisitInfo">
+        update web_bas_customers set c_visit_status = null,c_visit_emp=null,c_visit_Tm =null
+        where c_visit_Tm &lt; sysdate -180
+    </update>
+
+    <select id="getSpCust" resultMap="result">
+        select c_sp_cust_id,c_sp_cust_nme from web_bas_sp_cust where c_sp_cust_nme like concat('%',concat(#{query},'%'))
+    </select>
+    <select id="selectValidPolicy" resultType="Integer">
+        select count(1) from web_ply_base b ,web_ply_vhl v
+        where b.c_app_no = v.c_app_no
+        and v.c_plate_no = #{c_plate_no}
+        and b.t_insrnc_end_tm between sysdate -90 and sysdate + 90
+        and b.c_latest_mrk = '1'
+        and b.c_ply_sts &lt;&gt; 'T'
+        and b.n_Ratio_Coef = 1
+    </select>
+</mapper>

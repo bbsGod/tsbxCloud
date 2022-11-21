@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.meetingpreset.mapper.PersonMapper">
+    <resultMap id="result" type="com.tsvhlpom.meetingpreset.domain.Person">
+        <result column="pk_id" property="pk_id"></result>
+        <result column="dept_name" property="dept_name"></result>
+        <result column="person_id" property="person_id"></result>
+        <result column="dept_id" property="dept_id"></result>
+        <result column="person_name" property="person_name"></result>
+    </resultMap>
+    <sql id="getSql">
+        select pk_id,dept_name,person_id,person_name,dept_id from web_meeting_person
+    </sql>
+    <select id="getPersonList" resultMap="result">
+        <include refid="getSql"></include>
+        where 1=1
+         <if test="dept_name !=null and dept_name !=''"> and dept_name like concat('%',concat(#{dept_name},'%'))</if>
+         <if test="person_id !=null and person_id !=''">and person_id = #{person_id}</if>
+         <if test="person_name !=null and person_name !=''">and person_name = #{person_name}</if>
+         <if test="dept_id !=null and dept_id !=''">and dept_id = #{dept_id}</if>
+    </select>
+    <select id="getPersonById" resultMap="result">
+        <include refid="getSql"></include>
+        where pk_id = #{pk_id}
+    </select>
+    <select id="getPersonByPersonId" resultMap="result">
+        <include refid="getSql"></include>
+        where person_id = #{person_id}
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.meetingpreset.domain.Person">
+        insert into web_meeting_person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            pk_id,dept_name,person_id,person_name,dept_id
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{dept_name},
+            #{person_id},
+            #{person_name},
+            #{dept_id},
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.tsvhlpom.meetingpreset.domain.Person">
+        update web_meeting_person
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dept_name != null">dept_name = #{dept_name},</if>
+            <if test="person_id != null">person_id = #{person_id},</if>
+            <if test="person_name != null">person_name = #{person_name},</if>
+            <if test="dept_id != null">dept_id = #{dept_id},</if>
+        </trim>
+        where pk_id = #{pk_id}
+    </update>
+    <delete id="delete">
+        delete from web_meeting_person where pk_id in
+        <foreach item="pk_id" collection="array" open="(" separator="," close=")">
+            #{pk_id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteAll">
+        delete from web_meeting_person
+    </delete>
+</mapper>

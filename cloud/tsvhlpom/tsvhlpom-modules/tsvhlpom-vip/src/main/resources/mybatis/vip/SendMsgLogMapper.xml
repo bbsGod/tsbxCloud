@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.vip.mapper.SendMsgLogMapper">
+    <resultMap id="msgLogMap" type="com.tsvhlpom.vip.domain.SendMsgLog">
+        <result property="pkid" column="pkid"></result>
+        <result property="phoneNo" column="phoneNo"></result>
+        <result property="vip_date" column="vip_date"></result>
+        <result property="vip_day" column="vip_day"></result>
+        <result property="sendDate" column="sendDate"></result>
+        <result property="sendMsg" column="sendMsg"></result>
+        <result property="status" column="status"></result>
+        <result property="errMsg" column="errMsg"></result>
+    </resultMap>
+    <sql id="selectSendMsgLog">
+        select pkid,phoneNo,vip_date,vip_day,sendDate,sendMsg,status,errMsg from vip_sendmsg_log
+    </sql>
+    <select id="getSendMsgLog" resultMap="msgLogMap" parameterType="com.tsvhlpom.vip.domain.SendMsgLog">
+       <include refid="selectSendMsgLog"></include>
+        <where>
+            <if test="phoneNo !=null and phoneNo !='' ">phoneNo = #{phoneNo}</if>
+            <if test="vip_date !=null and vip_date !='' ">and vip_date = #{vip_date}</if>
+            <if test="vip_day !=null and vip_day !='' ">and vip_day = #{vip_day}</if>
+            <if test="status !=null and status !='' ">and status = #{status}</if>
+        </where>
+    </select>
+    <insert id="saveSendMsgLog" parameterType="com.tsvhlpom.vip.domain.SendMsgLog">
+        insert into vip_sendmsg_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            pkid,phoneNo,vip_date,vip_day,sendDate,sendMsg,status,errMsg
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{phoneNo},
+            #{vip_date},
+            #{vip_day},
+            #{sendDate},
+            #{sendMsg},
+            #{status},
+            #{errMsg}
+        </trim>
+    </insert>
+</mapper>

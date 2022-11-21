@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.tsvhlpom</groupId>
+        <artifactId>tsvhlpom</artifactId>
+        <version>3.2.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>tsvhlpom-system</module>
+        <module>tsvhlpom-gen</module>
+        <module>tsvhlpom-job</module>
+        <module>tsvhlpom-file</module>
+        <module>tsvhlpom-vip</module>
+        <module>tsvhlpom-proddata</module>
+        <module>tsvhlpom-user</module>
+        <module>tsvhlpom-prodapi</module>
+        <module>tsvhlpom-dailywork</module>
+        <module>tsvhlpom-batchdata</module>
+        <module>tsvhlpom-mysqlClient</module>
+        <module>tsvhlpom-zentao</module>
+        <module>tsvhlpom-covid</module>
+        <module>tsvhlpom-cargroup</module>
+        <module>tsvhlpom-meetingpreset</module>
+        <module>tsvhlpom-modules-pay</module>
+        <module>tsvhlpom-compare</module>
+        <module>tsvhlpom-modules-prod26</module>
+    </modules>
+
+    <artifactId>tsvhlpom-modules</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        tsvhlpom-modules业务模块
+    </description>
+
+</project>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.covid19.mapper.EmplyeeMapper">
+    <resultMap id="result" type="com.tsvhlpom.covid19.domain.Emplyee">
+        <result property="c_pk_id" column="c_pk_id"></result>
+        <result property="c_parent_dept" column="c_parent_dept"></result>
+        <result property="c_dept" column="c_dept"></result>
+        <result property="c_name" column="c_name"></result>
+        <result property="c_id_no" column="c_id_no"></result>
+        <result property="c_phone" column="c_phone"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select c_pk_id,c_parent_dept,c_dept,c_name,c_id_no,c_phone from web_covid_emplyee
+    </sql>
+    <select id="getEmplyee" resultMap="result">
+        <include refid="selectSql"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <select id="getEmplyeeList" resultMap="result">
+        <include refid="selectSql"></include>
+        where  1=1
+        <if test="c_parent_dept !=null and c_parent_dept !=''">and c_parent_dept = #{c_parent_dept}</if>
+        <if test="c_dept !=null and c_dept !=''">and c_dept=#{c_dept}</if>
+        <if test="c_name !=null and c_name !=''">and c_name = #{c_name}</if>
+        <if test="c_phone !=null and c_phone !=''">and c_phone = #{c_phone}</if>
+    </select>
+    <insert id="saveEmplyee" parameterType="com.tsvhlpom.covid19.domain.Emplyee">
+        insert into web_covid_emplyee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_parent_dept,c_dept,c_name,c_id_no,c_phone
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_parent_dept},
+            #{c_dept},
+            #{c_name},
+            #{c_id_no},
+            #{c_phone},
+        </trim>
+    </insert>
+    <update id="updateEmplyee" parameterType="com.tsvhlpom.covid19.domain.Emplyee">
+        update web_covid_emplyee
+        <trim prefix="SET" suffixOverrides=",">
+            c_parent_dept = #{c_parent_dept},
+            c_dept = #{c_dept},
+            c_name = #{c_name},
+            c_id_no = #{c_id_no},
+            c_phone = #{c_phone},
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="deleteEmplyee">
+        delete from web_covid_emplyee where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+    <select id="getDeptCount" resultType="java.lang.Integer">
+        select count(1) from sys_dept where dept_id = #{dept_id}
+    </select>
+    <select id="checkEmp" resultMap="result">
+        <include refid="selectSql"></include>
+        where c_name = #{c_name} and c_phone = #{c_phone}
+    </select>
+
+    <select id="getUnDoneResult" resultMap="result">
+        select (SELECT q.dept_name FROM sys_dept q WHERE q.dept_id = a.c_parent_dept) as c_parent_dept,
+        (SELECT q.dept_name FROM sys_dept q WHERE q.dept_id = a.c_dept) as c_dept,
+         c_name, c_id_no, c_phone
+        from web_covid_emplyee a
+        where  1=1
+        <if test="c_dept!=null and c_dept !=''"> and a.c_dept = #{c_dept}</if>
+        <if test="c_parent_dept!=null and c_parent_dept !=''">and a.c_parent_dept = #{c_parent_dept}</if>
+        and not exists (SELECT *  FROM web_covid_main b
+        where a.c_name = b.c_name
+        and a.c_phone = b.c_phone
+        <if test="day!=null and day!=''">and b.t_create_tm between to_date(concat(#{day},' 00:00:00'),
+            'yyyy-mm-dd hh24:mi:ss')
+            and to_date(concat(#{day},' 23:59:59'),
+            'yyyy-mm-dd hh24:mi:ss')</if>
+        )
+    </select>
+    <select id="getName" resultType="string">
+        select  c_name from web_covid_emplyee where c_phone = #{c_phone}
+    </select>
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.mysqlClient.mapper.DemandMapper">
+    <resultMap id="result" type="com.tsvhlpom.system.api.model.DemandDTO">
+        <result column="zid" property="zid"></result>
+        <result column="ztitle" property="ztitle"></result>
+        <result column="mname" property="mname"></result>
+        <result column="zsource" property="zsource"></result>
+        <result column="proonlinedate" property="proonlinedate"></result>
+        <result column="taskrealst" property="taskrealst"></result>
+        <result column="taskrealed" property="taskrealed"></result>
+        <result column="checkdate" property="checkdate"></result>
+        <result column="onlinedate" property="onlinedate"></result>
+        <result column="remarks" property="remarks"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select zid,ztitle,mname,zsource,proonlinedate,taskrealst,taskrealed,checkdate,onlinedate,remarks from zentao_demand
+    </sql>
+    <insert id="save" parameterType="com.tsvhlpom.system.api.model.DemandDTO">
+        insert into zentao_demand
+        values (
+            #{zid},
+            #{ztitle},
+            #{mname},
+            #{zsource},
+            #{proonlinedate},
+            #{taskrealst},
+            #{taskrealed},
+            #{checkdate},
+            #{onlinedate},
+            #{remarks}
+        )
+    </insert>
+    <update id="update" parameterType="com.tsvhlpom.system.api.model.DemandDTO">
+        update zentao_demand
+        <trim prefix="SET" suffixOverrides=",">
+            ztitle = #{ztitle},
+            mname = #{mname},
+            zsource = #{zsource},
+            proonlinedate = #{proonlinedate},
+            taskrealst = #{taskrealst},
+            taskrealed = #{taskrealed},
+            checkdate = #{checkdate},
+            onlinedate = #{onlinedate},
+            remarks = #{remarks},
+        </trim>
+        where zid = #{zid}
+    </update>
+    <select id="findByZidIn" resultType="com.tsvhlpom.system.api.model.DemandDTO">
+        <include refid="selectSql"></include>
+        where zid in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getDemandByZid" resultType="com.tsvhlpom.system.api.model.DemandDTO">
+        <include refid="selectSql"></include>
+        where zid = #{zid}
+    </select>
+    <select id="findById" resultType="com.tsvhlpom.system.api.model.DemandDTO">
+        <include refid="selectSql"></include>
+        where zid = #{zid}
+    </select>
+</mapper>

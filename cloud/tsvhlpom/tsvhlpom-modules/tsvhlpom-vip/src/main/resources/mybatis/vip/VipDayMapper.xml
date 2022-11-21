@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.vip.mapper.VipDayMapper">
+
+    <resultMap type="com.tsvhlpom.vip.domain.VipDay" id="VipDayResult">
+        <id property="pkId" column="pkid"/>
+        <result property="dayName" column="dayname"/>
+        <result property="dayDate" column="daydate"/>
+        <result property="createDate" column="createdate"/>
+        <result property="createBy" column="createBy"/>
+        <result property="updateDate" column="updatedate"/>
+        <result property="updateBy" column="updateBy"/>
+        <result property="preFixMessage" column="preFixMessage"/>
+        <result property="surFixMessage" column="surFixMessage"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+    <sql id="selectDayVo">
+        select u.pkid, u.dayname, u.daydate, u.createdate, u.createBy, u.updatedate, u.updateBy, u.remarks,u.preFixMessage,u.surFixMessage
+        from vip_day u
+    </sql>
+
+    <select id="selectDayList" parameterType="com.tsvhlpom.vip.domain.VipDay" resultMap="VipDayResult">
+        <include refid="selectDayVo"/>
+        <where>
+            1=1
+            <if test="pkId !=null and pkId != ''">and pkId = #{pkId}</if>
+            <if test="dayName !=null and dayName != ''">and dayName = #{dayName}</if>
+            <if test="dayDate !=null">and dayDate = #{dayDate}</if>
+        </where>
+    </select>
+
+    <select id="selectDayByDayName" parameterType="String" resultMap="VipDayResult">
+        <include refid="selectDayVo"/>
+        where u.dayname = #{dayName}
+    </select>
+
+    <select id="selectDayById" parameterType="String" resultMap="VipDayResult">
+        <include refid="selectDayVo"/>
+        where u.pkid = #{pkId}
+    </select>
+
+    <select id="checkDayNameUnique" parameterType="String" resultType="int">
+		select count(1) from vip_day where dayname = #{dayName}
+	</select>
+
+    <select id="checkDayDateUnique" parameterType="Date" resultMap="VipDayResult">
+        select pkid, daydate from vip_day where daydate = #{dayDate}
+    </select>
+
+    <insert id="insertDay" parameterType="com.tsvhlpom.vip.domain.VipDay" useGeneratedKeys="true" keyProperty="pkId">
+        insert into vip_day(
+        pkid,
+        dayname,
+        daydate,
+        createBy,
+        remarks,
+        createdate,
+        preFixMessage,
+        surFixMessage
+        )values(
+        sys_guid(),
+        #{dayName},
+        #{dayDate},
+        #{createBy},
+        #{remarks},
+        sysdate,
+        #{preFixMessage},
+        #{surFixMessage}
+        )
+    </insert>
+
+    <update id="updateDay" parameterType="com.tsvhlpom.vip.domain.VipDay">
+        update vip_day
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dayName != null and dayName != ''">dayname = #{dayName},</if>
+            <if test="dayDate != null ">daydate = #{dayDate},</if>
+            <if test="updateBy != null and updateBy != ''">updateBy = #{updateBy},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="preFixMessage != null">preFixMessage = #{preFixMessage},</if>
+            <if test="surFixMessage != null">surFixMessage = #{surFixMessage},</if>
+            updatedate = sysdate
+        </trim>
+        where pkid = #{pkId}
+    </update>
+
+    <delete id="deleteDayById" parameterType="String">
+ 		delete from vip_day where pkid = #{pkId}
+ 	</delete>
+
+    <delete id="deleteDayByIds" parameterType="String">
+        delete from vip_day where pkid in
+                <foreach collection="array" item="pkId" open="(" separator="," close=")">
+                    #{pkId}
+                </foreach>
+    </delete>
+
+</mapper>

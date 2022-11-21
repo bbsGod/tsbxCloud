@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebPlyEdrErrLogsMapper">
+    <resultMap id="result" type="com.tsvhlpom.proddata.domain.WebPlyEdrErrLogs">
+        <result property="c_pk_id"    column="c_pk_id"    />
+        <result property="c_req_type"    column="c_req_type"    />
+        <result property="c_app_no"    column="c_app_no"    />
+        <result property="c_err_message"    column="c_err_message"    />
+        <result property="t_send_time"    column="t_send_time"    />
+        <result property="c_status"    column="c_status"    />
+        <result property="n_err_tms"    column="n_err_tms"    />
+        <result property="c_sendmessage"    column="c_sendmessage"    />
+    </resultMap>
+    <sql id="selectWebPlyEdrErrLogs">
+        select c_pk_id,c_req_type,c_app_no,c_err_message,t_send_time,c_status,n_err_tms,c_sendmessage
+        from web_ply_edr_err_logs
+    </sql>
+
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.WebPlyEdrErrLogs">
+        update web_ply_edr_err_logs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_req_type != null">c_req_type = #{c_req_type},</if>
+            <if test="c_app_no != null">c_app_no = #{c_app_no},</if>
+            <if test="c_err_message != null">c_err_message = #{c_err_message},</if>
+            <if test="t_send_time != null">t_send_time = #{t_send_time},</if>
+            <if test="c_status != null">c_status = #{c_status},</if>
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="delete">
+        delete from web_ply_edr_err_logs where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+    <select id="getWebPlyEdrErrLogs" parameterType="string" resultMap="result">
+        <include refid="selectWebPlyEdrErrLogs"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <select id="getWebPlyEdrErrLogsList" parameterType="com.tsvhlpom.proddata.domain.WebPlyEdrErrLogs" resultMap="result">
+        <include refid="selectWebPlyEdrErrLogs"></include>
+        <where>
+            1=1
+            <if test="c_pk_id != null and c_pk_id !=''">and c_pk_id = #{c_pk_id}</if>
+            <if test="c_app_no != null and c_app_no !=''">and c_app_no = #{c_app_no}</if>
+            <if test="c_status != null and c_status !=''">and c_status = #{c_status}</if>
+        </where>
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.proddata.domain.WebPlyEdrErrLogs">
+        insert into web_ply_edr_err_logs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_req_type,c_app_no,c_err_message,t_send_time,c_status,n_err_tms
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_req_type},
+            #{c_app_no},
+            #{c_err_message},
+            #{t_send_time},
+            #{c_status},
+            #{n_err_tms}
+        </trim>
+    </insert>
+</mapper>

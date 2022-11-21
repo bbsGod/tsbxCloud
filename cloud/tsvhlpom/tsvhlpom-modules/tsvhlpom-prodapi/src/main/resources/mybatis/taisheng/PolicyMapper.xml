@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prodapi.taisheng.mapper.PolicyMapper">
+    <resultMap id="policyResult" type="com.tsvhlpom.prodapi.taisheng.VO.Policy">
+        <result property="applicationNo" column="applicationNo" ></result>
+        <result property="policyNo" column="policyNo" ></result>
+        <result property="insurerCode" column="insurerCode" ></result>
+        <result property="insurerName" column="insurerName" ></result>
+        <result property="insuranceChannels" column="insuranceChannels" ></result>
+        <result property="internet" column="internet" ></result>
+        <result property="insuranceType" column="insuranceType" ></result>
+        <result property="type" column="type" ></result>
+        <result property="agentName" column="agentName" ></result>
+        <result property="agencyCode" column="agencyCode" ></result>
+        <result property="agencyName" column="agencyName" ></result>
+        <result property="superviseOrgCode" column="superviseOrgCode" ></result>
+        <result property="superviseOrgName" column="superviseOrgName" ></result>
+        <result property="grossPremium" column="grossPremium" ></result>
+        <result property="netPremium" column="netPremium" ></result>
+        <result property="taxAmount" column="taxAmount" ></result>
+        <result property="signDate" column="signDate" ></result>
+        <result property="insurerStartTime" column="insurerStartTime" ></result>
+        <result property="insurerEndTime" column="insurerEndTime" ></result>
+        <result property="status" column="status" ></result>
+        <result property="plateNo" column="plateNo" ></result>
+        <result property="vehicleIdentificationNo" column="vehicleIdentificationNo" ></result>
+        <result property="engineNo" column="engineNo" ></result>
+        <result property="agricultureFlag" column="agricultureFlag" ></result>
+        <result property="insuredPeriod" column="insuredPeriod" ></result>
+        <result property="brandNo" column="brandNo" ></result>
+        <result property="vehicleAndVesselTax" column="vehicleAndVesselTax" ></result>
+        <result property="riskCode" column="riskCode" ></result>
+    </resultMap>
+    <select id="getPolicy" resultMap="policyResult">
+        SELECT base.c_app_no as applicationNo,
+        base.c_ply_no as policyNo,
+        base.c_prod_no as riskCode,
+        base.c_dpt_cde as insurerCode,
+        '泰山保险' as insurerName,
+        'NORMAL_CHANNEL' as insuranceChannels,
+        'false' as internet,
+        decode(base.c_prod_no,'0320','02','01') as insuranceType,
+        'VEHICLE' as type,
+        '' as agentName,
+        '' as agencyCode,
+        (SELECT cha.c_cha_nme
+        FROM WEB_CUS_CHA cha
+        WHERE cha.c_cha_cde = base.c_brkr_cde) as agencyName,
+        '' as superviseOrgCode,
+        (SELECT cha.c_cha_nme
+        FROM WEB_CUS_CHA cha
+        WHERE cha.c_cha_cde = base.c_brkr_cde) as superviseOrgName,
+        base.n_prm as grossPremium,
+        vat.n_sum_price as netPremium,
+        vat.n_tax_amt_y as taxAmount,
+        to_char(base.t_crt_tm,'yyyy-mm-dd hh24:mi:ss') as signDate,
+        to_char(base.t_insrnc_bgn_tm,'yyyy-mm-dd hh24:mi:ss') as insurerStartTime,
+        to_char(base.t_insrnc_end_tm,'yyyy-mm-dd hh24:mi:ss') as insurerEndTime,
+        (SELECT tax.n_taxable_amt FROM web_ply_vs_tax tax WHERE tax.c_app_no = base.c_app_no) as vehicleAndVesselTax,
+        decode(base.c_ply_sts,'I','01','T','03','99') as status,
+        to_char(base.t_insrnc_bgn_tm,'yyyy-mm-dd')||'至'||to_char(base.t_insrnc_end_tm,'yyyy-mm-dd') as insuredPeriod,
+        vhl.c_plate_no as plateNo,
+        vhl.c_eng_no as engineNo,
+        vhl.c_frm_no as vehicleIdentificationNo,
+        '0' as agricultureFlag,
+        vhl.c_model_nme as brandNo
+        FROM web_ply_base base, web_org_sales sales,web_ply_vhl vhl,web_ply_vat_base vat
+        WHERE sales.c_sls_cde = base.c_sls_cde
+        and vat.c_app_no = base.c_app_no
+        and base.c_app_no = vhl.c_app_no
+        and base.c_prod_no like '03%'
+        and (base.c_issue_src &lt;&gt; '6'  or base.c_issue_src is null)
+        and base.c_app_typ = 'A'
+        <if test="appNo!=null and appNo !=''">and base.c_app_no = #{appNo}</if>
+        <if test="startDate!=null and endDate!=null">
+            and base.t_crt_tm between #{startDate} and #{endDate}
+        </if>
+        and base.c_brkr_cde in (select broker.c_brkr_cde from web_trd_broker_info broker where broker.c_id = 'D5FE81B37000764BE0530100007FD60B')
+     </select>
+    <select id="getToken" resultType="map" parameterType="long">
+        select c_token,n_expire_in from web_trd_interf_log where n_expire_in > #{expireIn} and c_token is not null and rownum = 1
+    </select>
+
+    <select id="getSnrDept" resultType="string">
+        select  c_snr_dpt from web_org_dpt a WHERE a.c_dpt_cde = #{deptCode} and a.c_is_valid = '1'
+    </select>
+
+    <select id="getDept_ts" resultType="map">
+        SELECT a.c_tgt_cde as TGTCDE,a.c_remark as REMARK FROM WEB_BAS_MAP a WHERE a.c_typ_cde = 'ZJY.ORG' and a.c_src_cde = #{deptCode}
+    </select>
+</mapper>

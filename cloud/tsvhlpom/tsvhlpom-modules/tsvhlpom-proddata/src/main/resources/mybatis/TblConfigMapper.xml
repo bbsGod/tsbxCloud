@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.TblConfigMapper">
+    <resultMap id="TblConfig" type="com.tsvhlpom.proddata.domain.TblConfig">
+        <result property="c_pk_id"    column="c_pk_id"    />
+        <result property="c_conf_group"    column="c_conf_group"    />
+        <result property="c_conf_id"    column="c_conf_id"    />
+        <result property="c_conf_value"    column="c_conf_value"    />
+        <result property="c_crt_tm"    column="c_crt_tm"    />
+        <result property="c_upd_tm"    column="c_upd_tm"    />
+        <result property="c_conf_state"    column="c_conf_state"    />
+    </resultMap>
+    <sql id="selectTblConfig">
+        select c_pk_id,c_conf_group,c_conf_id,c_conf_value,c_crt_tm,c_upd_tm,c_conf_state from tsschedule.tbl_config
+    </sql>
+
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.TblConfig">
+        update tsschedule.tbl_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_conf_group != null">c_conf_group = #{c_conf_group},</if>
+            <if test="c_conf_id != null">c_conf_id = #{c_conf_id},</if>
+            <if test="c_conf_value != null">c_conf_value = #{c_conf_value},</if>
+            <if test="c_conf_state != null">c_conf_state = #{c_conf_state},</if>
+            c_upd_tm = sysdate,
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="delete">
+        delete from tsschedule.tbl_config where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+    <select id="getTblConfig" parameterType="string" resultMap="TblConfig">
+        <include refid="selectTblConfig"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <select id="getTblConfigList" parameterType="com.tsvhlpom.proddata.domain.TblConfig" resultMap="TblConfig">
+        <include refid="selectTblConfig"></include>
+        <where>
+            1=1
+            <if test="c_pk_id != null and c_pk_id !=''">and c_pk_id = #{c_pk_id}</if>
+            <if test="c_conf_group != null and c_conf_group !=''">and c_conf_group = #{c_conf_group}</if>
+            <if test="c_conf_id != null and c_conf_id !=''">and c_conf_id = #{c_conf_id}</if>
+            <if test="c_conf_state != null and c_conf_state !=''">and c_conf_state = #{c_conf_state}</if>
+            <if test="c_conf_value != null and c_conf_value !=''">and c_conf_value like concat(concat('%', #{c_conf_value}),'%')</if>
+        </where>
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.proddata.domain.TblConfig">
+        insert into tsschedule.tbl_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_conf_group,c_conf_id,c_conf_value,c_crt_tm,c_upd_tm,c_conf_state
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_conf_group},
+            #{c_conf_id},
+            #{c_conf_value},
+            sysdate,
+            sysdate,
+            #{c_conf_state},
+        </trim>
+    </insert>
+</mapper>

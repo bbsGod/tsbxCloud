@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prodapi.inter.mapper.InterMapper">
+    <resultMap id="result" type="com.tsvhlpom.prodapi.inter.VO.InterResVO">
+        <result property="CAppTyp" column="CAppTyp"></result>
+        <result property="CPlyNo" column="CPlyNo"></result>
+        <result property="CPlateNo" column="CPlateNo"></result>
+        <result property="CFrmNo" column="CFrmNo"></result>
+        <result property="CEngNo" column="CEngNo"></result>
+        <result property="TInsrncBgnTm" column="TInsrncBgnTm"></result>
+        <result property="TInsrncEndTm" column="TInsrncEndTm"></result>
+        <result property="TIssueTm" column="TIssueTm"></result>
+        <result property="CProdNo" column="CProdNo"></result>
+        <result property="CProdNme" column="CProdNme"></result>
+        <result property="NRate" column="NRate"></result>
+        <result property="CAgentCode" column="CAgentCode"></result>
+        <result property="CAgentName" column="CAgentName"></result>
+        <result property="CSalesmanCode" column="CSalesmanCode"></result>
+        <result property="CSalesmanName" column="CSalesmanName"></result>
+        <result property="CEdrNo" column="CEdrNo"></result>
+        <result property="CPlySts" column="CPlySts"></result>
+        <result property="CAppNme" column="CAppNme"></result>
+        <result property="CInsuredNme" column="CInsuredNme"></result>
+        <result property="NPrm" column="NPrm"></result>
+        <result property="NPrmNotax" column="NPrmNotax"></result>
+        <result property="NAmt" column="NAmt"></result>
+        <result property="NAggTax" column="NAggTax"></result>
+        <result property="CUsageCde" column="CUsageCde"></result>
+        <result property="CVhlTyp" column="CVhlTyp"></result>
+        <result property="CVhlcategoryCde" column="CVhlcategoryCde"></result>
+        <result property="CDptCde" column="CDptCde"></result>
+        <result property="CAppCertfCde" column="CAppCertfCde"></result>
+        <result property="CInsCertfCde" column="CInsCertfCde"></result>
+        <result property="NFee" column="NFee"></result>
+        <result property="NDiscRate" column="NDiscRate"></result>
+        <result property="CModelNme" column="CModelNme"></result>
+        <result property="CAppNo" column="CAppNo"></result>
+    </resultMap>
+    <select id="getInfo" resultMap="result">
+        SELECT base.c_app_typ as CAppTyp, base.c_app_no as CAppNo,
+       base.c_ply_no as CPlyNo,
+       vhl.c_plate_no as CPlateNo,
+       vhl.c_frm_no as CFrmNo,
+       vhl.c_eng_no as CEngNo,
+       base.t_Insrnc_Bgn_Tm as TInsrncBgnTm,
+       base.t_insrnc_end_tm as TInsrncEndTm,
+       base.t_issue_tm as TIssueTm,
+       base.c_prod_no as CProdNo,
+       (SELECT prod.c_nme_cn
+          FROM WEB_PRD_PROD prod
+         WHERE prod.c_prod_no = base.c_prod_no
+           and prod.c_kind_no = '03') as CProdNme,
+       (SELECT fee.n_fee_prop
+          FROM web_ply_fee fee
+         WHERE fee.c_app_no = base.c_app_no
+           and fee.c_feetyp_cde = 'S') as NRate, --佣金比例
+       (SELECT T.C_LICENSE
+          FROM WEB_CUS_AGENCY T
+         where T.C_CHA_CDE = base.c_brkr_cde) as CAgentCode, --代理机构组织机构代码证号
+       case base.c_salegrp_cde
+         when '10' then ''
+         else
+          (SELECT cha.c_cha_nme
+             FROM WEB_CUS_CHA cha
+            where cha.c_cha_cde = base.c_brkr_cde)
+       end as CAgentName, --代理机构名称
+       (SELECT agt.C_BSNS_NO
+          FROM WEB_CUS_PER_AGT agt
+         WHERE agt.c_cha_cde = base.c_brkr_cde) as CSalesmanCode, --销售人员个人代理资格证号
+       case base.c_salegrp_cde
+         when '10' then
+          (SELECT cha.c_cha_nme
+             FROM WEB_CUS_CHA cha
+            where cha.c_cha_cde = base.c_brkr_cde)
+         else
+          ''
+       end as CSalesmanName, --销售人员
+       base.c_edr_no as CEdrNo,
+       base.c_ply_sts as CPlySts,
+       (SELECT app.c_app_nme
+          FROM web_ply_applicant app
+         WHERE base.c_app_no = app.c_app_no) as CAppNme,
+       (SELECT ins.c_insured_nme
+          FROM web_ply_insured ins
+         WHERE ins.c_app_no = base.c_app_no) as CInsuredNme,
+       base.n_prm as NPrm,
+       base.n_prm as NPrmNotax, --保险金额(不含税)
+       base.n_amt as NAmt,
+       (SELECT tax.n_agg_tax
+          FROM web_ply_vs_tax tax
+         WHERE tax.c_app_no = base.c_app_no) as NAggTax,
+       vhl.c_usage_cde as CUsageCde,
+       base.c_dpt_cde as CDptCde,
+       vhl.c_vhlcategory_cde as CVhlcategoryCde,
+       vhl.c_vhl_typ as CVhlTyp,
+       --20220704需求变更
+       (select q.c_certf_cde from web_ply_applicant q where q.c_app_no = base.c_app_no) as CAppCertfCde,
+       (select q.c_certf_cde from web_ply_insured q where q.c_app_no = base.c_app_no) as CInsCertfCde,
+       (select fee.n_fee from web_ply_fee fee where fee.c_app_no = base.c_app_no and fee.c_feetyp_cde = 'S') as NFee,
+       base.n_disc_rate as NDiscRate,
+       vhl.c_model_nme as CModelNme
+
+  FROM web_ply_base base, web_ply_vhl vhl
+ where base.c_app_no = vhl.c_app_no
+ --and base.c_app_no = '005010203202012002019'
+ and base.c_prod_no like '03%'
+ and base.t_crt_tm between #{startDate} and #{endDate}
+ and base.t_crt_tm >= to_date((select a.c_conf_value from web_bas_config a where a.c_conf_group = 'Pcis.InterDate' and a.c_conf_id = #{id} ),'yyyy-mm-dd hh24:mi:ss')
+ and base.c_brkr_cde in (select broker.c_brkr_cde from web_trd_broker_info broker where broker.c_id = #{id})
+    </select>
+
+    <select id="getFlatUsageCode" resultType="string">
+        SELECT C_CODE FROM WEB_BAS_TRD_CODE WHERE C_CLASS = #{c_class} AND  C_INTER_CODE like concat('%',concat(#{code},'%')) AND rownum=1
+    </select>
+
+    <resultMap id="cvrgResult" type="com.tsvhlpom.prodapi.inter.VO.InterCvrgVO">
+        <result property="CCvrgNo" column="CCvrgNo"></result>
+        <result property="NAmt" column="NAmt"></result>
+    </resultMap>
+    <select id="getCvrg" parameterType="string" resultMap="cvrgResult">
+        select c_cvrg_no as CCvrgNo,n_amt as NAmt from web_ply_cvrg  where c_app_no = #{appNo}
+    </select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppFeeMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppFee" id="WebAppFeeResult">
+        <result property="cPkId"    column="c_pk_id"    />
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cRowId"    column="c_row_id"    />
+        <result property="cFeetypCde"    column="c_feetyp_cde"    />
+        <result property="nFeeProp"    column="n_fee_prop"    />
+        <result property="nFee"    column="n_fee"    />
+        <result property="nGotPrm"    column="n_got_prm"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="cDueCur"    column="c_due_cur"    />
+        <result property="nFeeDue"    column="n_fee_due"    />
+        <result property="nFeePrmExch"    column="n_fee_prm_exch"    />
+        <result property="nPrice"    column="n_price"    />
+        <result property="nRate"    column="n_rate"    />
+        <result property="nTaxAmt"    column="n_tax_amt"    />
+        <result property="nPrFeeProp"    column="n_pr_fee_prop"    />
+        <result property="nPrFee"    column="n_pr_fee"    />
+        <result property="nPrPrice"    column="n_pr_price"    />
+        <result property="nPrTaxAmt"    column="n_pr_tax_amt"    />
+        <result property="nPrFeeDue"    column="n_pr_fee_due"    />
+    </resultMap>
+    <sql id="selectWebAppFeeVo">
+        select c_pk_id, c_app_no, c_row_id, c_feetyp_cde, n_fee_prop, n_fee, n_got_prm, c_crt_cde, t_crt_tm, c_upd_cde, t_upd_tm, c_trans_mrk, t_trans_tm, c_due_cur, n_fee_due, n_fee_prm_exch, n_price, n_rate, n_tax_amt, n_pr_fee_prop, n_pr_fee, n_pr_price, n_pr_tax_amt, n_pr_fee_due from web_app_fee
+    </sql>
+
+    <select id="selectWebAppFeeList" parameterType="String" resultMap="WebAppFeeResult">
+        <include refid="selectWebAppFeeVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

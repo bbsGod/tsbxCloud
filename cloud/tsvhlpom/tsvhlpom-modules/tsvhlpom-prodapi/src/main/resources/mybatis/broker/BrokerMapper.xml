@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prodapi.broker.mapper.BrokerMapper">
+    <resultMap id="brokerResult" type="com.tsvhlpom.prodapi.broker.VO.Broker">
+        <result property="c_pk_id" column="c_pk_id"></result>
+        <result property="c_id" column="c_id"></result>
+        <result property="c_brkr_nme" column="c_brkr_nme"></result>
+        <result property="c_brkr_cde" column="c_brkr_cde"></result>
+        <result property="c_create_by" column="c_create_by"></result>
+        <result property="t_create_tm" column="t_create_tm"></result>
+        <result property="c_update_by" column="c_update_by"></result>
+        <result property="t_update_tm" column="t_update_tm"></result>
+    </resultMap>
+    <sql id="selectBroker">
+        select c_pk_id,c_id,c_brkr_cde,c_brkr_nme,c_create_by,t_create_tm,c_update_by,t_update_tm from web_trd_broker_info
+    </sql>
+    <select id="getBrokerList" resultMap="brokerResult">
+        <include refid="selectBroker"></include>
+        <where>
+            1=1
+            <if test="c_id != null and c_id !=''">and c_id = #{c_id}</if>
+            <if test="c_brkr_cde != null and c_brkr_cde !=''">and c_brkr_cde = #{c_brkr_cde}</if>
+            <if test="c_brkr_nme != null and c_brkr_nme !=''">and c_brkr_nme like concat(concat('%', #{c_brkr_nme}),'%')</if>
+        </where>
+    </select>
+    <select id="getBroker" resultMap="brokerResult">
+        <include refid="selectBroker"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <insert id="save">
+        insert into web_trd_broker_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_id,c_brkr_cde,c_brkr_nme,c_create_by,t_create_tm,c_update_by,t_update_tm
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_id},
+            #{c_brkr_cde},
+            #{c_brkr_nme},
+            #{c_create_by},
+            sysdate,
+            #{c_create_by},
+            sysdate,
+        </trim>
+    </insert>
+    <update id="update">
+        update web_trd_broker_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_id != null">c_id = #{c_id},</if>
+            <if test="c_brkr_cde != null">c_brkr_cde = #{c_brkr_cde},</if>
+            <if test="c_brkr_nme != null">c_brkr_nme = #{c_brkr_nme},</if>
+            <if test="c_update_by != null">c_update_by = #{c_update_by},</if>
+            t_update_tm = sysdate,
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="delete">
+        delete from web_trd_broker_info where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+</mapper>

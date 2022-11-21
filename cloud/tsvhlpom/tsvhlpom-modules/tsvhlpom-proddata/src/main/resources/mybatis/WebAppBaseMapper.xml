@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebAppBaseMapper">
+    <resultMap id="webAppBase" type="com.tsvhlpom.proddata.domain.WebAppBase">
+        <result property="c_ply_no"    column="c_ply_no"    />
+        <result property="c_salesman_name"    column="c_salesman_name"    />
+        <result property="c_cert_salesman_num"    column="c_cert_salesman_num"    />
+        <result property="c_certificate_name"    column="c_certificate_name"    />
+        <result property="c_certificate_phone"    column="c_certificate_phone"    />
+    </resultMap>
+    <sql id="selectWebAppBase">
+        select distinct c_ply_no,c_salesman_name,c_cert_salesman_num,c_certificate_name,c_certificate_phone from web_app_base
+    </sql>
+
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.WebAppBase">
+        update web_app_base
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_salesman_name != null">c_salesman_name = #{c_salesman_name},</if>
+            <if test="c_cert_salesman_num != null">c_cert_salesman_num = #{c_cert_salesman_num},</if>
+            <if test="c_certificate_name != null">c_certificate_name = #{c_certificate_name},</if>
+            <if test="c_certificate_phone != null">c_certificate_phone = #{c_certificate_phone},</if>
+        </trim>
+        where c_ply_no = #{c_ply_no}
+    </update>
+    <update id="updatePlyBase" parameterType="com.tsvhlpom.proddata.domain.WebAppBase">
+        update web_Ply_base
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_salesman_name != null">c_salesman_name = #{c_salesman_name},</if>
+            <if test="c_cert_salesman_num != null">c_cert_salesman_num = #{c_cert_salesman_num},</if>
+            <if test="c_certificate_name != null">c_certificate_name = #{c_certificate_name},</if>
+            <if test="c_certificate_phone != null">c_certificate_phone = #{c_certificate_phone},</if>
+        </trim>
+        where c_ply_no = #{c_ply_no}
+    </update>
+    <select id="getWebAppBase" parameterType="string" resultMap="webAppBase">
+        <include refid="selectWebAppBase"></include>
+        where c_ply_no = #{c_ply_no}
+    </select>
+    <select id="getWebAppBaseList" parameterType="com.tsvhlpom.proddata.domain.WebAppBase" resultMap="webAppBase">
+        <include refid="selectWebAppBase"></include>
+        where c_ply_no = #{c_ply_no}
+    </select>
+
+    <resultMap id="oprCodeResult" type="com.tsvhlpom.proddata.domain.WebAppBase">
+        <result property="c_app_no" column="c_app_no"/>
+        <result property="c_opr_cde" column="c_opr_cde"/>
+    </resultMap>
+    <sql id="opeCdeSql">
+        select c_app_no,c_opr_cde from web_app_base
+    </sql>
+    <select id="getAppBaseWithOpeCde" parameterType="com.tsvhlpom.proddata.domain.WebAppBase" resultMap="oprCodeResult">
+        <include refid="opeCdeSql"></include>
+        where c_app_no = #{c_app_no}
+    </select>
+    <update id="updateOprCde" parameterType="string">
+        update web_app_base set c_opr_cde = '001310' where c_app_no = #{c_app_no}
+    </update>
+</mapper>

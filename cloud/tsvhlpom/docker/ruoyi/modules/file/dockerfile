@@ -1,0 +1,15 @@
+# 基础镜像
+FROM  openjdk:8-jre
+# author
+MAINTAINER tsvhlpom
+
+# 挂载目录
+VOLUME /home/tsvhlpom
+# 创建目录
+RUN mkdir -p /home/tsvhlpom
+# 指定路径
+WORKDIR /home/tsvhlpom
+# 复制jar文件到路径ruoyi
+COPY ./jar/tsvhlpom-modules-file.jar /home/tsvhlpom/tsvhlpom-modules-file.jar
+# 启动文件服务
+ENTRYPOINT ["java","-jar","tsvhlpom-modules-file.jar"]

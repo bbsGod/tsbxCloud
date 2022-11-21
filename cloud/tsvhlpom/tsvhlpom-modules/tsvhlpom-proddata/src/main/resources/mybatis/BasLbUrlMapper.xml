@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.BasLbUrlMapper">
+    <resultMap id="BasLbUrl" type="com.tsvhlpom.proddata.domain.BasLbUrl">
+        <result property="c_pk_id"    column="c_pk_id"    />
+        <result property="c_zone"    column="c_zone"    />
+        <result property="c_url"    column="c_url"    />
+        <result property="n_count"    column="n_count"    />
+    </resultMap>
+    <sql id="selectBasLbUrl">
+        select c_pk_id,c_zone,c_url,n_count from web_bas_lb_url
+    </sql>
+
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.BasLbUrl">
+        update web_bas_lb_url
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="c_zone != null">c_zone = #{c_zone},</if>
+            <if test="c_url != null">c_url = #{c_url},</if>
+            <if test="n_count != null">n_count = #{n_count},</if>
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="delete">
+        delete from web_bas_lb_url where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+    <select id="getBasLbUrl" parameterType="string" resultMap="BasLbUrl">
+        <include refid="selectBasLbUrl"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <select id="getBasLbUrlList" parameterType="com.tsvhlpom.proddata.domain.BasLbUrl" resultMap="BasLbUrl">
+        <include refid="selectBasLbUrl"></include>
+        <where>
+            1=1
+            <if test="c_pk_id != null and c_pk_id !=''">and c_pk_id = #{c_pk_id}</if>
+            <if test="c_zone != null and c_zone !=''">and c_zone = #{c_zone}</if>
+            <if test="c_url != null and c_url !=''">and c_url like concat(concat('%', #{c_url}),'%')</if>
+        </where>
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.proddata.domain.BasLbUrl">
+        insert into web_bas_lb_url
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_zone,c_url,n_count
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_zone},
+            #{c_url},
+            #{n_count},
+        </trim>
+    </insert>
+</mapper>

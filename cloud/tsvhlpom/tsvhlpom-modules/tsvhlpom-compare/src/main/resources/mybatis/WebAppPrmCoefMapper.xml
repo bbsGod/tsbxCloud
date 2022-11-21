@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppPrmCoefMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppPrmCoef" id="WebAppPrmCoefResult">
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cVhlAge"    column="c_vhl_age"    />
+        <result property="cDrvSex"    column="c_drv_sex"    />
+        <result property="cDrvDrvage"    column="c_drv_drvage"    />
+        <result property="cAppDrv"    column="c_app_drv"    />
+        <result property="cDrvAge"    column="c_drv_age"    />
+        <result property="cCusLoy"    column="c_cus_loy"    />
+        <result property="cOwnAttr"    column="c_own_attr"    />
+        <result property="cTrafIrr"    column="c_traf_irr"    />
+        <result property="cTrafAccdt"    column="c_traf_accdt"    />
+        <result property="cRunArea"    column="c_run_area"    />
+        <result property="cRunMil"    column="c_run_mil"    />
+        <result property="cAgoClmRec"    column="c_ago_clm_rec"    />
+        <result property="cVhlMod"    column="c_vhl_mod"    />
+        <result property="cPlyQty"    column="c_ply_qty"    />
+        <result property="nMulRdr"    column="n_mul_rdr"    />
+        <result property="cMtcMng"    column="c_mtc_mng"    />
+        <result property="cSafeDev"    column="c_safe_dev"    />
+        <result property="nChaCoef"    column="n_cha_coef"    />
+        <result property="cInfoTrue"    column="c_info_true"    />
+        <result property="cLossRatio"    column="c_loss_ratio"    />
+        <result property="nBidCoef"    column="n_bid_coef"    />
+        <result property="nNclmDisc"    column="n_nclm_disc"    />
+        <result property="tCalStrtTm"    column="t_cal_strt_tm"    />
+        <result property="tCalEndTm"    column="t_cal_end_tm"    />
+        <result property="cNdiscRsn"    column="c_ndisc_rsn"    />
+        <result property="nTotDisc"    column="n_tot_disc"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cYearRunMil"    column="c_year_run_mil"    />
+        <result property="cTfiMrk"    column="c_tfi_mrk"    />
+        <result property="cTfiCompany"    column="c_tfi_company"    />
+        <result property="cTfiPlyNo"    column="c_tfi_ply_no"    />
+        <result property="cResvTxt1"    column="c_resv_txt_1"    />
+        <result property="cResvTxt2"    column="c_resv_txt_2"    />
+        <result property="cResvTxt3"    column="c_resv_txt_3"    />
+        <result property="cResvTxt4"    column="c_resv_txt_4"    />
+        <result property="cResvTxt5"    column="c_resv_txt_5"    />
+        <result property="nResvNum1"    column="n_resv_num_1"    />
+        <result property="nResvNum2"    column="n_resv_num_2"    />
+        <result property="nResvNum3"    column="n_resv_num_3"    />
+        <result property="nResvNum4"    column="n_resv_num_4"    />
+        <result property="nResvNum5"    column="n_resv_num_5"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="cResvTxt6"    column="c_resv_txt_6"    />
+        <result property="cResvTxt7"    column="c_resv_txt_7"    />
+        <result property="cResvTxt8"    column="c_resv_txt_8"    />
+        <result property="nResvNum6"    column="n_resv_num_6"    />
+        <result property="nResvNum7"    column="n_resv_num_7"    />
+        <result property="nResvNum8"    column="n_resv_num_8"    />
+        <result property="nDrvSex"    column="n_drv_sex"    />
+        <result property="nDrvDrvage"    column="n_drv_drvage"    />
+        <result property="nAppDrv"    column="n_app_drv"    />
+        <result property="nDrvAge"    column="n_drv_age"    />
+        <result property="nCusLoy"    column="n_cus_loy"    />
+        <result property="nTrafIrr"    column="n_traf_irr"    />
+        <result property="nRunArea"    column="n_run_area"    />
+        <result property="nAgoClmRec"    column="n_ago_clm_rec"    />
+        <result property="nVhlMod"    column="n_vhl_mod"    />
+        <result property="nPlyQty"    column="n_ply_qty"    />
+        <result property="nMtcMng"    column="n_mtc_mng"    />
+        <result property="nLossRatio"    column="n_loss_ratio"    />
+        <result property="nYearRunMil"    column="n_year_run_mil"    />
+        <result property="nAutonomyCoef"    column="n_autonomy_coef"    />
+        <result property="cVhlownerSex"    column="c_vhlowner_sex"    />
+        <result property="nVhlownerSex"    column="n_vhlowner_sex"    />
+        <result property="cVhlownerAge"    column="c_vhlowner_age"    />
+        <result property="nVhlownerAge"    column="n_vhlowner_age"    />
+        <result property="cVhlownerDrvage"    column="c_vhlowner_drvage"    />
+        <result property="nVhlownerDrvage"    column="n_vhlowner_drvage"    />
+    </resultMap>
+
+    <sql id="selectWebAppPrmCoefVo">
+        select c_app_no, c_vhl_age, c_drv_sex, c_drv_drvage, c_app_drv, c_drv_age, c_cus_loy, c_own_attr, c_traf_irr, c_traf_accdt, c_run_area, c_run_mil, c_ago_clm_rec, c_vhl_mod, c_ply_qty, n_mul_rdr, c_mtc_mng, c_safe_dev, n_cha_coef, c_info_true, c_loss_ratio, n_bid_coef, n_nclm_disc, t_cal_strt_tm, t_cal_end_tm, c_ndisc_rsn, n_tot_disc, c_crt_cde, t_crt_tm, c_upd_cde, t_upd_tm, c_year_run_mil, c_tfi_mrk, c_tfi_company, c_tfi_ply_no, c_resv_txt_1, c_resv_txt_2, c_resv_txt_3, c_resv_txt_4, c_resv_txt_5, n_resv_num_1, n_resv_num_2, n_resv_num_3, n_resv_num_4, n_resv_num_5, c_trans_mrk, t_trans_tm, c_resv_txt_6, c_resv_txt_7, c_resv_txt_8, n_resv_num_6, n_resv_num_7, n_resv_num_8, n_drv_sex, n_drv_drvage, n_app_drv, n_drv_age, n_cus_loy, n_traf_irr, n_run_area, n_ago_clm_rec, n_vhl_mod, n_ply_qty, n_mtc_mng, n_loss_ratio, n_year_run_mil, n_autonomy_coef, c_vhlowner_sex, n_vhlowner_sex, c_vhlowner_age, n_vhlowner_age, c_vhlowner_drvage, n_vhlowner_drvage from web_app_prm_coef
+    </sql>
+    <select id="selectWebAppPrmCoefList" parameterType="String" resultMap="WebAppPrmCoefResult">
+        <include refid="selectWebAppPrmCoefVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

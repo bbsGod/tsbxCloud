@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebTrdAutoPlyContactMapper">
+    <resultMap id="result" type="com.tsvhlpom.proddata.domain.WebTrdAutoPlyContact">
+        <result property="c_pk_id" column="c_pk_id"></result>
+        <result property="c_contact_nme" column="c_contact_nme"></result>
+        <result property="c_dpt_cde" column="c_dpt_cde"></result>
+        <result property="c_phone_no" column="c_phone_no"></result>
+        <result property="c_email" column="c_email"></result>
+    </resultMap>
+    <sql id="selectVo">
+        select c_pk_id,c_contact_nme,c_dpt_cde,c_phone_no,c_email FROM web_trd_auto_ply_contact
+    </sql>
+    <select id="getWebTrdAutoPlyContactList" parameterType="com.tsvhlpom.proddata.domain.WebTrdAutoPlyContact" resultMap="result">
+        <include refid="selectVo"></include>
+        <where>
+            1=1
+            <if test="c_pk_id != null and c_pk_id !=''">and c_pk_id = #{c_pk_id}</if>
+            <if test="c_contact_nme != null and c_contact_nme !=''">and c_contact_nme = #{c_contact_nme}</if>
+            <if test="c_dpt_cde != null and c_dpt_cde !=''">and c_dpt_cde like concat(#{c_dpt_cde},'%') </if>
+            <if test="c_phone_no != null and c_phone_no !=''">and c_phone_no = #{c_phone_no} </if>
+            <if test="c_email != null and c_email !=''">and c_email =#{c_email} </if>
+        </where>
+    </select>
+    <select id="getWebTrdAutoPlyContact" parameterType="string" resultMap="result">
+        <include refid="selectVo"></include>
+        where c_pk_id = #{c_pk_id}
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.proddata.domain.WebTrdAutoPlyContact">
+        insert into web_trd_auto_ply_contact
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_contact_nme,c_dpt_cde,c_phone_no,c_email
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{c_contact_nme},
+            #{c_dpt_cde},
+            #{c_phone_no},
+            #{c_email},
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.WebTrdAutoPlyContact">
+        update web_trd_auto_ply_contact
+        <trim prefix="SET" suffixOverrides=",">
+            c_contact_nme = #{c_contact_nme},
+            c_dpt_cde = #{c_dpt_cde},
+            c_phone_no = #{c_phone_no},
+            c_email = #{c_email},
+        </trim>
+        where c_pk_id = #{c_pk_id}
+    </update>
+    <delete id="delete" parameterType="string">
+        delete  from web_trd_auto_ply_contact where c_pk_id in
+        <foreach item="c_pk_id" collection="array" open="(" separator="," close=")">
+            #{c_pk_id}
+        </foreach>
+    </delete>
+</mapper>

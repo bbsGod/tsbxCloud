@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppVhlownerMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppVhlowner" id="WebAppVhlownerResult">
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cOwnerCde"    column="c_owner_cde"    />
+        <result property="cOwnerNme"    column="c_owner_nme"    />
+        <result property="cOwnerCls"    column="c_owner_cls"    />
+        <result property="cCertfCls"    column="c_certf_cls"    />
+        <result property="cCertfCde"    column="c_certf_cde"    />
+        <result property="cResidAddr"    column="c_resid_addr"    />
+        <result property="cClntAddr"    column="c_clnt_addr"    />
+        <result property="cZipCde"    column="c_zip_cde"    />
+        <result property="cWorkdptKind"    column="c_workdpt_kind"    />
+        <result property="cResvTxt1"    column="c_resv_txt_1"    />
+        <result property="cResvTxt2"    column="c_resv_txt_2"    />
+        <result property="cResvTxt3"    column="c_resv_txt_3"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="cYearOfBirth"    column="c_year_of_birth"    />
+        <result property="cGendorCde"    column="c_gendor_cde"    />
+        <result property="tLicenseDate"    column="t_license_date"    />
+        <result property="nAge"    column="n_age"    />
+        <result property="nDrvYears"    column="n_drv_years"    />
+        <result property="cHmtResidentsPassCde"    column="c_hmt_residents_pass_cde"    />
+        <result property="cOwnerProvince"    column="c_owner_province"    />
+        <result property="cOwnerCity"    column="c_owner_city"    />
+        <result property="cOwnerCounty"    column="c_owner_county"    />
+        <result property="cOwnerAddress"    column="c_owner_address"    />
+    </resultMap>
+
+    <sql id="selectWebAppVhlownerVo">
+        select c_app_no, c_owner_cde, c_owner_nme, c_owner_cls, c_certf_cls, c_certf_cde, c_resid_addr, c_clnt_addr, c_zip_cde, c_workdpt_kind, c_resv_txt_1, c_resv_txt_2, c_resv_txt_3, t_upd_tm, c_upd_cde, t_crt_tm, c_crt_cde, c_trans_mrk, t_trans_tm, c_year_of_birth, c_gendor_cde, t_license_date, n_age, n_drv_years, c_hmt_residents_pass_cde, c_owner_province, c_owner_city, c_owner_county, c_owner_address from web_app_vhlowner
+    </sql>
+    <select id="selectWebAppVhlownerList" parameterType="String" resultMap="WebAppVhlownerResult">
+        <include refid="selectWebAppVhlownerVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

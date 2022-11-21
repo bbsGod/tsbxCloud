@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebAppVsTaxMapper">
+    <resultMap id="result" type="com.tsvhlpom.proddata.domain.WebAppVsTax">
+        <result property="c_app_no"    column="c_app_no"    />
+        <result property="c_tax_location_code"    column="c_tax_location_code"    />
+    </resultMap>
+    <sql id="selectSql">
+        select c_app_no,c_tax_location_code from web_app_vs_tax
+    </sql>
+
+    <update id="update" parameterType="com.tsvhlpom.proddata.domain.WebPlyVatInvoice">
+        update web_app_vs_tax a
+        set a.c_tax_location_code = #{c_tax_location_code}
+        where  c_app_no = #{c_app_no}
+    </update>
+    <select id="getWebAppVsTaxList" parameterType="string" resultMap="result">
+        <include refid="selectSql"></include>
+        where c_app_no = #{c_app_no}
+    </select>
+</mapper>

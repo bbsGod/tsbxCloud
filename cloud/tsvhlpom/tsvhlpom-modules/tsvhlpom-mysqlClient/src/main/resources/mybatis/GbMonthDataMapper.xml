@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.mysqlClient.mapper.GbMonthDataMapper">
+    <resultMap id="result" type="com.tsvhlpom.system.api.model.GbMonthDataDTO">
+        <result column="c_month" property="month"></result>
+        <result column="c_middle_data_status" property="middleDataStatus"></result>
+        <result column="c_csv_status" property="csvStatus"></result>
+        <result column="c_err_status" property="errStatus"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select c_month,c_middle_data_status ,c_csv_status,c_err_status from  gb_month_data
+    </sql>
+    <delete id="delete">
+        delete  from gb_month_data where c_month = #{month}
+    </delete>
+    <select id="findAll" resultMap="result">
+        <include refid="selectSql"></include>
+        order by c_month desc
+    </select>
+    <update id="updateMiddleDataStatus">
+        update gb_month_data set c_middle_data_status = #{middleDataStatus} where c_month = #{month}
+    </update>
+    <select id="getGbMonthData" resultMap="result">
+        <include refid="selectSql"></include>
+        where c_month = #{month}
+    </select>
+    <update id="updateCsvStatus">
+         update gb_month_data set c_csv_status = #{csvStatus} where c_month = #{month}
+    </update>
+    <update id="updateErrStatus">
+        update gb_month_data set c_err_status = #{errStatus} where c_month = #{month}
+    </update>
+    <insert id="initGbMonthData">
+        insert into gb_month_data values (#{month},'1','','')
+    </insert>
+</mapper>

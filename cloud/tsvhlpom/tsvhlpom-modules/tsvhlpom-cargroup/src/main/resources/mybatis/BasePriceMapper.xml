@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.cargroup.mapper.BasePriceMapper">
+    <resultMap id="result" type="com.tsvhlpom.cargroup.domain.BasePrice">
+        <result column="pk_id" property="pk_id"></result>
+        <result column="price_date" property="price_date"></result>
+        <result column="dept_name" property="dept_name"></result>
+        <result column="name" property="name"></result>
+        <result column="sp_cust_name" property="sp_cust_name"></result>
+        <result column="plate_no" property="plate_no"></result>
+        <result column="insured_name" property="insured_name"></result>
+        <result column="phone_no" property="phone_no"></result>
+        <result column="make_dept" property="make_dept"></result>
+        <result column="isNewEnery" property="isNewEnery"></result>
+        <result column="isChange" property="isChange"></result>
+        <result column="isCli" property="isCli"></result>
+        <result column="isVi" property="isVi"></result>
+        <result column="isCarLoss" property="isCarLoss"></result>
+        <result column="price_first_rate" property="price_first_rate"></result>
+        <result column="price_fee_rate" property="price_fee_rate"></result>
+        <result column="price_charge_rate" property="price_charge_rate"></result>
+        <result column="price_final_rate" property="price_final_rate"></result>
+        <result column="jq_fee" property="jq_fee"></result>
+        <result column="jq_rate" property="jq_rate"></result>
+        <result column="jq_amount" property="jq_amount"></result>
+        <result column="sy_first_fee" property="sy_first_fee"></result>
+        <result column="sy_fee_rate" property="sy_fee_rate"></result>
+        <result column="sy_amount" property="sy_amount"></result>
+        <result column="sy_after_fee" property="sy_after_fee"></result>
+        <result column="sy_charge_fee" property="sy_charge_fee"></result>
+        <result column="sy_final_fee" property="sy_final_fee"></result>
+        <result column="avalid_amount" property="avalid_amount"></result>
+        <result column="last_fee_NoTax" property="last_fee_NoTax"></result>
+        <result column="last_fee_Tax" property="last_fee_Tax"></result>
+        <result column="total_fee" property="total_fee"></result>
+        <result column="make_name" property="make_name"></result>
+        <result column="c_price_status" property="c_price_status"></result>
+        <result column="t_create_date" property="t_create_date"></result>
+        <result column="customer_id" property="customer_id"></result>
+        <result column="c_remark" property="c_remark"></result>
+        <result column="nocar_price" property="nocar_price"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select pk_id,
+               price_date,
+               dept_name,
+               name,
+               sp_cust_name,
+               plate_no,
+               insured_name,
+               phone_no,
+               make_dept,
+               isNewEnery,
+               isChange,
+               isCli,
+               isVi,
+               isCarLoss,
+               price_first_rate,
+               price_fee_rate,
+               price_charge_rate,
+               price_final_rate,
+               jq_fee,
+               jq_rate,
+               jq_amount,
+               sy_first_fee,
+               sy_fee_rate,
+               sy_amount,
+               sy_after_fee,
+               sy_charge_fee,
+               sy_final_fee,
+               avalid_amount,
+               last_fee_NoTax,
+               last_fee_Tax,
+               total_fee,
+               make_name,
+               customer_id,
+               c_remark,
+               nocar_price,
+               c_price_status from web_bas_sp_price
+    </sql>
+    <update id="update" parameterType="com.tsvhlpom.cargroup.domain.BasePrice">
+        update web_bas_sp_price set
+                        price_date=#{price_date},
+                        dept_name=#{dept_name},
+                        name=#{name},
+                        sp_cust_name=#{sp_cust_name},
+                        plate_no=#{plate_no},
+                        insured_name=#{insured_name},
+                        phone_no=#{phone_no},
+                        make_dept=#{make_dept},
+                        isNewEnery=#{isNewEnery},
+                        isChange=#{isChange},
+                        isCli=#{isCli},
+                        isVi=#{isVi},
+                        isCarLoss=#{isCarLoss},
+                        price_first_rate=#{price_first_rate},
+                        price_fee_rate=#{price_fee_rate},
+                        price_charge_rate=#{price_charge_rate},
+                        price_final_rate=#{price_final_rate},
+                        jq_fee=#{jq_fee},
+                        jq_rate=#{jq_rate},
+                        jq_amount=#{jq_amount},
+                        sy_first_fee=#{sy_first_fee},
+                        sy_fee_rate=#{sy_fee_rate},
+                        sy_amount=#{sy_amount},
+                        sy_after_fee=#{sy_after_fee},
+                        sy_charge_fee=#{sy_charge_fee},
+                        sy_final_fee=#{sy_final_fee},
+                        avalid_amount=#{avalid_amount},
+                        last_fee_NoTax=#{last_fee_NoTax},
+                        last_fee_Tax=#{last_fee_Tax},
+                        total_fee=#{total_fee},
+                        make_name=#{make_name},
+                        c_price_status=#{c_price_status},
+                        c_remark=#{c_remark},
+                        nocar_price=#{nocar_price},
+                        customer_id=#{customer_id}
+        where pk_id = #{pk_id}
+    </update>
+    <delete id="delete">
+        delete from web_bas_sp_price where pk_id in
+        <foreach item="pk_id" collection="array" open="(" separator="," close=")">
+            #{pk_id}
+        </foreach>
+    </delete>
+    <select id="getBasePriceList" parameterType="com.tsvhlpom.cargroup.domain.BasePrice" resultMap="result">
+        <include refid="selectSql"></include>
+        <where>
+            1=1
+            <if test="insured_name != null and insured_name !=''">and insured_name like concat('%',concat(#{insured_name},'%'))</if>
+            <if test="phone_no != null and phone_no !=''">and phone_no = #{phone_no}</if>
+            <if test="plate_no != null and plate_no !=''">and plate_no = #{plate_no}</if>
+            <if test="c_price_status != null and c_price_status !=''">and c_price_status like concat('%',concat(#{c_price_status},'%'))</if>
+            <if test="make_name != null and make_name !=''">and make_name =#{make_name}</if>
+            <if test="params.beginprice != null and params.endprice">and price_date  between to_date(concat(#{params.beginprice},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+                and to_date(concat(#{params.endprice},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss') </if>
+        </where>
+        order by price_date,t_create_date asc
+    </select>
+    <select id="getBasePriceListForUpdateStatus" parameterType="com.tsvhlpom.cargroup.domain.BasePrice" resultMap="result">
+        <include refid="selectSql"></include>
+        <where>
+            1=1
+            and c_price_status is null
+            <if test="insured_name != null and insured_name !=''">and insured_name like concat('%',concat(#{insured_name},'%'))</if>
+            <if test="phone_no != null and phone_no !=''">and phone_no = #{phone_no}</if>
+            <if test="plate_no != null and plate_no !=''">and plate_no = #{plate_no}</if>
+            <if test="c_price_status != null and c_price_status !=''">and c_price_status like concat('%',concat(#{c_price_status},'%'))</if>
+            <if test="make_name != null and make_name !=''">and make_name =#{make_name}</if>
+            <if test="params.beginprice != null and params.endprice">and price_date  between to_date(concat(#{params.beginprice},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+                and to_date(concat(#{params.endprice},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss') </if>
+
+        </where>
+        order by price_date,t_create_date asc
+    </select>
+    <select id="getPriceById" resultMap="result">
+        <include refid="selectSql"></include>
+        where pk_id = #{pk_id}
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.cargroup.domain.BasePrice">
+        insert into web_bas_sp_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            pk_id,
+            price_date,
+            dept_name,
+            name,
+            sp_cust_name,
+            plate_no,
+            insured_name,
+            phone_no,
+            make_dept,
+            isNewEnery,
+            isChange,
+            isCli,
+            isVi,
+            isCarLoss,
+            price_first_rate,
+            price_fee_rate,
+            price_charge_rate,
+            price_final_rate,
+            jq_fee,
+            jq_rate,
+            jq_amount,
+            sy_first_fee,
+            sy_fee_rate,
+            sy_amount,
+            sy_after_fee,
+            sy_charge_fee,
+            sy_final_fee,
+            avalid_amount,
+            last_fee_NoTax,
+            last_fee_Tax,
+            total_fee,
+            make_name,
+            c_price_status,
+            customer_id,
+            c_remark,
+            nocar_price,
+            t_create_date
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{price_date},
+            #{dept_name},
+            #{name},
+            #{sp_cust_name},
+            #{plate_no},
+            #{insured_name},
+            #{phone_no},
+            #{make_dept},
+            #{isNewEnery},
+            #{isChange},
+            #{isCli},
+            #{isVi},
+            #{isCarLoss},
+            #{price_first_rate},
+            #{price_fee_rate},
+            #{price_charge_rate},
+            #{price_final_rate},
+            #{jq_fee},
+            #{jq_rate},
+            #{jq_amount},
+            #{sy_first_fee},
+            #{sy_fee_rate},
+            #{sy_amount},
+            #{sy_after_fee},
+            #{sy_charge_fee},
+            #{sy_final_fee},
+            #{avalid_amount},
+            #{last_fee_NoTax},
+            #{last_fee_Tax},
+            #{total_fee},
+            #{make_name},
+            #{c_price_status},
+            #{customer_id},
+            #{c_remark},
+            #{nocar_price},
+            sysdate,
+        </trim>
+    </insert>
+
+    <select id="selectAppStatus" resultMap="statusMap">
+        select to_char(a.t_insrnc_bgn_tm,'yyyy-mm-dd') as insDate,
+        to_char(a.t_crt_tm,'yyyy-mm-dd') as makeDate
+              from web_app_base a
+              left join web_app_vhl b
+                on a.c_app_no = b.c_app_no
+              left join web_app_insured c
+                on c.c_app_no = a.c_app_no
+             where a.c_prod_no like '03%'
+               and a.t_insrnc_end_tm > sysdate
+               and b.c_plate_no = #{plateNo}
+               and c.c_insured_nme = #{insuredName}
+               and a.c_app_typ = 'A'
+               and a.t_crt_tm  between to_date(concat(#{params.beginprice},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+                               and to_date(concat(#{params.endprice},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')
+                order by makeDate desc
+    </select>
+    <resultMap id="statusMap" type="map">
+        <result property="insDate" column="insDate"></result>
+        <result property="makeDate" column="makeDate"></result>
+    </resultMap>
+    <select id="selectPlyStatus" resultMap="statusMap">
+        select  to_char(a.t_insrnc_bgn_tm,'yyyy-mm-dd') as insDate,
+                to_char(a.t_crt_tm,'yyyy-mm-dd') as makeDate
+              from web_ply_base a
+              left join web_ply_vhl b
+                on a.c_app_no = b.c_app_no
+              left join web_ply_insured c
+                on c.c_app_no = a.c_app_no
+             where a.c_prod_no like '03%'
+               and a.t_insrnc_end_tm > sysdate
+               and b.c_plate_no = #{plateNo}
+               and c.c_insured_nme = #{insuredName}
+               and a.c_app_typ = 'A'
+               and a.t_crt_tm  between to_date(concat(#{params.beginprice},' 00:00:00'),'yyyy-mm-dd hh24:mi:ss')
+                               and to_date(concat(#{params.endprice},' 23:59:59'),'yyyy-mm-dd hh24:mi:ss')
+               order by makeDate desc
+    </select>
+</mapper>

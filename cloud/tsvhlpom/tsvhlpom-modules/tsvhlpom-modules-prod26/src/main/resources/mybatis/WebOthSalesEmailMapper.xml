@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.prod26.mapper.WebOthSalesEmailMapper">
+    <resultMap id="result" type="com.tsvhlpom.prod26.domain.WebOthSalesEmail">
+        <result property="c_email" column="c_email"></result>
+        <result property="c_sls_cde" column="c_sls_cde"></result>
+        <result property="c_sls_nme" column="c_sls_nme"></result>
+    </resultMap>
+    <sql id="selectEmail">
+        select c_email,c_sls_cde,c_sls_nme FROM web_oth_sales_email
+    </sql>
+    <select id="getWebOthSalesEmailList" parameterType="com.tsvhlpom.prod26.domain.WebOthSalesEmail" resultMap="result">
+        <include refid="selectEmail"></include>
+        where c_sls_cde = #{c_sls_cde}
+    </select>
+    <update id="update" parameterType="com.tsvhlpom.prod26.domain.WebOthSalesEmail">
+        update web_oth_sales_email set c_email = #{c_email} where c_sls_cde = #{c_sls_cde}
+    </update>
+</mapper>

@@ -1,0 +1,21 @@
+# Spring
+spring:
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 10.1.4.173:8848
+        namespace: 3aa0644e-3e15-4dbb-bd3b-d992efddce03
+      config:
+        # 配置中心地址
+        server-addr: 10.1.4.173:8848
+        # 配置文件格式
+        file-extension: yml
+        # 共享配置
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        namespace: 3aa0644e-3e15-4dbb-bd3b-d992efddce03
+logging:
+  logstash:
+    ip: 10.1.14.58
+    port: 9601

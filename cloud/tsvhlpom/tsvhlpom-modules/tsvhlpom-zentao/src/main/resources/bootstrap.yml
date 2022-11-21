@@ -1,0 +1,11 @@
+# Tomcat
+server:
+  port: 18088
+
+# Spring
+spring:
+  profiles:
+    active: ${platenv:dev}
+  application:
+    # 应用名称
+    name: tsvhlpom-zentao

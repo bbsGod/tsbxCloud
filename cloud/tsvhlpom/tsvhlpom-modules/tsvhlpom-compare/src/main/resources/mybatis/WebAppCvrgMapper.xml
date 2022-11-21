@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppCvrgMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppCvrg" id="WebAppCvrgResult">
+        <result property="cPkId"    column="c_pk_id"    />
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cRowId"    column="c_row_id"    />
+        <result property="nSeqNo"    column="n_seq_no"    />
+        <result property="cCvrgNo"    column="c_cvrg_no"    />
+        <result property="cCustCvrgNme"    column="c_cust_cvrg_nme"    />
+        <result property="nAmt"    column="n_amt"    />
+        <result property="nRate"    column="n_rate"    />
+        <result property="nBasePrm"    column="n_base_prm"    />
+        <result property="nBefPrm"    column="n_bef_prm"    />
+        <result property="nDisCoef"    column="n_dis_coef"    />
+        <result property="nCalcPrm"    column="n_calc_prm"    />
+        <result property="nPrm"    column="n_prm"    />
+        <result property="nBefAnnPrm"    column="n_bef_ann_prm"    />
+        <result property="nCalcAnnPrm"    column="n_calc_ann_prm"    />
+        <result property="tPrmChgTm"    column="t_prm_chg_tm"    />
+        <result property="nDutPrm"    column="n_dut_prm"    />
+        <result property="cRemark"    column="c_remark"    />
+        <result property="cTgtTyp"    column="c_tgt_typ"    />
+        <result property="cTgtNme"    column="c_tgt_nme"    />
+        <result property="nTgtQty"    column="n_tgt_qty"    />
+        <result property="nIndemLmt"    column="n_indem_lmt"    />
+        <result property="cDductMrk"    column="c_dduct_mrk"    />
+        <result property="nDductRate"    column="n_dduct_rate"    />
+        <result property="cDductDesc"    column="c_dduct_desc"    />
+        <result property="nDductAmt"    column="n_dduct_amt"    />
+        <result property="cCancelMrk"    column="c_cancel_mrk"    />
+        <result property="cIndemLmtLvl"    column="c_indem_lmt_lvl"    />
+        <result property="nLiabDaysLmt"    column="n_liab_days_lmt"    />
+        <result property="nPerAmt"    column="n_per_amt"    />
+        <result property="nPerIndemLmt"    column="n_per_indem_lmt"    />
+        <result property="nPerPrm"    column="n_per_prm"    />
+        <result property="nOnceIndemLmt"    column="n_once_indem_lmt"    />
+        <result property="nSavingAmt"    column="n_saving_amt"    />
+        <result property="tBgnTm"    column="t_bgn_tm"    />
+        <result property="tEndTm"    column="t_end_tm"    />
+        <result property="nAmtVar"    column="n_amt_var"    />
+        <result property="nPrmVar"    column="n_prm_var"    />
+        <result property="nCalcPrmVar"    column="n_calc_prm_var"    />
+        <result property="nIndemVar"    column="n_indem_var"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cResvTxt1"    column="c_resv_txt_1"    />
+        <result property="cResvTxt2"    column="c_resv_txt_2"    />
+        <result property="cResvTxt3"    column="c_resv_txt_3"    />
+        <result property="cResvTxt4"    column="c_resv_txt_4"    />
+        <result property="cResvTxt5"    column="c_resv_txt_5"    />
+        <result property="cResvTxt6"    column="c_resv_txt_6"    />
+        <result property="cResvTxt7"    column="c_resv_txt_7"    />
+        <result property="cResvTxt8"    column="c_resv_txt_8"    />
+        <result property="cResvTxt9"    column="c_resv_txt_9"    />
+        <result property="cResvTxt10"    column="c_resv_txt_10"    />
+        <result property="cResvTxt11"    column="c_resv_txt_11"    />
+        <result property="cResvTxt12"    column="c_resv_txt_12"    />
+        <result property="cResvTxt13"    column="c_resv_txt_13"    />
+        <result property="cResvTxt14"    column="c_resv_txt_14"    />
+        <result property="cResvTxt15"    column="c_resv_txt_15"    />
+        <result property="cResvTxt16"    column="c_resv_txt_16"    />
+        <result property="cResvTxt17"    column="c_resv_txt_17"    />
+        <result property="cResvTxt18"    column="c_resv_txt_18"    />
+        <result property="cResvTxt19"    column="c_resv_txt_19"    />
+        <result property="cResvTxt20"    column="c_resv_txt_20"    />
+        <result property="cResvTxt21"    column="c_resv_txt_21"    />
+        <result property="cResvTxt22"    column="c_resv_txt_22"    />
+        <result property="cResvTxt23"    column="c_resv_txt_23"    />
+        <result property="cResvTxt24"    column="c_resv_txt_24"    />
+        <result property="cResvTxt25"    column="c_resv_txt_25"    />
+        <result property="cResvTxt26"    column="c_resv_txt_26"    />
+        <result property="cResvTxt27"    column="c_resv_txt_27"    />
+        <result property="cResvTxt28"    column="c_resv_txt_28"    />
+        <result property="cResvTxt29"    column="c_resv_txt_29"    />
+        <result property="cResvTxt30"    column="c_resv_txt_30"    />
+        <result property="nResvNum1"    column="n_resv_num_1"    />
+        <result property="nResvNum2"    column="n_resv_num_2"    />
+        <result property="nResvNum3"    column="n_resv_num_3"    />
+        <result property="nResvNum4"    column="n_resv_num_4"    />
+        <result property="nResvNum5"    column="n_resv_num_5"    />
+        <result property="nResvNum6"    column="n_resv_num_6"    />
+        <result property="nResvNum7"    column="n_resv_num_7"    />
+        <result property="nResvNum8"    column="n_resv_num_8"    />
+        <result property="nResvNum9"    column="n_resv_num_9"    />
+        <result property="nResvNum10"    column="n_resv_num_10"    />
+        <result property="nResvNum11"    column="n_resv_num_11"    />
+        <result property="nResvNum12"    column="n_resv_num_12"    />
+        <result property="nResvNum13"    column="n_resv_num_13"    />
+        <result property="nResvNum14"    column="n_resv_num_14"    />
+        <result property="nResvNum15"    column="n_resv_num_15"    />
+        <result property="nResvNum16"    column="n_resv_num_16"    />
+        <result property="nResvNum17"    column="n_resv_num_17"    />
+        <result property="nResvNum18"    column="n_resv_num_18"    />
+        <result property="nResvNum19"    column="n_resv_num_19"    />
+        <result property="nResvNum20"    column="n_resv_num_20"    />
+        <result property="nResvNum21"    column="n_resv_num_21"    />
+        <result property="nResvNum22"    column="n_resv_num_22"    />
+        <result property="nResvNum23"    column="n_resv_num_23"    />
+        <result property="nResvNum24"    column="n_resv_num_24"    />
+        <result property="nResvNum25"    column="n_resv_num_25"    />
+        <result property="nResvNum26"    column="n_resv_num_26"    />
+        <result property="nResvNum27"    column="n_resv_num_27"    />
+        <result property="nResvNum28"    column="n_resv_num_28"    />
+        <result property="nResvNum29"    column="n_resv_num_29"    />
+        <result property="nResvNum30"    column="n_resv_num_30"    />
+        <result property="tResvTm1"    column="t_resv_tm_1"    />
+        <result property="tResvTm2"    column="t_resv_tm_2"    />
+        <result property="tResvTm3"    column="t_resv_tm_3"    />
+        <result property="tResvTm4"    column="t_resv_tm_4"    />
+        <result property="tResvTm5"    column="t_resv_tm_5"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="nVhlMod"    column="n_vhl_mod"    />
+        <result property="cCustClCtnt"    column="c_cust_cl_ctnt"    />
+        <result property="nPureriskPremium"    column="n_purerisk_premium"    />
+        <result property="nAutonomyCoef"    column="n_autonomy_coef"    />
+        <result property="nTgtAmt"    column="n_tgt_amt"    />
+        <result property="nTgtBasePrm"    column="n_tgt_base_prm"    />
+        <result property="nTgtPrm"    column="n_tgt_prm"    />
+        <result property="nTgtPrmVar"    column="n_tgt_prm_var"    />
+        <result property="nTgtBefPrm"    column="n_tgt_bef_prm"    />
+        <result property="nTgtCalcPrm"    column="n_tgt_calc_prm"    />
+        <result property="cIsShare"    column="c_is_share"    />
+        <result property="cShareRisk"    column="c_share_risk"    />
+        <result property="cClauseType"    column="c_clause_type"    />
+        <result property="cRateExplan"    column="c_rate_explan"    />
+    </resultMap>
+
+    <sql id="selectWebAppCvrgVo">
+        select c_pk_id, c_app_no, c_row_id, n_seq_no, c_cvrg_no, c_cust_cvrg_nme, n_amt, n_rate, n_base_prm, n_bef_prm, n_dis_coef, n_calc_prm, n_prm, n_bef_ann_prm, n_calc_ann_prm, t_prm_chg_tm, n_dut_prm, c_remark, c_tgt_typ, c_tgt_nme, n_tgt_qty, n_indem_lmt, c_dduct_mrk, n_dduct_rate, c_dduct_desc, n_dduct_amt, c_cancel_mrk, c_indem_lmt_lvl, n_liab_days_lmt, n_per_amt, n_per_indem_lmt, n_per_prm, n_once_indem_lmt, n_saving_amt, t_bgn_tm, t_end_tm, n_amt_var, n_prm_var, n_calc_prm_var, n_indem_var, c_crt_cde, t_crt_tm, c_upd_cde, t_upd_tm, c_resv_txt_1, c_resv_txt_2, c_resv_txt_3, c_resv_txt_4, c_resv_txt_5, c_resv_txt_6, c_resv_txt_7, c_resv_txt_8, c_resv_txt_9, c_resv_txt_10, c_resv_txt_11, c_resv_txt_12, c_resv_txt_13, c_resv_txt_14, c_resv_txt_15, c_resv_txt_16, c_resv_txt_17, c_resv_txt_18, c_resv_txt_19, c_resv_txt_20, c_resv_txt_21, c_resv_txt_22, c_resv_txt_23, c_resv_txt_24, c_resv_txt_25, c_resv_txt_26, c_resv_txt_27, c_resv_txt_28, c_resv_txt_29, c_resv_txt_30, n_resv_num_1, n_resv_num_2, n_resv_num_3, n_resv_num_4, n_resv_num_5, n_resv_num_6, n_resv_num_7, n_resv_num_8, n_resv_num_9, n_resv_num_10, n_resv_num_11, n_resv_num_12, n_resv_num_13, n_resv_num_14, n_resv_num_15, n_resv_num_16, n_resv_num_17, n_resv_num_18, n_resv_num_19, n_resv_num_20, n_resv_num_21, n_resv_num_22, n_resv_num_23, n_resv_num_24, n_resv_num_25, n_resv_num_26, n_resv_num_27, n_resv_num_28, n_resv_num_29, n_resv_num_30, t_resv_tm_1, t_resv_tm_2, t_resv_tm_3, t_resv_tm_4, t_resv_tm_5, c_trans_mrk, t_trans_tm, n_vhl_mod, c_cust_cl_ctnt, n_purerisk_premium, n_autonomy_coef, n_tgt_amt, n_tgt_base_prm, n_tgt_prm, n_tgt_prm_var, n_tgt_bef_prm, n_tgt_calc_prm, c_is_share, c_share_risk, c_clause_type, c_rate_explan from web_app_cvrg
+    </sql>
+    <select id="selectWebAppCvrgList" parameterType="String" resultMap="WebAppCvrgResult">
+        <include refid="selectWebAppCvrgVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

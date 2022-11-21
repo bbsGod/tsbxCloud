@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebPolicyXiaoJuErrLogsMapper">
+    <insert id="save" parameterType="com.tsvhlpom.proddata.domain.WebPolicyXiaoJuErrLogs">
+        insert into WEB_POLICY_XIAOJU_ERR_LOGS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            c_pk_id,c_app_no,c_err_message,c_status,t_send_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{c_pk_id},
+            #{c_app_no},
+            #{c_err_message},
+            #{c_status},
+            #{t_send_time},
+        </trim>
+    </insert>
+
+
+</mapper>

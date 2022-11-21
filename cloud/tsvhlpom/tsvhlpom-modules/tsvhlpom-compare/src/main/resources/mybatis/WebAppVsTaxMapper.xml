@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppVsTaxMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppVsTax" id="WebAppVsTaxResult">
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cVsTaxMrk"    column="c_vs_tax_mrk"    />
+        <result property="cAbateMrk"    column="c_abate_mrk"    />
+        <result property="cAbateProp"    column="c_abate_prop"    />
+        <result property="cAbateAmt"    column="c_abate_amt"    />
+        <result property="nCurbWt"    column="n_curb_wt"    />
+        <result property="cTaxpayerId"    column="c_taxpayer_id"    />
+        <result property="cTaxItemCde"    column="c_tax_item_cde"    />
+        <result property="nAnnUnitTaxAmt"    column="n_ann_unit_tax_amt"    />
+        <result property="tLastSaliEndDate"    column="t_last_sali_end_date"    />
+        <result property="cLastSaliInsurerCde"    column="c_last_sali_insurer_cde"    />
+        <result property="cLastSaliPlyNo"    column="c_last_sali_ply_no"    />
+        <result property="tSaliAppDate"    column="t_sali_app_date"    />
+        <result property="nTaxableMonths"    column="n_taxable_months"    />
+        <result property="nTaxableAmt"    column="n_taxable_amt"    />
+        <result property="cTaxYear"    column="c_tax_year"    />
+        <result property="cLastTaxYear"    column="c_last_tax_year"    />
+        <result property="nLastYearTaxableMonths"    column="n_last_year_taxable_months"    />
+        <result property="nLastYear"    column="n_last_year"    />
+        <result property="nOverdueDays"    column="n_overdue_days"    />
+        <result property="nOverdueFineProp"    column="n_overdue_fine_prop"    />
+        <result property="nAggTax"    column="n_agg_tax"    />
+        <result property="nChargeProp"    column="n_charge_prop"    />
+        <result property="nChargeAmt"    column="n_charge_amt"    />
+        <result property="cTaxPaymentRecptNo"    column="c_tax_payment_recpt_no"    />
+        <result property="cTaxAuthorities"    column="c_tax_authorities"    />
+        <result property="cTaxReliefCertNo"    column="c_tax_relief_cert_no"    />
+        <result property="cTaxpayerCertTyp"    column="c_taxpayer_cert_typ"    />
+        <result property="cTaxpayerCertNo"    column="c_taxpayer_cert_no"    />
+        <result property="cTaxpayerNme"    column="c_taxpayer_nme"    />
+        <result property="cTaxpayerAddr"    column="c_taxpayer_addr"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cPaytaxTyp"    column="c_paytax_typ"    />
+        <result property="cAbateRsn"    column="c_abate_rsn"    />
+        <result property="cNotpayNo"    column="c_notpay_no"    />
+        <result property="cSubTaxItemCde"    column="c_sub_tax_item_cde"    />
+        <result property="cTaxUnit"    column="c_tax_unit"    />
+        <result property="cTaxableTyp"    column="c_taxable_typ"    />
+        <result property="nNewcarMon"    column="n_newcar_mon"    />
+        <result property="cShortTyp"    column="c_short_typ"    />
+        <result property="nShortMon"    column="n_short_mon"    />
+        <result property="tLastSaliBgnDate"    column="t_last_sali_bgn_date"    />
+        <result property="nOverdueAmt"    column="n_overdue_amt"    />
+        <result property="tTaxEffBgnTm"    column="t_tax_eff_bgn_tm"    />
+        <result property="tTaxEffEndTm"    column="t_tax_eff_end_tm"    />
+        <result property="cTaxdptVhltyp"    column="c_taxdpt_vhltyp"    />
+        <result property="cTaxBelongTm"    column="c_tax_belong_tm"    />
+        <result property="cTaxVchNo"    column="c_tax_vch_no"    />
+        <result property="cTaxVchTyp"    column="c_tax_vch_typ"    />
+        <result property="cTaxAuthCde"    column="c_tax_auth_cde"    />
+        <result property="cIsCommissionTax"    column="c_is_commission_tax"    />
+        <result property="cTaxfreeVhltyp"    column="c_taxfree_vhltyp"    />
+        <result property="cTaxFreeCertNo"    column="c_tax_free_cert_no"    />
+        <result property="cFreeTaxOrg"    column="c_free_tax_org"    />
+        <result property="cComTaxOrg"    column="c_com_tax_org"    />
+        <result property="nBalanceTax"    column="n_balance_tax"    />
+        <result property="cTaxpayerComId"    column="c_taxpayer_com_id"    />
+        <result property="cVehicleNumber"    column="c_vehicle_number"    />
+        <result property="tCertificateDate"    column="t_certificate_date"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="nAggTaxVar"    column="n_agg_tax_var"    />
+        <result property="nBefEdrTax"    column="n_bef_edr_tax"    />
+        <result property="tTaxArrBgnTm"    column="t_tax_arr_bgn_tm"    />
+        <result property="tTaxArrEndTm"    column="t_tax_arr_end_tm"    />
+        <result property="cTaxPaymentVhltyp"    column="c_tax_payment_vhltyp"    />
+        <result property="cTaxPaymentAmt"    column="c_tax_payment_amt"    />
+        <result property="nTaxFreeAmt"    column="n_tax_free_amt"    />
+        <result property="cFuelTyp"    column="c_fuel_typ"    />
+        <result property="cAbateTyp"    column="c_abate_typ"    />
+        <result property="cTaxAuthoritiesCde"    column="c_tax_authorities_cde"    />
+        <result property="cFreeTaxOrgCde"    column="c_free_tax_org_cde"    />
+        <result property="cComTaxOrgCde"    column="c_com_tax_org_cde"    />
+        <result property="cTaxPrintNo"    column="c_tax_print_no"    />
+        <result property="cCalcTaxFlag"    column="c_calc_tax_flag"    />
+        <result property="nAnnualTaxAmt"    column="n_annual_tax_amt"    />
+        <result property="tExceedDate"    column="t_exceed_date"    />
+        <result property="nExceedDaysCount"    column="n_exceed_days_count"    />
+        <result property="cTaxLocationCode"    column="c_tax_location_code"    />
+        <result property="cTaxUnitTypeCode"    column="c_tax_unit_type_code"    />
+        <result property="nSumOverDue"    column="n_sum_over_due"    />
+        <result property="nSumTax"    column="n_sum_tax"    />
+        <result property="nAnnualTaxDue"    column="n_annual_tax_due"    />
+        <result property="nSumTaxDefault"    column="n_sum_tax_default"    />
+        <result property="cDeclareStatuIa"    column="c_declare_statu_ia"    />
+        <result property="cTaxItem"    column="c_tax_item"    />
+        <result property="cBacktaxFormula"    column="c_backtax_formula"    />
+        <result property="cDepartmentNonlocal"    column="c_department_nonlocal"    />
+        <result property="cPayId"    column="c_pay_id"    />
+        <result property="cComTaxOrgNme"    column="c_com_tax_org_nme"    />
+        <result property="cVoucherCode"    column="c_voucher_code"    />
+        <result property="cTaxDeductorNme"    column="c_tax_deductor_nme"    />
+        <result property="cTaxDeductorId"    column="c_tax_deductor_id"    />
+        <result property="cIsLastLocality"    column="c_is_last_locality"    />
+    </resultMap>
+
+    <sql id="selectWebAppVsTaxVo">
+        select c_app_no, c_vs_tax_mrk, c_abate_mrk, c_abate_prop, c_abate_amt, n_curb_wt, c_taxpayer_id, c_tax_item_cde, n_ann_unit_tax_amt, t_last_sali_end_date, c_last_sali_insurer_cde, c_last_sali_ply_no, t_sali_app_date, n_taxable_months, n_taxable_amt, c_tax_year, c_last_tax_year, n_last_year_taxable_months, n_last_year, n_overdue_days, n_overdue_fine_prop, n_agg_tax, n_charge_prop, n_charge_amt, c_tax_payment_recpt_no, c_tax_authorities, c_tax_relief_cert_no, c_taxpayer_cert_typ, c_taxpayer_cert_no, c_taxpayer_nme, c_taxpayer_addr, c_crt_cde, t_crt_tm, c_upd_cde, t_upd_tm, c_paytax_typ, c_abate_rsn, c_notpay_no, c_sub_tax_item_cde, c_tax_unit, c_taxable_typ, n_newcar_mon, c_short_typ, n_short_mon, t_last_sali_bgn_date, n_overdue_amt, t_tax_eff_bgn_tm, t_tax_eff_end_tm, c_taxdpt_vhltyp, c_tax_belong_tm, c_tax_vch_no, c_tax_vch_typ, c_tax_auth_cde, c_is_commission_tax, c_taxfree_vhltyp, c_tax_free_cert_no, c_free_tax_org, c_com_tax_org, n_balance_tax, c_taxpayer_com_id, c_vehicle_number, t_certificate_date, c_trans_mrk, t_trans_tm, n_agg_tax_var, n_bef_edr_tax, t_tax_arr_bgn_tm, t_tax_arr_end_tm, c_tax_payment_vhltyp, c_tax_payment_amt, n_tax_free_amt, c_fuel_typ, c_abate_typ, c_tax_authorities_cde, c_free_tax_org_cde, c_com_tax_org_cde, c_tax_print_no, c_calc_tax_flag, n_annual_tax_amt, t_exceed_date, n_exceed_days_count, c_tax_location_code, c_tax_unit_type_code, n_sum_over_due, n_sum_tax, n_annual_tax_due, n_sum_tax_default, c_declare_statu_ia, c_tax_item, c_backtax_formula, c_department_nonlocal, c_pay_id, c_com_tax_org_nme, c_voucher_code, c_tax_deductor_nme, c_tax_deductor_id, c_is_last_locality from web_app_vs_tax
+    </sql>
+    <select id="selectWebAppVsTaxList" parameterType="String" resultMap="WebAppVsTaxResult">
+        <include refid="selectWebAppVsTaxVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

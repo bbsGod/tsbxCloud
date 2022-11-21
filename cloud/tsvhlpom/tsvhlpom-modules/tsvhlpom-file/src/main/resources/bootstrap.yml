@@ -1,0 +1,16 @@
+# Tomcat
+server:
+  port: 9300
+
+# Spring
+spring:
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 50MB
+  application:
+    # 应用名称
+    name: tsvhlpom-file
+  profiles:
+    # 环境配置
+    active: ${platenv:dev}

@@ -1,0 +1,140 @@
+version : '3.8'
+services:
+  tsvhlpom-nacos:
+    container_name: tsvhlpom-nacos
+    image: nacos/nacos-server
+    build:
+      context: ./nacos
+    environment:
+      - MODE=standalone
+    volumes:
+      - ./nacos/logs/:/home/nacos/logs
+      - ./nacos/conf/application.properties:/home/nacos/conf/application.properties
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    depends_on:
+      - tsvhlpom-mysql
+  tsvhlpom-mysql:
+    container_name: tsvhlpom-mysql
+    image: mysql:5.7
+    build:
+      context: ./mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/conf:/etc/mysql/conf.d
+      - ./mysql/logs:/logs
+      - ./mysql/data:/var/lib/mysql
+    command: [
+          'mysqld',
+          '--innodb-buffer-pool-size=80M',
+          '--character-set-server=utf8mb4',
+          '--collation-server=utf8mb4_unicode_ci',
+          '--default-time-zone=+8:00',
+          '--lower-case-table-names=1'
+        ]
+    environment:
+      MYSQL_DATABASE: 'ry-cloud'
+      MYSQL_ROOT_PASSWORD: password
+  tsvhlpom-redis:
+    container_name: tsvhlpom-redis
+    image: redis
+    build:
+      context: ./redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/conf/redis.conf:/home/tsvhlpom/redis/redis.conf
+      - ./redis/data:/data
+    command: redis-server /home/tsvhlpom/redis/redis.conf
+  tsvhlpom-nginx:
+    container_name: tsvhlpom-nginx
+    image: nginx
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/html/dist:/home/tsvhlpom/projects/tsvhlpom-ui
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - tsvhlpom-gateway
+    links:
+      - tsvhlpom-gateway
+  tsvhlpom-gateway:
+    container_name: tsvhlpom-gateway
+    build:
+      context: ./tsvhlpom/gateway
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tsvhlpom-redis
+    links:
+      - tsvhlpom-redis
+  tsvhlpom-auth:
+    container_name: tsvhlpom-auth
+    build:
+      context: ./tsvhlpom/auth
+      dockerfile: dockerfile
+    ports:
+      - "9200:9200"
+    depends_on:
+      - tsvhlpom-redis
+    links:
+      - tsvhlpom-redis
+  tsvhlpom-modules-system:
+    container_name: tsvhlpom-modules-system
+    build:
+      context: ./tsvhlpom/modules/system
+      dockerfile: dockerfile
+    ports:
+      - "9201:9201"
+    depends_on:
+      - tsvhlpom-redis
+      - tsvhlpom-mysql
+    links:
+      - tsvhlpom-redis
+      - tsvhlpom-mysql
+  tsvhlpom-modules-gen:
+    container_name: tsvhlpom-modules-gen
+    build:
+      context: ./tsvhlpom/modules/gen
+      dockerfile: dockerfile
+    ports:
+      - "9202:9202"
+    depends_on:
+      - tsvhlpom-mysql
+    links:
+      - tsvhlpom-mysql
+  tsvhlpom-modules-job:
+    container_name: tsvhlpom-modules-job
+    build:
+      context: ./tsvhlpom/modules/job
+      dockerfile: dockerfile
+    ports:
+      - "9203:9203"
+    depends_on:
+      - tsvhlpom-mysql
+    links:
+      - tsvhlpom-mysql
+  tsvhlpom-modules-file:
+    container_name: tsvhlpom-modules-file
+    build:
+      context: ./tsvhlpom/modules/file
+      dockerfile: dockerfile
+    ports:
+      - "9300:9300"
+    volumes:
+    - ./tsvhlpom/uploadPath:/home/tsvhlpom/uploadPath
+  tsvhlpom-visual-monitor:
+    container_name: tsvhlpom-visual-monitor
+    build:
+      context: ./tsvhlpom/visual/monitor
+      dockerfile: dockerfile
+    ports:
+      - "9100:9100"

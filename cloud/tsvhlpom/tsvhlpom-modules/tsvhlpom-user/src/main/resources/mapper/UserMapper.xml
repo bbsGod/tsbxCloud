@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.user.mapper.UserMapper">
+    <resultMap id="userResult" type="com.tsvhlpom.user.domain.User">
+        <result column="pkid" property="pkid"></result>
+        <result column="sys_name" property="sys_name"></result>
+        <result column="user_name" property="user_name"></result>
+        <result column="password" property="password"></result>
+        <result column="create_time" property="create_time"></result>
+        <result column="remark" property="remark"></result>
+    </resultMap>
+    <sql id="getUserSql">
+        select pkid,sys_name,user_name,password,create_time,remark from vhlpom_user
+    </sql>
+    <select id="getUser" resultMap="userResult" parameterType="string">
+        <include refid="getUserSql"></include>
+        where sys_name = #{sys_name} and user_name = #{user_name}
+    </select>
+    <insert id="save">
+        insert into vhlpom_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            pkid,sys_name,user_name,password,create_time,remark
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{pkid},
+            #{sys_name},
+            #{user_name},
+            #{password},
+            #{create_time},
+            #{remark},
+        </trim>
+    </insert>
+    <update id="update">
+        update vhlpom_user set password = #{password},create_time = #{create_time}
+        where pkid = #{pkid}
+    </update>
+</mapper>

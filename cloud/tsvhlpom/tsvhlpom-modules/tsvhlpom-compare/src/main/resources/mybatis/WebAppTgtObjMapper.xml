@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppTgtObjMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppTgtObj" id="WebAppTgtObjResult">
+        <result property="cPkId"    column="c_pk_id"    />
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cRowId"    column="c_row_id"    />
+        <result property="nSeqNo"    column="n_seq_no"    />
+        <result property="cTgtObjTxtFld1"    column="c_tgt_obj_txt_fld_1"    />
+        <result property="cTgtObjTxtFld2"    column="c_tgt_obj_txt_fld_2"    />
+        <result property="cTgtObjTxtFld3"    column="c_tgt_obj_txt_fld_3"    />
+        <result property="cTgtObjTxtFld4"    column="c_tgt_obj_txt_fld_4"    />
+        <result property="cTgtObjTxtFld5"    column="c_tgt_obj_txt_fld_5"    />
+        <result property="cTgtObjTxtFld6"    column="c_tgt_obj_txt_fld_6"    />
+        <result property="cTgtObjTxtFld7"    column="c_tgt_obj_txt_fld_7"    />
+        <result property="cTgtObjTxtFld8"    column="c_tgt_obj_txt_fld_8"    />
+        <result property="cTgtObjTxtFld9"    column="c_tgt_obj_txt_fld_9"    />
+        <result property="cTgtObjTxtFld10"    column="c_tgt_obj_txt_fld_10"    />
+        <result property="cTgtObjTxtFld11"    column="c_tgt_obj_txt_fld_11"    />
+        <result property="cTgtObjTxtFld12"    column="c_tgt_obj_txt_fld_12"    />
+        <result property="cTgtObjTxtFld13"    column="c_tgt_obj_txt_fld_13"    />
+        <result property="cTgtObjTxtFld14"    column="c_tgt_obj_txt_fld_14"    />
+        <result property="cTgtObjTxtFld15"    column="c_tgt_obj_txt_fld_15"    />
+        <result property="cTgtObjTxtFld16"    column="c_tgt_obj_txt_fld_16"    />
+        <result property="cTgtObjTxtFld17"    column="c_tgt_obj_txt_fld_17"    />
+        <result property="cTgtObjTxtFld18"    column="c_tgt_obj_txt_fld_18"    />
+        <result property="cTgtObjTxtFld19"    column="c_tgt_obj_txt_fld_19"    />
+        <result property="cTgtObjTxtFld20"    column="c_tgt_obj_txt_fld_20"    />
+        <result property="tTgtObjTmFld1"    column="t_tgt_obj_tm_fld_1"    />
+        <result property="tTgtObjTmFld2"    column="t_tgt_obj_tm_fld_2"    />
+        <result property="tTgtObjTmFld3"    column="t_tgt_obj_tm_fld_3"    />
+        <result property="tTgtObjTmFld4"    column="t_tgt_obj_tm_fld_4"    />
+        <result property="tTgtObjTmFld5"    column="t_tgt_obj_tm_fld_5"    />
+        <result property="nTgtObjNumFld1"    column="n_tgt_obj_num_fld_1"    />
+        <result property="nTgtObjNumFld2"    column="n_tgt_obj_num_fld_2"    />
+        <result property="nTgtObjNumFld3"    column="n_tgt_obj_num_fld_3"    />
+        <result property="nTgtObjNumFld4"    column="n_tgt_obj_num_fld_4"    />
+        <result property="nTgtObjNumFld5"    column="n_tgt_obj_num_fld_5"    />
+        <result property="nTgtObjNumFld6"    column="n_tgt_obj_num_fld_6"    />
+        <result property="nTgtObjNumFld7"    column="n_tgt_obj_num_fld_7"    />
+        <result property="nTgtObjNumFld8"    column="n_tgt_obj_num_fld_8"    />
+        <result property="nTgtObjNumFld9"    column="n_tgt_obj_num_fld_9"    />
+        <result property="nTgtObjNumFld10"    column="n_tgt_obj_num_fld_10"    />
+        <result property="lTgtObjLtxtFld1"    column="l_tgt_obj_ltxt_fld_1"    />
+        <result property="lTgtObjLtxtFld2"    column="l_tgt_obj_ltxt_fld_2"    />
+        <result property="lTgtObjLtxtFld3"    column="l_tgt_obj_ltxt_fld_3"    />
+        <result property="lTgtObjLtxtFld4"    column="l_tgt_obj_ltxt_fld_4"    />
+        <result property="lTgtObjLtxtFld5"    column="l_tgt_obj_ltxt_fld_5"    />
+        <result property="cCancelMark"    column="c_cancel_mark"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="cTgtObjTxtFld21"    column="c_tgt_obj_txt_fld_21"    />
+        <result property="cTgtObjTxtFld22"    column="c_tgt_obj_txt_fld_22"    />
+        <result property="cTgtObjTxtFld23"    column="c_tgt_obj_txt_fld_23"    />
+        <result property="cTgtObjTxtFld24"    column="c_tgt_obj_txt_fld_24"    />
+        <result property="cTgtObjTxtFld25"    column="c_tgt_obj_txt_fld_25"    />
+        <result property="cTgtObjTxtFld26"    column="c_tgt_obj_txt_fld_26"    />
+        <result property="cTgtObjTxtFld27"    column="c_tgt_obj_txt_fld_27"    />
+        <result property="cTgtObjTxtFld28"    column="c_tgt_obj_txt_fld_28"    />
+        <result property="cTgtObjTxtFld29"    column="c_tgt_obj_txt_fld_29"    />
+        <result property="cTgtObjTxtFld30"    column="c_tgt_obj_txt_fld_30"    />
+        <result property="cCertfCls"    column="c_certf_cls"    />
+        <result property="cFarmerIsOrg"    column="c_farmer_is_org"    />
+        <result property="cLandParcelType"    column="c_land_parcel_type"    />
+        <result property="cStartLongitude"    column="c_start_longitude"    />
+        <result property="cEndLongitude"    column="c_end_longitude"    />
+        <result property="cStartLatitude"    column="c_start_latitude"    />
+        <result property="cEndLatitude"    column="c_end_latitude"    />
+        <result property="cCompartmentNo"    column="c_compartment_no"    />
+        <result property="cSmallCompartmentNo"    column="c_small_compartment_no"    />
+        <result property="cCertfBgnTm"    column="c_certf_bgn_tm"    />
+        <result property="cTgtObjTxtFld31"    column="c_tgt_obj_txt_fld_31"    />
+        <result property="cTgtObjTxtFld32"    column="c_tgt_obj_txt_fld_32"    />
+        <result property="cTgtObjTxtFld33"    column="c_tgt_obj_txt_fld_33"    />
+        <result property="cPerpetual"    column="c_perpetual"    />
+        <result property="nTgtObjNumFld11"    column="n_tgt_obj_num_fld_11"    />
+        <result property="cEastLocation"    column="c_east_location"    />
+        <result property="cWestLocation"    column="c_west_location"    />
+        <result property="cSouthLocation"    column="c_south_location"    />
+        <result property="cNorthLocation"    column="c_north_location"    />
+        <result property="cRelateName"    column="c_relate_name"    />
+        <result property="cRelateCls"    column="c_relate_cls"    />
+        <result property="cRelateCert"    column="c_relate_cert"    />
+        <result property="cRelateContact"    column="c_relate_contact"    />
+        <result property="cRelation"    column="c_relation"    />
+    </resultMap>
+    <sql id="selectWebAppTgtObjVo">
+        select c_pk_id, c_app_no, c_row_id, n_seq_no, c_tgt_obj_txt_fld_1, c_tgt_obj_txt_fld_2, c_tgt_obj_txt_fld_3, c_tgt_obj_txt_fld_4, c_tgt_obj_txt_fld_5, c_tgt_obj_txt_fld_6, c_tgt_obj_txt_fld_7, c_tgt_obj_txt_fld_8, c_tgt_obj_txt_fld_9, c_tgt_obj_txt_fld_10, c_tgt_obj_txt_fld_11, c_tgt_obj_txt_fld_12, c_tgt_obj_txt_fld_13, c_tgt_obj_txt_fld_14, c_tgt_obj_txt_fld_15, c_tgt_obj_txt_fld_16, c_tgt_obj_txt_fld_17, c_tgt_obj_txt_fld_18, c_tgt_obj_txt_fld_19, c_tgt_obj_txt_fld_20, t_tgt_obj_tm_fld_1, t_tgt_obj_tm_fld_2, t_tgt_obj_tm_fld_3, t_tgt_obj_tm_fld_4, t_tgt_obj_tm_fld_5, n_tgt_obj_num_fld_1, n_tgt_obj_num_fld_2, n_tgt_obj_num_fld_3, n_tgt_obj_num_fld_4, n_tgt_obj_num_fld_5, n_tgt_obj_num_fld_6, n_tgt_obj_num_fld_7, n_tgt_obj_num_fld_8, n_tgt_obj_num_fld_9, n_tgt_obj_num_fld_10, l_tgt_obj_ltxt_fld_1, l_tgt_obj_ltxt_fld_2, l_tgt_obj_ltxt_fld_3, l_tgt_obj_ltxt_fld_4, l_tgt_obj_ltxt_fld_5, c_cancel_mark, t_crt_tm, c_upd_cde, c_crt_cde, t_upd_tm, c_trans_mrk, t_trans_tm, c_tgt_obj_txt_fld_21, c_tgt_obj_txt_fld_22, c_tgt_obj_txt_fld_23, c_tgt_obj_txt_fld_24, c_tgt_obj_txt_fld_25, c_tgt_obj_txt_fld_26, c_tgt_obj_txt_fld_27, c_tgt_obj_txt_fld_28, c_tgt_obj_txt_fld_29, c_tgt_obj_txt_fld_30, c_certf_cls, c_farmer_is_org, c_land_parcel_type, c_start_longitude, c_end_longitude, c_start_latitude, c_end_latitude, c_compartment_no, c_small_compartment_no, c_certf_bgn_tm, c_tgt_obj_txt_fld_31, c_tgt_obj_txt_fld_32, c_tgt_obj_txt_fld_33, c_perpetual, n_tgt_obj_num_fld_11, c_east_location, c_west_location, c_south_location, c_north_location, c_relate_name, c_relate_cls, c_relate_cert, c_relate_contact, c_relation from web_app_tgt_obj
+    </sql>
+
+    <select id="selectWebAppTgtObjList" parameterType="String" resultMap="WebAppTgtObjResult">
+        <include refid="selectWebAppTgtObjVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

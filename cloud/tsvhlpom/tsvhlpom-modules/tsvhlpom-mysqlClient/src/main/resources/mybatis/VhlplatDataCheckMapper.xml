@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.mysqlClient.mapper.VhlplatDataCheckMapper">
+    <resultMap id="result" type="com.tsvhlpom.system.api.model.VhlplatDataCheckDTO">
+        <result property="month" column="c_month"></result>
+        <result property="zipStatus" column="c_zip_status"></result>
+        <result property="errStatus" column="c_err_status"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select c_month,c_zip_status,c_err_status from vhlplat_data_check
+    </sql>
+    <delete id="delete">
+        delete from vhlplat_data_check where c_month = #{month}
+    </delete>
+    <select id="findByOrderByMonthDesc" resultMap="result">
+        <include refid="selectSql"></include>
+        order by c_month desc
+    </select>
+    <select id="findByMonthOrderByMonthDesc" resultMap="result">
+        <include refid="selectSql"></include>
+        where c_month = #{month}
+        order by c_month desc
+    </select>
+    <update id="updateErrStatus">
+        update vhlplat_data_check set c_err_status = #{errStatus}
+        where c_month = #{month}
+    </update>
+    <update id="updateZipStatus">
+        update vhlplat_data_check set c_zip_status = #{zipStatus}
+        where c_month = #{month}
+    </update>
+    <insert id="initVhlplatDataCheck">
+        insert into vhlplat_data_check values(#{month},'1','')
+    </insert>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.compare.mapper.WebAppChargingPostMapper">
+
+    <resultMap type="com.tsvhlpom.compare.domain.WebAppChargingPost" id="WebAppChargingPostResult">
+        <result property="cPkId"    column="c_pk_id"    />
+        <result property="cAppNo"    column="c_app_no"    />
+        <result property="cPlyNo"    column="c_ply_no"    />
+        <result property="nSeqNo"    column="n_seq_no"    />
+        <result property="cChargingPostModel"    column="c_charging_post_model"    />
+        <result property="cChargingPostCod"    column="c_charging_post_cod"    />
+        <result property="cChargingPostKind"    column="c_charging_post_kind"    />
+        <result property="cChargingPostPlace"    column="c_charging_post_place"    />
+        <result property="cChargingPostTime"    column="c_charging_post_time"    />
+        <result property="cProvince"    column="c_province"    />
+        <result property="cCity"    column="c_city"    />
+        <result property="cCounty"    column="c_county"    />
+        <result property="cDetailedAddr"    column="c_detailed_addr"    />
+        <result property="nLiabAmt"    column="n_liab_amt"    />
+        <result property="nLiabPrm"    column="n_liab_prm"    />
+        <result property="cChargingPostYearLimit"    column="c_charging_post_year_limit"    />
+        <result property="tCrtTm"    column="t_crt_tm"    />
+        <result property="cUpdCde"    column="c_upd_cde"    />
+        <result property="cCrtCde"    column="c_crt_cde"    />
+        <result property="tUpdTm"    column="t_upd_tm"    />
+        <result property="cTransMrk"    column="c_trans_mrk"    />
+        <result property="tTransTm"    column="t_trans_tm"    />
+        <result property="cChargingPostLiabInsur"    column="c_charging_post_liab_insur"    />
+        <result property="cChargingPostLossInsur"    column="c_charging_post_loss_insur"    />
+        <result property="nLiabRate"    column="n_liab_rate"    />
+        <result property="nLiabBasePrm"    column="n_liab_base_prm"    />
+        <result property="nLiabBefPrm"    column="n_liab_bef_prm"    />
+        <result property="nLiabDisCoef"    column="n_liab_dis_coef"    />
+        <result property="nLiabCalcPrm"    column="n_liab_calc_prm"    />
+        <result property="nLiabBefAnnPrm"    column="n_liab_bef_ann_prm"    />
+        <result property="nLiabCalcAnnPrm"    column="n_liab_calc_ann_prm"    />
+        <result property="nLiabAmtVar"    column="n_liab_amt_var"    />
+        <result property="nLiabPrmVar"    column="n_liab_prm_var"    />
+        <result property="nLiabCalcPrmVar"    column="n_liab_calc_prm_var"    />
+        <result property="nResvNum6"    column="n_resv_num_6"    />
+        <result property="nLossAmt"    column="n_loss_amt"    />
+        <result property="nLossPrm"    column="n_loss_prm"    />
+        <result property="nLossRate"    column="n_loss_rate"    />
+        <result property="nLossBasePrm"    column="n_loss_base_prm"    />
+        <result property="nLossBefPrm"    column="n_loss_bef_prm"    />
+        <result property="nLossDisCoef"    column="n_loss_dis_coef"    />
+        <result property="nLossCalcPrm"    column="n_loss_calc_prm"    />
+        <result property="nLossBefAnnPrm"    column="n_loss_bef_ann_prm"    />
+        <result property="nLossCalcAnnPrm"    column="n_loss_calc_ann_prm"    />
+        <result property="nLossAmtVar"    column="n_loss_amt_var"    />
+        <result property="nLossPrmVar"    column="n_loss_prm_var"    />
+        <result property="nLossCalcPrmVar"    column="n_loss_calc_prm_var"    />
+        <result property="cLossCancelMrk"    column="c_loss_cancel_mrk"    />
+        <result property="cLiabCancelMrk"    column="c_liab_cancel_mrk"    />
+        <result property="tLossBgnTm"    column="t_loss_bgn_tm"    />
+        <result property="tLossEndTm"    column="t_loss_end_tm"    />
+        <result property="tLiabBgnTm"    column="t_liab_bgn_tm"    />
+        <result property="tLiabEndTm"    column="t_liab_end_tm"    />
+        <result property="cLiabIndemLmtLvl"    column="c_liab_indem_lmt_lvl"    />
+        <result property="cLossIndemLmtLvl"    column="c_loss_indem_lmt_lvl"    />
+    </resultMap>
+
+    <sql id="selectWebAppChargingPostVo">
+        select c_pk_id, c_app_no, c_ply_no, n_seq_no, c_charging_post_model, c_charging_post_cod, c_charging_post_kind, c_charging_post_place, c_charging_post_time, c_province, c_city, c_county, c_detailed_addr, n_liab_amt, n_liab_prm, c_charging_post_year_limit, t_crt_tm, c_upd_cde, c_crt_cde, t_upd_tm, c_trans_mrk, t_trans_tm, c_charging_post_liab_insur, c_charging_post_loss_insur, n_liab_rate, n_liab_base_prm, n_liab_bef_prm, n_liab_dis_coef, n_liab_calc_prm, n_liab_bef_ann_prm, n_liab_calc_ann_prm, n_liab_amt_var, n_liab_prm_var, n_liab_calc_prm_var, n_resv_num_6, n_loss_amt, n_loss_prm, n_loss_rate, n_loss_base_prm, n_loss_bef_prm, n_loss_dis_coef, n_loss_calc_prm, n_loss_bef_ann_prm, n_loss_calc_ann_prm, n_loss_amt_var, n_loss_prm_var, n_loss_calc_prm_var, c_loss_cancel_mrk, c_liab_cancel_mrk, t_loss_bgn_tm, t_loss_end_tm, t_liab_bgn_tm, t_liab_end_tm, c_liab_indem_lmt_lvl, c_loss_indem_lmt_lvl from web_app_charging_post
+    </sql>
+    <select id="selectWebAppChargingPostList" parameterType="String" resultMap="WebAppChargingPostResult">
+        <include refid="selectWebAppChargingPostVo"/>
+        where c_app_no in
+        <foreach collection="array" item="appNo" open="(" separator="," close=")">
+            #{appNo}
+        </foreach>
+    </select>
+</mapper>

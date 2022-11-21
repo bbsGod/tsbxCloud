@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tsvhlpom.batchdata.gbmonthdata.mapper.GbMonthDataMapper">
+    <!-- 查询policy数据SQL -->
+    <select id="queryPolicy" resultType="java.util.LinkedHashMap">
+        SELECT B.C_LAST_YEAR_CORP 上年承保公司, --上年承保公司代码1
+        B.C_APP_NO 投保单号, --投保单号2
+        B.C_PLY_NO 保单号, --保单号3
+        B.C_PROD_NO 险种代码, --险别代码4
+        (SELECT D.C_DPT_CDE
+        FROM WEB_ORG_DPT D
+        WHERE D.C_DPT_CDE = SUBSTR(B.C_DPT_CDE, 0, 2)
+        AND d.c_dpt_cde != '00') 承保二级机构代码, --承保二级机构代码5
+        (SELECT D.C_DPT_CDE
+        FROM WEB_ORG_DPT D
+        WHERE D.C_DPT_CDE = SUBSTR(B.C_DPT_CDE, 0, 4)) 承保三级机构代码, --承保三级机构代码6
+        B.C_SALEGRP_CDE 承保渠道代码, --承保渠道代码7
+        B.C_BRKR_CDE 代理人代码, --代理人代码8
+        (SELECT C_CHA_NME FROM WEB_CUS_CHA where C_CHA_CDE = B.C_BRKR_CDE AND ROWNUM =1) 代理人名称, --代理人名称 9
+        B.C_OPR_CDE 出单员代码, --出单员代码10
+        (SELECT C_OPER_CNM FROM WEB_ORG_OPER WHERE C_OPER_ID = B.C_OPR_CDE AND ROWNUM =1) 出单员名称, --出单员名称11
+        (CASE
+        WHEN o.c_certf_cls = '01' THEN
+        o.c_certf_cde
+        ELSE
+        ''
+        END) 行驶证车主身份证号, --行驶证车主身份证号12
+        '' 行驶证车主性别, --行驶证车主性别13
+        '' 行驶证车主年龄, --行驶证车主年龄14
+        V.C_PLATE_NO 车牌号, --车牌号15
+        V.C_FRM_NO 车架号, --车架号(VIN)16
+        V.C_ENG_NO 发动机号, --发动机号17
+        C.VEHICLE_NAME 车型名称, --车型名称18
+        V.C_MODEL_CDE 车型编码, --车型编码19
+        C.BRAND_NAME 品牌名称, --品牌名称20
+        C.BRAND_ID 品牌代码, --品牌代码21
+        C.FAMILY_NAME 车系名称, --车系名称22
+        C.FAMILY_ID 车系代码, --车系代码23
+        C.VEHICLE_MAKER 车辆生产厂商名称, --车辆生产厂商名称24
+        '' 家庭自用是否涡轮增压, --家庭自用是否涡轮增压25
+        (CASE
+        WHEN c.ANTI_THEFT is not null and c.VEHICLE_NAME NOT like '%轿车%' THEN
+        c.TRANSMISSION_TYPE
+        ELSE
+        ''
+        END) 家庭自用变速箱类型, --家庭自用变速箱类型26
+        C.VEHICLE_SEAT 座位数, --座位数27
+        ROUND(C.VEHICLE_TONNAGE, 2) 吨位数, --吨位数28
+        ROUND(V.N_ORIG_QUALITY_MAX, 2) 整备质量, --整备质量29
+        ROUND(V.N_DISPLACEMENT, 2) 排气量, --排气量30
+        '0' 货车特种车功率, --货车特种车功率31
+        '0' 拖拉机功率, --拖拉机功率32
+
+        substr(v.C_FST_REG_YM, 0, 4) || substr(v.C_FST_REG_YM, 6, 2) ||
+        substr(v.C_FST_REG_YM, 9, 2) 车辆初登日期, --车辆初登日期33
+        V.C_USE_YEAR 车龄, --车龄34
+
+        V.C_USAGE_CDE 车辆使用性质代码, --车辆使用性质代码35
+
+        V.C_VHL_TYP 车辆种类代码, --车辆种类代码36
+        '0' 是否租赁, --是否租赁37
+        V.C_REG_VHL_TYP 交管车辆类型, -- 交管车辆类型38
+        (CASE
+        WHEN c.ANTI_THEFT is not null and c.VEHICLE_NAME NOT like '%轿车%' THEN
+        c.ABS_FLAG
+        ELSE
+        ''
+        END) 车辆安全装置, --车辆安全装置39
+        (CASE
+        WHEN c.ANTI_THEFT is not null and c.VEHICLE_NAME NOT like '%轿车%' THEN
+        c.ANTI_THEFT
+        ELSE
+        ''
+        END) 车辆防盗装备, --车辆防盗装备40
+        (CASE
+        WHEN c.ANTI_THEFT is not null and c.VEHICLE_NAME NOT like '%轿车%' THEN
+        c.AIRBAG_NUM
+        ELSE
+        ''
+        END) 气囊数量, --气囊数量41
+
+        (CASE
+        WHEN B.C_RENEW_MRK = '1' THEN
+        '续保'
+        ELSE
+        '新保'
+        END) 业务来源, --业务来源42
+        '' 业务分类, --业务分类 43
+        V.C_CHG_OWNER_FLAG 车主过户标识, -- 车主过户标识44
+        O.C_OWNER_CLS 车主性质代码, --车主性质代码45
+        (SELECT C_APP_NME FROM WEB_APP_APPLICANT WHERE C_APP_NO = B.C_APP_NO AND ROWNUM =1) 投保人名称, --投保人名称46
+        (SELECT CASE
+        WHEN TT.C_CLNT_MRK = '1' THEN '1'
+        WHEN TT.C_CLNT_MRK = '7' THEN '1'
+        WHEN TT.C_CLNT_MRK = '2' THEN '3'
+        WHEN TT.C_CLNT_MRK = '3' THEN '3'
+        WHEN TT.C_CLNT_MRK = '4' THEN '3'
+        WHEN TT.C_CLNT_MRK = '6' THEN '3'
+        ELSE '2'
+        END
+        FROM WEB_APP_APPLICANT TT WHERE C_APP_NO = B.C_APP_NO) 投保人性质代码, --投保人性质代码47
+        B.C_PKG_BUS_FLG 车队标识, -- 车队标识48
+        (SELECT  g.c_resv_txt_6
+        FROM web_ply_cvrg g
+        WHERE g.c_app_no = b.c_app_no
+        AND g.c_cvrg_no = '030004'
+        AND ROWNUM =1
+        ) 玻璃险类型, --玻璃险类型49
+
+        (SELECT N_LIAB_DAYS_LMT
+        FROM WEB_PLY_CVRG
+        WHERE C_CVRG_NO = '030009'
+        AND C_APP_NO = B.C_APP_NO AND ROWNUM =1) 乘客险投保座位数, --乘客险投保座位数 50
+        '0' 新车购置价, --新车购置价（核保调整后）51
+        C.VEHICLE_PRICE_TAX 含税新车购置价, --含税新车购置价（精友库） 52
+        C.VEHICLE_PRICE 不含税新车购置价, --不含税新车购置价（精友库）53
+        C.KINDRED_PRICE_TAX 含税类比价格, --含税类比价格（精友库）54
+        C.KINDRED_PRICE 不含税类比价格, --不含税类比价格（精友库）55
+        ROUND(DECODE(B.C_PROD_NO,
+        '0336',
+        V.N_ACTUAL_VALUE,
+        '0335',
+        V.N_ACTUAL_VALUE,
+        '0337',
+        V.N_ACTUAL_VALUE,
+        '0339',
+        V.N_ACTUAL_VALUE,
+        '0'),
+        2) 车辆实际价值, --车辆实际价值56
+        V.N_NEW_PURCHASE_VALUE 协商后的新车购置价, --协商后的新车购置价57
+        C.VEHICLE_TYPE 国别性质, --国别性质（精友库）58
+        C.VEHICLE_CLASS 车型分类, --车型分类（精友库） 59
+        TO_CHAR(B.T_CRT_TM, 'yyyyMMdd') 签单日期, --签单日期60
+        TO_CHAR(B.T_INSRNC_BGN_TM, 'yyyyMMdd') 保险起期, --保险起期61
+        TO_CHAR(B.T_INSRNC_END_TM, 'yyyyMMdd') 保险止期, --保险止期62
+        P.N_CLAIM 上年保单出险次数, --上年保单出险次数63
+        P.N_CLAIM_AMOUNT_SUM 上年保单出险金额, --上年保单出险金额 64
+        P.N_ORIG_YEARS 存续年, --存续年65
+        DECODE((SELECT C_RESV_TXT_12
+        FROM WEB_PLY_CVRG
+        WHERE C_CVRG_NO = '030006'
+        AND C_APP_NO = B.C_APP_NO),
+        '375001',
+        '0',
+        '375002',
+        '300',
+        '375003',
+        '500',
+        '375004',
+        '1000',
+        '375005',
+        '2000',
+        '0') 免赔额, --免赔额 66
+        (SELECT SUM(N_BEF_ANN_PRM)
+        FROM WEB_PLY_CVRG
+        WHERE C_APP_NO = B.C_APP_NO) 标准保费, --标准保费67
+        B.N_PRM 签单保费, --签单保费68
+        '' 承保折扣, --承保折扣69
+        P.C_CLAIM_ADJUST_REASON 无赔款优待记录, --无赔款优待及上年赔款记录70
+        round((p.N_CLAIM_ADJUST_VALUE), 2) 无赔款优待及上年出险记录系数, --无赔款优待及上年出险记录系数71
+        decode(b.c_prod_no,
+        '0335',
+        '',
+        '0336',
+        '',
+        '0337',
+        '',
+        '0339',
+        '',
+        round((select pc.N_AGO_CLM_REC
+        from WEB_PLY_CVRG_PRM_COEF pc
+        where pc.c_app_no = b.c_app_no
+        and rownum = 1),
+        2)) 调整后的无赔款优待, --调整后的无赔款优待及上年出险记录系数72
+        p.C_NO_CLAIM_ADJUST_REASON 不浮动原因, --不浮动原因73
+        '' 违章记录, --交通违法记录74
+        (SELECT CO.N_TRAF_IRR
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 违章记录系数, --交通违法系数75
+        (SELECT CO.N_MUL_RDR
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 多险种同时投保系数, --多险种同时投保系数76
+        (SELECT CO.N_YEAR_RUN_MIL
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 平均年行驶里程系数, --平均年行驶里程系数77
+
+        (SELECT CO.N_TRAF_IRR
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 安全驾驶系数, --安全驾驶(上一保险年度无交通违法记录) 系数78
+        (SELECT CO.N_RUN_AREA
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 约定行驶区域系数, --约定行驶区域系数79
+        (SELECT CASE
+        WHEN co.C_Ply_Qty = '376011' THEN
+        '1.0'
+        WHEN co.C_Ply_Qty = '376012' THEN
+        '0.95'
+        WHEN co.C_Ply_Qty = '376013' THEN
+        '0.9'
+        WHEN co.C_Ply_Qty = '376014' THEN
+        '0.8'
+        ELSE
+        ''
+        END
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 承保数量系数, --承保数量系数80
+        (SELECT CO.N_APP_DRV
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 指定驾驶人系数, --指定驾驶人系数81
+        (SELECT CO.N_DRV_SEX
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 驾驶人性别系数, --驾驶人性别系数82
+        (SELECT CO.N_DRV_AGE
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 驾龄人年龄系数, --驾龄人年龄系数83
+        (SELECT CO.N_DRV_DRVAGE
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 驾龄系数, --驾龄系数84
+        (SELECT CASE
+        WHEN co.C_Cus_Loy = '376008' THEN
+        '1.0'
+        WHEN co.C_Cus_Loy = '376009' THEN
+        '0.9'
+        ELSE
+        ''
+        END
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 客户忠诚度系数, --投保年度（新保、续保、转保）系数85 ========此字段应该是客户忠诚度系数
+        (SELECT CO.n_Loss_Ratio
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 经验及预期赔付率系数, --经验及预期赔付率系数86 NLossRatio
+        (SELECT CO.n_Mtc_Mng
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 管理水平系数, --管理水平系数87  NMtcMng
+        (SELECT CO.N_VHL_MOD
+        FROM WEB_PLY_CVRG_PRM_COEF CO
+        WHERE CO.C_APP_NO = B.C_APP_NO
+        AND ROWNUM = 1) 车辆损失险车型系数, --车辆损失险车型（老旧新特）系数 88
+        round((select pc.N_AUTONOMY_COEF
+        from web_ply_cvrg_prm_coef pc
+        where C_APP_NO = b.c_app_no
+        AND ROWNUM =1),
+        2) 自主核保系数, --自主核保系数89
+        round((select pc.N_CHA_COEF
+        from web_ply_cvrg_prm_coef pc
+        where C_APP_NO = b.c_app_no
+        AND ROWNUM =1),
+        2) 自主渠道系数, --自主渠道系数90
+        /*       '' 过往出险记录, --过往出险记录
+        '' 过往出险记录系数, -- 过往出险记录系数
+
+        '1' 交通违法记录, -- 交通违法记录
+        '1' 交通违法记录系数, --交通违法记录系数 */
+        round((select cp.N_UNSURE_COEF
+        from web_ply_cvrg_prm_coef cp
+        where cp.c_app_no = b.c_app_no
+        AND ROWNUM =1),
+        2) 计算自主核保系数使用的费率系数, --计算自主核保系数使用的费率系数 91
+        '' 上门投保系数,--上门投保系数92
+        '' 自主调整系数,--自主调整系数93
+        '' 赔款金额调整系数, -- 赔款金额调整系数 94
+        (SELECT ba.c_joint_no
+        from web_app_base ba
+        where ba.c_app_no = b.c_app_no) 交商共保标识, --交商共保标识95
+        decode(b.c_prod_no,
+        '0336',
+        '1',
+        '0335',
+        '1',
+        '0337',
+        '1',
+        '0339',
+        '1',
+        '0') 商改前后标识, --商改前后标识 96
+        (SELECT N_RESV_NUM_11 FROM WEB_APP_CVRG WHERE C_APP_NO = B.C_APP_NO AND C_CVRG_NO = '032618' AND ROWNUM =1) 指定修理厂险费率浮动系数,-- 指定修理厂险费率浮动系数97
+        (SELECT N_RESV_NUM_11 FROM WEB_APP_CVRG WHERE C_APP_NO = B.C_APP_NO AND C_CVRG_NO = '032603' AND ROWNUM =1) 最高赔偿天数, --修理期间费用补偿险的约定的最高赔偿天数98
+        A.N_ENTIRE_COST_DISCOUNT 整单成本折扣, --整单成本折扣99
+        A.N_ENTIRE_RECOMMEN_DISCOUNT 整单建议折扣, --整单建议折扣100
+        A.N_ENTIRE_EXP_DISCOUNT 整单期望折扣, --整单期望折扣101
+        A.N_ENTIRE_UWRITING_DISCOUNT 整单核保折扣, --整单核保折扣102
+        A.N_COM_COST_PREM 商业险的整单赔付成本, --商业险的整单赔付成本103
+        A.N_CTP_COST_PREM 交强险的赔付成本, --交强险的赔付成本104
+        TO_CHAR(B.T_EDR_BGN_TM, 'yyyyMMdd') 批单有效起期, --批单有效起期105
+        B.c_app_typ 申请单据类型,
+        (SELECT N_SCORE FROM WEB_FLAT_PRECISION_SCORE WHERE V.C_QRY_CDE = C_QRY_CDE AND ROWNUM =1) 平台分,--平台分106
+        DECODE((SELECT C_RESV_TXT_13
+        FROM WEB_PLY_CVRG
+        WHERE C_CVRG_NO = '033607'
+        AND C_APP_NO = B.C_APP_NO),
+        '379001',
+        '5%',
+        '379002',
+        '10%',
+        '379003',
+        '15%',
+        '379004',
+        '20%',
+        '') 全面型车损险绝对免赔率, --全面型车损险绝对免赔率107
+        C.JY_VEH_CODE 行业车型编码,  --12位行业车型编码 108
+        A.N_ENTIRE_ACTUARY_DISCOUNT 整单精算折扣, --整单精算折扣
+        A.N_ENTIRE_INIT_FIT_DISCOUNT 整单初始建议折扣, --整单初始建议折扣
+        A.N_ENTIRE_FLOAT_FIT_DISCOUNT 整单联动后建议折扣, --整单联动后建议折扣
+        (A.N_SIGN_ELR - A.N_COM_SIGN_ELR) 签单折扣下交强险预期赔付率, --签单折扣下交强险预期赔付率
+        A.N_COM_SIGN_ELR 签单折扣下商业险预期赔付率, --签单折扣下商业险预期赔付率
+        A.N_SIGN_ELR 签单折扣下整单预期赔付率, --签单折扣下整单预期赔付率
+        A.N_BILL_COM_COMMISSION 签单折扣下商业险费用率, --签单折扣下商业险费用率
+        A.N_BILL_COM_COR 签单折扣下商业险两率和, --签单折扣下商业险两率和
+        A.N_BILL_COMMISSION 签单折扣下整单费用率, --签单折扣下整单费用率
+        A.N_BILL_COR 签单折扣下整单两率和, --签单折扣下整单两率和
+        A.N_COM_SCORE 光博车险承保分商业险, --光博车险承保分（商业险）
+        A.N_CTP_SCORE 光博车险承保分交强险, --光博车险承保分（交强险）
+        A.N_SCORE 光博车险承保分整单,--光博车险承保分（整单）
+        O.C_CERTF_CLS 车主证件类型, -- 车主证件类型
+        O.N_AGE 车主年龄, --车主年龄
+        O.C_GENDOR_CDE 车主性别, -- 车主性别
+        V.N_TONAGE 吨位新, -- 吨位新
+       (SELECT g.c_resv_txt_7
+        FROM web_ply_cvrg g
+        WHERE g.c_app_no = b.c_app_no
+          AND g.c_cvrg_no = '030004'
+       ) 特种车特种璃险类型, --特种玻璃险类型
+        (select pc.N_RESV_NUM_6
+        from web_ply_cvrg_prm_coef pc
+        where C_APP_NO = b.c_app_no
+        AND ROWNUM =1) AS 自助定价系数, --自助定价系数
+        V.C_CLAIM_ADJUST_LEVEL AS 无赔优系数级别, --无赔优系数级别
+        V.N_INSURE_YEARS AS 连续承保年数, --连续承保年数
+        V.N_CLAIM_TIMES AS 连续承保期间出险次数, --连续承保期间出险次数
+       (SELECT L.C_MILEPOST_SCORE
+        FROM WEB_GBMILEPOST_LOG L, WEB_APP_VHL AV
+        WHERE L.C_UUID_NO = AV.C_OCR_UU_ID
+          AND L.C_VIN_CODE = AV.C_FRM_NO
+          AND L.C_PLATE_NO = AV.C_PLATE_NO
+          AND AV.C_APP_NO = (SELECT C_APP_NO
+                            FROM WEB_PLY_BASE
+                            WHERE C_PLY_NO = B.C_PLY_NO
+                              AND C_APP_TYP = 'A')
+          AND L.T_CRT_TM =
+              (SELECT MAX(T_CRT_TM)
+               FROM WEB_GBMILEPOST_LOG
+               WHERE C_UUID_NO = L.C_UUID_NO
+                 AND C_VIN_CODE = L.C_VIN_CODE
+                 AND C_PLATE_NO = L.C_PLATE_NO)) AS 公里保评分
+        FROM WEB_PLY_BASE            B,
+        WEB_PLY_VHL             V,
+        WEB_BAS_CAR_CODE        C,
+        WEB_PLY_VHLOWNER        O,
+        WEB_TRD_PACKET_TEMP_NEW P,
+        WEB_TRD_AP A
+        WHERE B.C_APP_NO = V.C_APP_NO
+        AND B.C_AP_ID = A.C_AP_ID(+)
+        AND V.C_MODEL_CDE = C.VEHICLE_ID (+)
+        AND B.C_PLY_NO = P.C_PLY_NO(+)
+        AND B.C_APP_NO = O.C_APP_NO(+)
+        AND B.T_INSRNC_BGN_TM >= #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        AND B.C_LATEST_MRK = '1'
+        AND b.c_prod_no IN ('0320',
+        '0335',
+        '0336',
+        '0337',
+        '0339')
+    </select>
+
+    <!-- 查询光博 policy_duty(险别)数据SQL -->
+    <select id="queryPolicyDuty" resultType="java.util.LinkedHashMap">
+        (SELECT ''''||C.C_PLY_NO 保单号, --保单号1
+        ''''||C.N_SEQ_NO 序号, --序号2
+        (SELECT (CASE
+        WHEN C_RDR_TYP = '0' THEN
+        '1'
+        ELSE
+        '2'
+        END)
+        FROM WEB_PRD_CVRG
+        WHERE C_CVRG_NO = C.C_CVRG_NO) 险种性质, --险种性质代码3
+        ''''||C.C_CVRG_NO 险种代码, -- 险种代码4
+        C.N_AMT 保额限额, --保额/限额5
+        C.C_RESV_TXT_1 不计免赔投保标志, --不计免赔投保标识6
+        C.N_BEF_ANN_PRM 标准保费, -- 标准保费7
+        C.N_PRM 签单保费, -- 签单保费8
+        ''不计免赔保费, -- 9不计免赔保费
+        B.T_APP_TM 签单日期, --10签单日期
+        C.T_BGN_TM 保险起期, --11保险起期
+        C.T_END_TM 保险止期, --12保险止期
+        A.N_COST_PREM 分险别赔付成本, --分险别赔付成本13
+        A.N_COST_DISCOUNT 分险别成本折扣, --分险别成本折扣14
+        DECODE(C_RESV_TXT_13, '379001', '0.05', '379002', '0.1', '379003', '0.15', '379004', '0.2', '') AS 绝对免赔率
+        from WEB_PLY_CVRG C
+        inner join WEB_PLY_BASE B
+        on C.C_APP_NO = B.C_APP_NO AND
+        B.C_PROD_NO IN ('0335','0336','0337','0339')
+        AND B.C_LATEST_MRK = '1'
+        AND B.T_INSRNC_BGN_TM >= #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        left join WEB_TRD_AP_CVRG A
+        ON A.C_CVRG_CDE = C.C_CVRG_NO
+        AND  B.C_AP_ID = A.C_AP_ID
+        )
+        UNION ALL
+        (SELECT C.C_PLY_NO 保单号, --保单号1
+        C.N_SEQ_NO 序号, --序号2
+        (SELECT (CASE
+        WHEN C_RDR_TYP = '0' THEN
+        '1'
+        ELSE
+        '2'
+        END)
+        FROM WEB_PRD_CVRG
+        WHERE C_CVRG_NO = C.C_CVRG_NO) 险种性质, --险种性质代码3
+        C.C_CVRG_NO 险种代码, -- 险种代码4
+        C.N_AMT 保额限额, --保额/限额5
+        C.C_RESV_TXT_1 不计免赔投保标志, --不计免赔投保标识6
+        C.N_BEF_ANN_PRM 标准保费, -- 标准保费7
+        Decode(C.C_CVRG_NO,'030055' , B.n_Prm, c.n_prm) 签单保费, -- 签单保费8
+        ''不计免赔保费, -- 9不计免赔保费
+        B.T_APP_TM 签单日期, --10签单日期
+        C.T_BGN_TM 保险起期, --11保险起期
+        C.T_END_TM 保险止期, --12保险止期
+        A.N_COST_PREM 分险别赔付成本, --分险别赔付成本13
+        A.N_COST_DISCOUNT 分险别成本折扣, --分险别成本折扣14
+        '' AS 绝对免赔率
+        from WEB_PLY_CVRG C
+        inner join WEB_PLY_BASE B
+        on C.C_APP_NO = B.C_APP_NO
+        and B.C_PROD_NO IN ('0320')
+        AND  B.C_LATEST_MRK = '1'
+        AND B.T_INSRNC_BGN_TM >= #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        left join WEB_TRD_AP_CVRG A
+        ON A.C_CVRG_CDE = C.C_CVRG_NO
+        AND  B.C_AP_ID = A.C_AP_ID)
+    </select>
+
+    <!-- 查询光博 交强险赔付成本数据SQL -->
+    <select id="queryJqPayCost" resultType="java.util.LinkedHashMap">
+        SELECT ''''||c_ply_no, '0320', N_Ctp_Cost_Prem
+        FROM (SELECT c.c_ap_id, c_ply_no
+        FROM (SELECT c_ap_id, c_joint_no
+        FROM web_app_base
+        WHERE c_joint_no IS NOT NULL
+        AND c_prod_no &lt; &gt; '0320'
+        AND c_ply_no IS NOT NULL
+        AND t_insrnc_bgn_tm >= #{startDate}
+        AND t_insrnc_bgn_tm &lt; #{endDate}) c,
+        web_app_base b
+        WHERE c.c_joint_no = b.c_joint_no
+        AND b.c_prod_no = '0320'
+        AND b.c_ply_no is not null) e,
+        web_trd_ap a WHERE e.c_ap_id = a.c_ap_id
+    </select>
+
+    <!-- 查询光博车损险纯风险保费数据SQL -->
+    <select id="queryPureRiskPremium" resultType="java.util.LinkedHashMap">
+        SELECT ''''||T.C_PLY_NO,
+        T.N_PURERISK_PREMIUM,
+        V.C_MODEL_CODE,
+        ''''||t.c_cvrg_no,
+        (SELECT N_BASE_PRM
+        FROM WEB_PLY_CVRG C
+        WHERE C_CVRG_NO = '033608'
+        AND C_APP_NO = T.C_APP_NO) AS N_BASE_PRM
+        FROM WEB_PLY_CVRG T, WEB_PLY_VHL V, web_ply_base b
+        WHERE (T.C_CVRG_NO = '030006' OR T.C_CVRG_NO = '033606')
+        AND b.t_insrnc_bgn_tm >=  #{startDate}
+        AND b.t_insrnc_bgn_tm  &lt; #{endDate}
+        AND T.C_LATEST_MRK = '1'
+        AND T.C_APP_NO = V.C_APP_NO
+        AND t.c_app_no = b.c_app_no
+        AND b.c_prod_no in ('0336', '0339')
+    </select>
+
+    <!-- 查询光博增值服务数据SQL -->
+    <select id="queryAddService" resultType="java.util.LinkedHashMap">
+        SELECT ''''||T.C_PLY_NO 保单号,
+               MAX(CASE
+                     WHEN T.C_CVRG_NO = '033615' THEN
+                      (SELECT C.C_CNM
+                         FROM WEB_BAS_COMM_CODE C
+                        WHERE C.C_PAR_CDE = '390'
+                          AND C.C_CDE = t.CISHU)
+                     ELSE
+                      NULL
+                   END) 道路救援服务特约条款,
+               MAX(CASE
+                     WHEN T.C_CVRG_NO = '033616' THEN
+                      (SELECT C.C_CNM
+                         FROM WEB_BAS_COMM_CODE C
+                        WHERE C.C_PAR_CDE = 'N39'
+                          AND C.C_CDE = t.CISHU)
+                     ELSE
+                      NULL
+                   END) 车辆安全检测特约条款,
+               MAX(CASE
+                     WHEN T.C_CVRG_NO = '033617' THEN
+                      t.CISHU
+                     ELSE
+                      NULL
+                   END) 代为驾驶服务特约条款,
+               MAX(CASE
+                     WHEN T.C_CVRG_NO = '033618' THEN
+                      t.CISHU
+                     ELSE
+                      NULL
+                   END) 代为送检服务特约条款
+          FROM (SELECT B.C_PLY_NO C_PLY_NO,
+                       C.C_CVRG_NO C_CVRG_NO,
+                       CASE
+                         WHEN (C.C_CVRG_NO = '033615' OR C.C_CVRG_NO = '033616') THEN
+                          C.C_RESV_TXT_11
+                         ELSE
+                          C.C_RESV_TXT_14
+                       END CISHU
+                  FROM WEB_PLY_BASE B, WEB_PLY_CVRG C
+                 WHERE C.C_APP_NO = B.C_APP_NO
+                   AND C.C_CVRG_NO IN ('033615', '033616', '033617', '033618')
+                   AND B.C_PROD_NO LIKE '03%'
+                   AND b.t_insrnc_bgn_tm >=  #{startDate}
+                   AND b.t_insrnc_bgn_tm  &lt; #{endDate}
+                   AND B.C_LATEST_MRK = '1') T
+         GROUP BY T.C_PLY_NO
+    </select>
+
+    <!-- 查询车慧达货车数据SQL -->
+    <select id="queryChdTruckVhl" resultType="java.util.LinkedHashMap">
+        SELECT T.c_Relation_Id                  as 关联主键ID,
+        t.C_TOTAL_TRANCHE                as 三者和车损分档,
+        t.C_VEHICLE_SCORE                as 三者和车损评分， t.C_COMPULSORY_SUB_FILE as 交强险分档,
+        t.C_COMPULSORY_SCORE             as 交强评分,
+        t.C_VEHICLE_DAMAGE_PREDICTION    as 车损分档预测,
+        t.C_DAMAGE_SCORE                 as 车损评分,
+        t.C_THE_THREE_ARE_FORECAST       as 三者分档预测,
+        t.C_THREE_SCORE                  as 三者评分,
+        t.c_Plate_No                     as 车牌号,
+        t.C_VIN                          as 车架号,
+        t.c_Type                         as 车辆类型,
+        t.c_Gs_Divisor_Status            as 高速因子状态,
+        t.C_GJ_DIVISOR_STATUS            as 轨迹因子状态,
+        t.c_Status                       as 查询状态,
+        t.c_Save_Date                    as 第一次保存时间,
+        t.c_Deck_Source                  as 套牌车评分概率,
+        t.c_Guest_Status                 as 两客一危判断状态,
+        t.c_Compulsory_Three_Tranche     as 交强和三者分档预测,
+        t.c_Compulsory_Three_Score       as 交强和三者评分预测,
+        t.C_MODEL_TOTAL_TRANCHE          as 风险分档三者和车损分档预测,
+        t.C_MODEL_VEHICLE_SCORE          as 风险分档三者和车损评分预测,
+        t.c_Model_Compulsory_Tranche     as 风险分档交强险分档预测,
+        t.c_Model_Compulsory_Score       as 风险分档交强评分预测,
+        t.c_Model_Vehicledamage_Tranche  as 风险分档车损分档预测,
+        t.c_Model_Damage_Score           as 风险分档车损评分预测,
+        t.c_Model_Three_Tranche          as 风险分档三者分档预测,
+        t.c_Model_Three_Score            as 风险分档三者评分预测,
+        t.C_MODEL_COMPULSORY_THREE_SCORE as 风险分档交强和三者评分预测,
+        t.c_Model_Flag                   as 风险分档风险标识,
+        t.C_MODEL_STATUS                 as 风险分档查询状态,
+        t.C_SMALL_TOTAL_TRANCHE          as 五到10吨三者和车损分档预测,
+        t.C_SMALL_VEHICLE_SCORE          as 五到10吨三者和车损评分预测,
+        t.C_SMALL_COMPULSORY_TRANCHE     as 五到10吨交强险分档预测,
+        t.C_SMALL_COMPULSORY_SCORE       as 五到10吨交强评分预测,
+        t.C_SMALL_VEHICLEDAMAGE_TRANCHE  as 五到10吨车损分档预测,
+        t.C_SMALL_DAMAGE_SCORE           as 五到10吨车损评分预测,
+        t.C_SMALL_THREE_TRANCHE          as 五到10吨三者分档预测,
+        t.C_SMALL_THREE_SCORE            as 五到10吨三者评分预测,
+        t.C_SMALL_COMPULSORY_THREE_SCORE as 五到10吨交强和三者评分预测,
+        t.C_SMALL_STATUS                 as 五到10吨查询状态,
+        t.C_SMA_COMPULSORY_THREE_TRANCHE as 五到10吨交强和三者分档预测,
+        t.C_MOD_COMPULSORY_THREE_TRANCHE as 交强和三者分档预测
+        FROM WEB_TRD_TRUCK_VHL_INFO T
+        WHERE T.C_VIN IN (SELECT DISTINCT (V.C_FRM_NO)
+        FROM WEB_PLY_VHL V
+        WHERE V.C_APP_NO IN
+        (SELECT B.C_APP_NO
+        FROM WEB_PLY_BASE B
+        WHERE B.T_INSRNC_BGN_TM >=  #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        AND B.C_PROD_NO LIKE '03%'))
+        AND T.C_SAVE_DATE >=  (#{startDate} - 43)
+    </select>
+
+    <!-- 查询车慧达私家车数据 -->
+    <select id="queryChdPrivateVhl" resultType="java.util.LinkedHashMap">
+        SELECT T.c_Relation_Id       as 主键关联ID,
+        t.c_tranche           as 分档,
+        t.c_plate_no          as 车牌号,
+        t.c_vin               as 车架号,
+        t.c_type              as 车辆类型,
+        t.c_gs_divisor_status as 高速因子状态,
+        t.c_status            as 查询状态,
+        t.c_save_date         as 第一次保存时间
+        FROM WEB_TRD_PRIVATE_VHL_INFO T
+        WHERE T.C_VIN IN (SELECT DISTINCT (V.C_FRM_NO)
+        FROM WEB_PLY_VHL V
+        WHERE V.C_APP_NO IN
+        (SELECT B.C_APP_NO
+        FROM WEB_PLY_BASE B
+        WHERE B.T_INSRNC_BGN_TM >=  #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        AND B.C_PROD_NO LIKE '03%'))
+        AND T.C_SAVE_DATE >=  (#{startDate} - 43)
+    </select>
+
+    <!-- 查询车慧达轨迹因子数据 -->
+    <select id="queryChdGjDivisor" resultType="java.util.LinkedHashMap">
+        SELECT g.c_pk_id    as 主键ID,
+        g.c_truck_id as 与货车信息主表的关联ID,
+        g.c_name     as 因子名称,
+        g.c_values1  as 因子值,
+        g.c_values2  as 因子分档,
+        g.c_values3  as 因子权重,
+        g.c_flag     as 因子标识
+        FROM WEB_TRD_GJ_DIVISOR G
+        WHERE G.C_TRUCK_ID IN
+        (SELECT T.C_RELATION_ID
+        FROM WEB_TRD_TRUCK_VHL_INFO T
+        WHERE T.C_VIN IN
+        (SELECT DISTINCT (V.C_FRM_NO)
+        FROM WEB_PLY_VHL V
+        WHERE V.C_APP_NO IN
+        (SELECT B.C_APP_NO
+        FROM WEB_PLY_BASE B
+        WHERE B.T_INSRNC_BGN_TM >=  #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        AND B.C_PROD_NO LIKE '03%'))
+        AND T.C_SAVE_DATE >=  (#{startDate} - 43))
+        OR G.C_TRUCK_ID IN
+        (SELECT T.C_RELATION_ID
+        FROM WEB_TRD_BUGGY_VHL_INFO T
+        WHERE T.C_VIN IN
+        (SELECT DISTINCT (V.C_FRM_NO)
+        FROM WEB_PLY_VHL V
+        WHERE V.C_APP_NO IN
+        (SELECT B.C_APP_NO
+        FROM WEB_PLY_BASE B
+        WHERE B.T_INSRNC_BGN_TM >=  #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        AND B.C_PROD_NO LIKE '03%'))
+        AND T.C_SAVE_DATE >=  (#{startDate} - 43))
+    </select>
+
+    <!-- 查询车慧达高速因子数据 -->
+    <select id="queryChdGsDivisor" resultType="java.util.LinkedHashMap">
+        SELECT GS.c_Pk_Id      as 主键ID,
+        GS.C_PRIVATE_ID as 与私家车信息主表的关联ID,
+        gs.c_truck_id   as 与货车信息主表的关联ID,
+        gs.c_name       as 因子名称,
+        gs.c_values     as 因子值,
+        gs.c_flag       as 因子标识
+        FROM WEB_TRD_GS_DIVISOR GS
+        WHERE GS.C_PRIVATE_ID IN
+        (SELECT T.C_RELATION_ID
+        FROM WEB_TRD_PRIVATE_VHL_INFO T
+        WHERE T.C_VIN IN
+        (SELECT DISTINCT (V.C_FRM_NO)
+        FROM WEB_PLY_VHL V
+        WHERE V.C_APP_NO IN
+        (SELECT B.C_APP_NO
+        FROM WEB_PLY_BASE B
+        WHERE B.T_INSRNC_BGN_TM >=  #{startDate}
+        AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+        AND B.C_PROD_NO LIKE '03%'))
+        AND T.C_SAVE_DATE >=  (#{startDate} - 43))
+        OR GS.C_TRUCK_ID IN
+        (SELECT T.C_RELATION_ID
+        FROM WEB_TRD_TRUCK_VHL_INFO T
+        WHERE T.C_VIN IN
+        (SELECT DISTINCT (V.C_FRM_NO)
+        FROM WEB_PLY_VHL V
+        WHERE V.C_APP_NO IN
+        (SELECT B.C_APP_NO
+        FROM WEB_PLY_BASE B
+         WHERE B.T_INSRNC_BGN_TM >=  #{startDate}
+           AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+           AND B.C_PROD_NO LIKE '03%'))
+          AND T.C_SAVE_DATE >=  (#{startDate} - 43))
+    </select>
+
+    <!-- 查询车慧达小货车数据 -->
+    <select id="queryChdBuggyVhl" resultType="java.util.LinkedHashMap">
+        SELECT  T.C_RELATION_ID AS  主键关联ID,
+        T.C_BUGGY_THREE_DAMAGE_TRANCHE AS 三者和车损分档预测,
+        T.C_BUGGY_THREE_DAMAGE_SCORE   AS 三者和车损评分预测,
+        T.C_BUGGY_COMPULS_TRANCHE      AS 交强险分档预测,
+        T.C_BUGGY_COMPULS_SCORE        AS 交强评分预测,
+        T.C_BUGGY_DAMAGE_TRANCHE       AS 车损分档预测,
+        T.C_BUGGY_DAMAGE_SCORE         AS 车损评分预测,
+        T.C_BUGGY_THREE_TRANCHE        AS 三者分档预测,
+        T.C_BUGGY_THREE_SCORE          AS 三者评分预测,
+        T.C_BUGGY_COMPULS_THREE_TRANCHE   AS 交强和三者分档预测,
+        T.C_BUGGY_COMPULS_THREE_SCORE     AS 交强和三者评分预测,
+        T.C_BUGGY_COMPULS_DAMAGE_TRANCHE  AS 交强和车损分档预测,
+        T.C_BUGGY_COMPULS_DAMAGE_SCORE    AS 交强和车损评分预测,
+        T.C_BUGGY_TRANCHE                 AS 整车分档预测,
+        T.C_BUGGY_SCORE                   AS 整车评分预测,
+        T.C_PLATE_NO                      AS 车牌号,
+        T.C_VIN                           AS 车架号,
+        T.C_TYPE                          AS 车辆类型,
+        T.C_DIVISOR_STATUS                AS 高速因子状态,
+        T.C_STATUS                        AS 查询状态,
+        T.C_SAVE_DATE                     AS 第一次保存时间
+        FROM WEB_TRD_BUGGY_VHL_INFO T
+        WHERE T.C_VIN IN (SELECT DISTINCT (V.C_FRM_NO)
+        FROM WEB_PLY_VHL V
+        WHERE V.C_APP_NO IN
+        (SELECT B.C_APP_NO
+        FROM WEB_PLY_BASE B
+         WHERE B.T_INSRNC_BGN_TM >=  #{startDate}
+           AND B.T_INSRNC_BGN_TM &lt; #{endDate}
+           AND B.C_PROD_NO LIKE '03%'))
+          AND T.C_SAVE_DATE >=  (#{startDate} - 43)
+    </select>
+
+</mapper>

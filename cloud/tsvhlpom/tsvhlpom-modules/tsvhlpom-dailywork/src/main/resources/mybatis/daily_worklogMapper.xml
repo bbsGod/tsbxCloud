@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.dailywork.mapper.Daily_worklogMapper">
+    <resultMap id="reslut" type="com.tsvhlpom.dailywork.domain.Daily_worklog">
+        <result property="pkid" column="pkid"></result>
+        <result property="emp_id" column="emp_id"></result>
+        <result property="emp_name" column="emp_name"></result>
+        <result property="create_time" column="create_time"></result>
+        <result property="work_type" column="work_type"></result>
+        <result property="work_progress" column="work_progress"></result>
+        <result property="log_info" column="log_info"></result>
+        <result property="log_attachment_path" column="log_attachment_path"></result>
+    </resultMap>
+    <sql id="selectSql">
+        select pkid ,emp_id,emp_name,create_time,work_type,work_progress,log_info,log_attachment_path from Daily_worklog
+    </sql>
+    <select id="getWorkLogList" resultMap="reslut">
+        <include refid="selectSql"></include>
+        where to_char(create_time,'yyy-mm-dd') = to_char(sysdate,'yyy-mm-dd')
+        and emp_id = #{emp_id}
+        <!--<if test="emp_id!=null and emp_id!=''">and emp_id=#{emp_id}</if>
+        <if test="query_time!=null and query_time!=''">
+        and to_char(create_time,'yyy-mm-dd') = #{query_time}
+         </if>-->
+        order by create_time
+    </select>
+    <select id="getWorkLog" resultMap="reslut">
+        <include refid="selectSql"></include>
+        where pkid =#{pkid}
+    </select>
+
+    <insert id="saveWorkLog" parameterType="com.tsvhlpom.dailywork.domain.Daily_worklog">
+        insert into Daily_worklog
+        (pkid ,emp_id,emp_name,create_time,work_type,work_progress,log_info,log_attachment_path)
+        values (
+        sys_guid(),
+        #{emp_id},#{emp_name},sysdate,#{work_type},#{work_progress},#{log_info},#{log_attachment_path}
+        )
+    </insert>
+    <update id="updateWorkLog" parameterType="com.tsvhlpom.dailywork.domain.Daily_worklog">
+        update Daily_worklog
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="emp_id != null">emp_id = #{emp_id},</if>
+            <if test="emp_name != null">emp_name = #{emp_name},</if>
+            <if test="work_type != null">work_type = #{work_type},</if>
+            <if test="work_progress != null">work_progress = #{work_progress},</if>
+            <if test="log_info != null">log_info = #{log_info},</if>
+            <if test="log_attachment_path != null">log_attachment_path = #{log_attachment_path},</if>
+        </trim>
+        where pkid = #{pkid}
+    </update>
+
+    <delete id="deleteWorkLog">
+        delete from Daily_worklog where pkid in
+        <foreach item="pkid" collection="array" open="(" separator="," close=")">
+            #{pkid}
+        </foreach>
+    </delete>
+
+    <update id="updateWorkLogPath">
+        update Daily_worklog set log_attachment_path = #{url} where pkid = #{pkid}
+    </update>
+    <resultMap id="logResult" type="com.tsvhlpom.dailywork.domain.LogAnalysis">
+        <result property="emp_team" column="emp_team"></result>
+        <result property="emp_id" column="emp_id"></result>
+        <result property="emp_name" column="emp_name"></result>
+        <result property="create_time" column="create_time"></result>
+        <result property="work_type" column="work_type"></result>
+        <result property="work_progress" column="work_progress"></result>
+        <result property="log_info" column="log_info"></result>
+        <result property="log_attachment_path" column="log_attachment_path"></result>
+    </resultMap>
+    <select id="getLogAnalysisList" resultMap="logResult">
+        SELECT b.emp_team,
+        to_char(a.create_time, 'yyyy-mm-dd') as create_time,
+        b.emp_id,
+        a.emp_name,
+        a.work_type,
+        a.work_progress,
+        a.log_info,b.team_type,a.log_attachment_path
+        FROM daily_worklog a, daily_employee b
+        WHERE a.emp_id = b.emp_id
+        <if test="emp_team !=null and emp_team !=''">and b.emp_team = #{emp_team} </if>
+        <if test="startDate !=null and startDate !=''"> and to_char(a.create_time,'yyyy-mm-dd') between  #{startDate} and  #{endDate}</if>
+        order by b.emp_team, to_char(a.create_time, 'yyyy-mm-dd') desc, b.emp_id
+
+    </select>
+</mapper>

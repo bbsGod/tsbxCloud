@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.proddata.mapper.WebPlyVatInvoiceMapper">
+    <resultMap id="webPlyVatInvoice" type="com.tsvhlpom.proddata.domain.WebPlyVatInvoice">
+        <result property="c_ply_no"    column="c_ply_no"    />
+        <result property="c_status"    column="c_status"    />
+    </resultMap>
+    <sql id="selectWebPlyVatInvoice">
+        select distinct c_ply_no,c_status from WEB_PLY_VAT_INVOICE
+    </sql>
+
+    <update id="updateStatus" parameterType="com.tsvhlpom.proddata.domain.WebPlyVatInvoice">
+        update WEB_PLY_VAT_INVOICE a set a.c_status = #{c_status} where  c_ply_no = #{c_ply_no}
+    </update>
+    <select id="getVatList" parameterType="string" resultMap="webPlyVatInvoice">
+        <include refid="selectWebPlyVatInvoice"></include>
+        where c_ply_no = #{c_ply_no}
+    </select>
+</mapper>

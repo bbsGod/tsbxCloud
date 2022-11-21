@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsvhlpom.vip.mapper.VIP_MainMapper">
+    <resultMap id="VIPMap" type="com.tsvhlpom.vip.domain.VIP_Main">
+        <result property="pkId"    column="pkId"    />
+        <result property="insuredName"    column="insuredName"    />
+        <result property="certifCode"    column="certifCode"    />
+        <result property="phoneNo"    column="phoneNo"    />
+        <result property="plateNo"    column="plateNo"    />
+        <result property="frmNo"    column="frmNo"    />
+        <result property="engNo"    column="engNo"    />
+        <result property="createDate"    column="createDate"    />
+        <result property="createBy"    column="createBy"    />
+        <result property="updateDate"    column="updateDate"    />
+        <result property="updateBy"    column="updateBy"    />
+    </resultMap>
+    <sql id="selectVip">
+        select pkId,insuredName,certifCode,phoneNo,plateNo,frmNo,engNo,createDate,createBy,updateDate,updateBy from vip_main
+    </sql>
+    <update id="update" parameterType="com.tsvhlpom.vip.domain.VIP_Main">
+        update vip_main
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="insuredName != null">insuredName = #{insuredName},</if>
+            <if test="certifCode != null">certifCode = #{certifCode},</if>
+            <if test="phoneNo != null">phoneNo = #{phoneNo},</if>
+            <if test="plateNo != null">plateNo = #{plateNo},</if>
+            <if test="frmNo != null">frmNo = #{frmNo},</if>
+            <if test="engNo != null">engNo = #{engNo},</if>
+            <if test="updateBy != null">updateBy = #{updateBy},</if>
+            updateDate = sysdate,
+        </trim>
+        where pkId = #{pkId}
+    </update>
+    <delete id="delete">
+        delete from vip_main where pkId in
+        <foreach item="pkId" collection="array" open="(" separator="," close=")">
+            #{pkId}
+        </foreach>
+    </delete>
+    <select id="getVIPList" parameterType="com.tsvhlpom.vip.domain.VIP_Main" resultMap="VIPMap">
+        <include refid="selectVip"></include>
+        <where>
+            1=1
+            <if test="pkId != null and pkId !=''">and pkId = #{pkId}</if>
+            <if test="insuredName != null and insuredName !=''">and insuredName = #{insuredName}</if>
+            <if test="certifCode != null and certifCode !=''">and certifCode = #{certifCode}</if>
+            <if test="phoneNo != null and phoneNo !=''">and phoneNo = #{phoneNo}</if>
+            <if test="plateNo != null and plateNo !=''">and plateNo = #{plateNo}</if>
+            <if test="frmNo != null and frmNo !=''">and frmNo = #{frmNo}</if>
+            <if test="engNo != null and engNo !=''">and engNo = #{engNo}</if>
+        </where>
+    </select>
+    <select id="getVIPByPkID" resultType="com.tsvhlpom.vip.domain.VIP_Main">
+        <include refid="selectVip"></include>
+        where pkId = #{pkId}
+    </select>
+    <select id="getVIPByCertifCode" resultType="com.tsvhlpom.vip.domain.VIP_Main">
+        <include refid="selectVip"></include>
+        where certifCode = #{certifCode}
+    </select>
+    <select id="checkStatus" resultType="java.lang.Integer">
+        SELECT count(1) FROM web_ply_vhl a ,web_ply_base b
+        WHERE  a.c_app_no = b.c_app_no
+            and b.c_prod_no like '03%'
+            and b.c_latest_mrk = '1'
+            and b.c_ply_sts <![CDATA[ <> ]]> 'T'
+            and b.t_insrnc_end_tm &gt;= sysdate
+            and (a.c_plate_no = #{plateNo} or a.c_frm_no = #{frmNo})
+    </select>
+    <insert id="save" parameterType="com.tsvhlpom.vip.domain.VIP_Main">
+        insert into vip_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            pkId,insuredName,certifCode,phoneNo,plateNo,frmNo,engNo,createDate,createBy,updateDate,updateBy
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            sys_guid(),
+            #{insuredName},
+            #{certifCode},
+            #{phoneNo},
+            #{plateNo},
+            #{frmNo},
+            #{engNo},
+            sysdate,
+            #{createBy},
+            #{updateDate},
+            #{updateBy},
+        </trim>
+    </insert>
+</mapper>
