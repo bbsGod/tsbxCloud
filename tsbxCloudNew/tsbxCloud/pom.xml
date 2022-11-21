@@ -13,6 +13,7 @@
         <module>cloud-consumer-order80</module>
         <module>cloud-api-commons</module>
         <module>cloud-config-nacos-client3377</module>
+        <module>cloud-gateway-gateway9527</module>
     </modules>
 
 
@@ -38,7 +39,7 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
-    <!-- 子模块继承之后，提供作用：锁定版-->
+    <!-- 依赖管理 子模块继承之后，提供作用：锁定版本 + 子module 不用写（springboot，springcloud，springcloudalibaa）groupId和version -->
     <dependencyManagement>
         <dependencies>
             <!--spring boot 2.2.2-->
@@ -172,7 +173,7 @@
                 <!--Nacos配置中心地址-->
                 <config.server-addr>82.156.175.242</config.server-addr>
                 <!--Nacos配置中心命名空间,用于支持多环境.这里必须使用ID，不能使用名称,默认为空-->
-                <config.namespace>f2475b83-0fa8-42c4-acf0-1c64875cce92</config.namespace>
+                <config.namespace>301159b3-a876-4527-a768-b684ff3cc7fd</config.namespace>
                 <!--Nacos配置分组名称-->
                 <config.group>MES_DEV_GROUP</config.group>
                 <!--Nacos服务发现地址-->
@@ -192,7 +193,7 @@
                 <!--Nacos配置中心地址-->
                 <config.server-addr>82.156.175.242</config.server-addr>
                 <!--Nacos配置中心命名空间,用于支持多环境.这里必须使用ID，不能使用名称,默认为空-->
-                <config.namespace>52319686-40f5-4725-9746-a29b0275f3db</config.namespace>
+                <config.namespace>33072176-19a2-454a-bf48-dd92dd3f9ad8</config.namespace>
                 <!--Nacos配置分组名称-->
                 <config.group>MES_PROD_GROUP</config.group>
                 <!--Nacos服务发现地址-->
