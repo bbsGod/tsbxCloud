@@ -5,7 +5,7 @@ server:
 # Spring
 spring:
   application:
-    name: @project.artifactId@
+    name: cloud-gateway-9527
   profiles:
     # 环境配置
     active: ${platenv:dev}
