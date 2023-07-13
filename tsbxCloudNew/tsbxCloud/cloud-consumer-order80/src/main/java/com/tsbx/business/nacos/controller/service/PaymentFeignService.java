@@ -1,6 +1,8 @@
 package com.tsbx.business.nacos.controller.service;
 
+import com.tsbx.business.channel.pojo.MesChannel;
 import com.tsbx.business.nacos.controller.service.impl.RemoteHystrix;
+import com.tsbx.entities.ApiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Component
 @FeignClient(value = "cloud-payment-service-8001",fallback = RemoteHystrix.class)
@@ -22,4 +25,7 @@ public interface PaymentFeignService {
 
     @GetMapping(value = "/consumer/payment/sendMsgByCookie")
     void sendMsgByCookie(@RequestParam("name") String name);
+
+    @GetMapping("/getChannel")
+    ApiResponse<List<MesChannel>> getChannel();
 }
