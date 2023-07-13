@@ -6,8 +6,7 @@ spring:
     name: cloud-payment-service-8001
   cloud:
     nacos:
-      #server-addr: 127.0.0.1:8848
-      server-addr: 82.156.175.242:8848
+      server-addr: 127.0.0.1:8848
       username: nacos
       password: nacos
 
